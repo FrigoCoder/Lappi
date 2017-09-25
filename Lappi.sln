@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.16
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lappi", "Lappi\Lappi.csproj", "{027D5156-D77E-44A6-9CFF-750708F12A6E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{027D5156-D77E-44A6-9CFF-750708F12A6E}.Debug|x64.ActiveCfg = Debug|x64
+		{027D5156-D77E-44A6-9CFF-750708F12A6E}.Debug|x64.Build.0 = Debug|x64
+		{027D5156-D77E-44A6-9CFF-750708F12A6E}.Release|x64.ActiveCfg = Release|x64
+		{027D5156-D77E-44A6-9CFF-750708F12A6E}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {29A65339-EBDF-433D-9908-92506CC443E2}
+	EndGlobalSection
+EndGlobal
