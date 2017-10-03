@@ -2,7 +2,7 @@
 
 namespace Lappi {
 
-    public interface ColorConvertible {
+    public interface Colorspace {
 
         Color ToColor ();
 

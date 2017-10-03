@@ -3,7 +3,7 @@ using System.Drawing;
 
 namespace Lappi {
 
-    public class Image<T> where T : ColorConvertible {
+    public class Image<T> where T : Colorspace {
 
         public static Image<T> Load (string filename) {
             using( Bitmap bitmap = new Bitmap(filename) ) {

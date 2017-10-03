@@ -2,7 +2,7 @@
 
 namespace Lappi {
 
-    public struct RGB8 : ColorConvertible {
+    public struct RGB8 : Colorspace {
 
         public readonly byte R;
         public readonly byte G;
