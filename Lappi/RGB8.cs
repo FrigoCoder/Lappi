@@ -8,10 +8,10 @@ namespace Lappi {
         public readonly byte G;
         public readonly byte B;
 
-        public RGB8 (byte R, byte G, byte B) {
-            this.R = R;
-            this.G = G;
-            this.B = B;
+        public RGB8 (byte r, byte g, byte b) {
+            R = r;
+            G = g;
+            B = b;
         }
 
         public RGB8 (Color color) {

@@ -13,8 +13,8 @@ namespace LappiTest {
     [TestFixture]
     public class ImageTest {
 
-        private Image<T> image;
-        private readonly Random random = new Random();
+        private Image<T> Image;
+        private readonly Random Random = new Random();
 
         [Test]
         public void Can_load_640_by_480_white_image () {
@@ -74,14 +74,14 @@ namespace LappiTest {
         }
 
         private void LoadImage (string filename) {
-            image = Image<T>.Load("LappiTest\\Resources\\ImageTest\\" + filename);
+            Image = Image<T>.Load("LappiTest\\Resources\\ImageTest\\" + filename);
         }
 
         private Image<T> CreateRandomImage (int xs, int ys) {
             Image<T> result = new Image<T>(xs, ys);
             for( int x = 0; x < xs; x++ ) {
                 for( int y = 0; y < ys; y++ ) {
-                    Color color = Color.FromArgb(random.Next(256), random.Next(256), random.Next(256));
+                    Color color = Color.FromArgb(Random.Next(256), Random.Next(256), Random.Next(256));
                     result[x, y] = (T) Activator.CreateInstance(typeof(T), color);
                 }
             }
@@ -89,29 +89,29 @@ namespace LappiTest {
         }
 
         private void AssertDimensions (int xs, int ys) {
-            Assert.That(image.xs, Is.EqualTo(xs));
-            Assert.That(image.ys, Is.EqualTo(ys));
+            Assert.That(Image.Xs, Is.EqualTo(xs));
+            Assert.That(Image.Ys, Is.EqualTo(ys));
         }
 
         private void AssertPixel (int x, int y, Color color) {
             T value = (T) Activator.CreateInstance(typeof(T), color);
-            Assert.That(image[x, y], Is.EqualTo(value));
+            Assert.That(Image[x, y], Is.EqualTo(value));
         }
 
         private void AssertSolidColor (Color color) {
             T value = (T) Activator.CreateInstance(typeof(T), color);
-            for( int x = 0; x < image.xs; x++ ) {
-                for( int y = 0; y < image.ys; y++ ) {
-                    Assert.That(image[x, y], Is.EqualTo(value));
+            for( int x = 0; x < Image.Xs; x++ ) {
+                for( int y = 0; y < Image.Ys; y++ ) {
+                    Assert.That(Image[x, y], Is.EqualTo(value));
                 }
             }
         }
 
         private void AssertEquals (Image<T> expected, Image<T> actual) {
-            Assert.That(actual.xs, Is.EqualTo(expected.xs));
-            Assert.That(actual.ys, Is.EqualTo(expected.ys));
-            for( int x = 0; x < actual.xs; x++ ) {
-                for( int y = 0; y < actual.ys; y++ ) {
+            Assert.That(actual.Xs, Is.EqualTo(expected.Xs));
+            Assert.That(actual.Ys, Is.EqualTo(expected.Ys));
+            for( int x = 0; x < actual.Xs; x++ ) {
+                for( int y = 0; y < actual.Ys; y++ ) {
                     Assert.That(actual[x, y], Is.EqualTo(expected[x, y]));
                 }
             }

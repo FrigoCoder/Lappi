@@ -4,19 +4,18 @@ using System.Drawing;
 namespace Lappi {
 
     /// <summary>
-    /// Based on https://en.wikipedia.org/wiki/YUV#SDTV_with_BT.601
+    ///     Based on https://en.wikipedia.org/wiki/YUV#SDTV_with_BT.601
     /// </summary>
-
     public class YUVD : Colorspace {
 
         public readonly double Y;
         public readonly double U;
         public readonly double V;
 
-        public YUVD (double Y, double U, double V) {
-            this.Y = Y;
-            this.U = U;
-            this.V = V;
+        public YUVD (double y, double u, double v) {
+            Y = y;
+            U = u;
+            V = v;
         }
 
         public YUVD (Color color) {
@@ -36,23 +35,23 @@ namespace Lappi {
             return "YUVDouble(" + Y + "," + U + "," + V + ")";
         }
 
-        private const double WR = 0.299;
-        private const double WG = 1.000 - WR - WB;
-        private const double WB = 0.114;
+        private const double Wr = 0.299;
+        private const double Wg = 1.000 - Wr - Wb;
+        private const double Wb = 0.114;
 
         private const double Umax = 0.436;
         private const double Vmax = 0.615;
 
         private static readonly double[,] F = {
-            {WR, WG, WB},
-            {-Umax * WR / (WR + WG), -Umax * WG / (WR + WG), Umax},
-            {Vmax, -Vmax * WG / (WG + WB), -Vmax * WB / (WG + WB)}
+            {Wr, Wg, Wb},
+            {-Umax * Wr / (Wr + Wg), -Umax * Wg / (Wr + Wg), Umax},
+            {Vmax, -Vmax * Wg / (Wg + Wb), -Vmax * Wb / (Wg + Wb)}
         };
 
         private static readonly double[,] I = {
-            {1, 0, (WG + WB) / Vmax},
-            {1, WB * (WB - 1) / WG / Umax, WR * (WR - 1) / WG / Vmax},
-            {1, (WR + WG) / Umax, 0}
+            {1, 0, (Wg + Wb) / Vmax},
+            {1, Wb * (Wb - 1) / Wg / Umax, Wr * (Wr - 1) / Wg / Vmax},
+            {1, (Wr + Wg) / Umax, 0}
         };
 
         private static byte ToByte (double x) {
