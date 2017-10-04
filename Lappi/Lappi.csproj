@@ -71,7 +71,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="RGB8.cs" />
-    <Compile Include="YUVDouble.cs" />
+    <Compile Include="YUVD.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />

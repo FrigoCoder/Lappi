@@ -78,7 +78,7 @@
   <ItemGroup>
     <Compile Include="ImageTest.cs" />
     <Compile Include="RGB8Test.cs" />
-    <Compile Include="YUVDoubleTest.cs" />
+    <Compile Include="YUVDTest.cs" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -3,19 +3,23 @@ using System.Drawing;
 
 namespace Lappi {
 
-    public class YUVDouble : Colorspace {
+    /// <summary>
+    /// Based on https://en.wikipedia.org/wiki/YUV#SDTV_with_BT.601
+    /// </summary>
+
+    public class YUVD : Colorspace {
 
         public readonly double Y;
         public readonly double U;
         public readonly double V;
 
-        public YUVDouble (double Y, double U, double V) {
+        public YUVD (double Y, double U, double V) {
             this.Y = Y;
             this.U = U;
             this.V = V;
         }
 
-        public YUVDouble (Color color) {
+        public YUVD (Color color) {
             Y = (F[0, 0] * color.R + F[0, 1] * color.G + F[0, 2] * color.B) / 255;
             U = (F[1, 0] * color.R + F[1, 1] * color.G + F[1, 2] * color.B) / 255;
             V = (F[2, 0] * color.R + F[2, 1] * color.G + F[2, 2] * color.B) / 255;
