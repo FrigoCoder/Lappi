@@ -76,6 +76,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Filter\Analog\LinearTest.cs" />
     <Compile Include="ImageTest.cs" />
     <Compile Include="RGB8Test.cs" />
     <Compile Include="YUVDTest.cs" />
