@@ -68,6 +68,8 @@
     <Compile Include="Filter\Analog\AnalogFilter.cs" />
     <Compile Include="Filter\Analog\Linear.cs" />
     <Compile Include="Filter\Analog\ResamplingFilter.cs" />
+    <Compile Include="Filter\Digital\DigitalAdapter.cs" />
+    <Compile Include="Filter\Digital\DigitalFilter.cs" />
     <Compile Include="Image.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
