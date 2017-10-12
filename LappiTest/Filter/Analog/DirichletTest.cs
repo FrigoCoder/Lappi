@@ -10,20 +10,23 @@ namespace LappiTest.Filter.Analog {
     public class DirichletTest {
 
         [TestCase]
-        public void Dirichlet_same_as_naive_implementation () {
-            AssertFiltersEqual(new Dirichlet(1), new DirichletNaive(1), 0.125);
-            AssertFiltersEqual(new Dirichlet(2), new DirichletNaive(2), 0.125);
-            AssertFiltersEqual(new Dirichlet(3), new DirichletNaive(3), 0.125);
-            AssertFiltersEqual(new Dirichlet(4), new DirichletNaive(4), 0.125);
+        public void Dirichlet_downsampling_coefficients_are_appropriate () {
+            FilterTestUtil.AssertCoefficients(new Dirichlet(1), 2.0, new[] {0.5, 1.0, 0.5});
+            FilterTestUtil.AssertCoefficients(new Dirichlet(2), 2.0,
+                new[] {-0.10355339059327377, 0, 0.60355339059327384, 1.0, 0.60355339059327384, 0, -0.10355339059327377});
+            FilterTestUtil.AssertCoefficients(new Dirichlet(3), 2.0,
+                new[] {
+                    0.044658198738520435, 0, -0.16666666666666666, 0, 0.62200846792814635, 1.0, 0.62200846792814635, 0, -0.16666666666666666, 0,
+                    0.044658198738520435
+                });
         }
 
-        private void AssertFiltersEqual (AnalogFilter actual, AnalogFilter expected, double granularity) {
-            Assert.That(actual.Left, Is.EqualTo(expected.Left));
-            Assert.That(actual.Right, Is.EqualTo(expected.Right));
-            Assert.That(actual.Radius, Is.EqualTo(expected.Radius));
-            for( double x = actual.Left - granularity; x <= actual.Right + granularity; x += granularity ) {
-                Assert.That(actual.Function(x), Is.EqualTo(expected.Function(x)).Within(1E-15));
-            }
+        [TestCase]
+        public void Dirichlet_same_as_naive_implementation () {
+            FilterTestUtil.AssertFiltersEqual(new Dirichlet(1), new DirichletNaive(1), 0.125);
+            FilterTestUtil.AssertFiltersEqual(new Dirichlet(2), new DirichletNaive(2), 0.125);
+            FilterTestUtil.AssertFiltersEqual(new Dirichlet(3), new DirichletNaive(3), 0.125);
+            FilterTestUtil.AssertFiltersEqual(new Dirichlet(4), new DirichletNaive(4), 0.125);
         }
 
         private class DirichletNaive : AnalogFilter, ResamplingFilter {

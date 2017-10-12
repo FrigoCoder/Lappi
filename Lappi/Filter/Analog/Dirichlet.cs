@@ -11,7 +11,7 @@ namespace Lappi.Filter.Analog {
 
         public Func<double, double> Function => x => {
             double t = Math.Abs(x);
-            if( t >= Radius ) {
+            if( t > Radius ) {
                 return 0;
             }
             if( t > 0 ) {
