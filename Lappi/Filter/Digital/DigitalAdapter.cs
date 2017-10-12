@@ -24,6 +24,11 @@ namespace Lappi.Filter.Digital {
             }
         }
 
+        public override string ToString () {
+            return GetType().Name + "{Left = " + Left + ", Right = " + Right + ", Radius = " + Radius + ", Coefficients=[" +
+                string.Join(", ", _coefficients) + "]}";
+        }
+
         [SuppressMessage("ReSharper", "CompareOfFloatsByEqualityOperator")]
         private static int NonZeroLeft (AnalogFilter analog, double scale) {
             int left = Convert.ToInt32(Math.Ceiling(analog.Left * scale));
