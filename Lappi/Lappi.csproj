@@ -66,6 +66,7 @@
   <ItemGroup>
     <Compile Include="Colorspace.cs" />
     <Compile Include="Filter\Analog\AnalogFilter.cs" />
+    <Compile Include="Filter\Analog\Dirichlet.cs" />
     <Compile Include="Filter\Analog\Linear.cs" />
     <Compile Include="Filter\Analog\ResamplingFilter.cs" />
     <Compile Include="Filter\Digital\DigitalAdapter.cs" />
