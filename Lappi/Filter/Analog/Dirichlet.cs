@@ -4,10 +4,9 @@ namespace Lappi.Filter.Analog {
 
     public class Dirichlet : AnalogFilter, ResamplingFilter {
 
-        public double Radius { get; }
-
         public double Left => -Radius;
         public double Right => Radius;
+        public double Radius { get; }
 
         public Func<double, double> Function => x => {
             double t = Math.Abs(x);

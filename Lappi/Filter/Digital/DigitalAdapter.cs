@@ -11,7 +11,6 @@ namespace Lappi.Filter.Digital {
         public int Right { get; }
         public int Radius { get; }
         public Func<int, double> Function => x => coefficients[x - Left];
-
         private readonly double[] coefficients;
 
         public DigitalAdapter (AnalogFilter analog, double scale) {
