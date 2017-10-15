@@ -26,6 +26,14 @@ namespace Lappi.Filter.Digital {
             return sum == 0 ? 0 : result / sum;
         }
 
+        public double[] Convolute (double[] source) {
+            double[] result = new double[source.Length];
+            for( int i = 0; i < result.Length; i++ ) {
+                result[i] = Sample(source, i);
+            }
+            return result;
+        }
+
     }
 
 }
