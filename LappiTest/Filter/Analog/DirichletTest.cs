@@ -31,7 +31,6 @@ namespace LappiTest.Filter.Analog {
 
         private class DirichletNaive : AnalogFilter, ResamplingFilter {
 
-            private readonly int _n;
             public double Left => -_n;
             public double Right => _n;
             public double Radius => _n;
@@ -50,6 +49,8 @@ namespace LappiTest.Filter.Analog {
                 result += 0.5 * Math.Cos(_n * z);
                 return result / _n;
             };
+
+            private readonly int _n;
 
             public DirichletNaive (int n) {
                 _n = n;

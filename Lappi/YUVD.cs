@@ -42,17 +42,10 @@ namespace Lappi {
         private const double Umax = 0.436;
         private const double Vmax = 0.615;
 
-        private static readonly double[,] F = {
-            {Wr, Wg, Wb},
-            {-Umax * Wr / (Wr + Wg), -Umax * Wg / (Wr + Wg), Umax},
-            {Vmax, -Vmax * Wg / (Wg + Wb), -Vmax * Wb / (Wg + Wb)}
-        };
+        private static readonly double[,] F ={{Wr, Wg, Wb}, {-Umax * Wr / (Wr + Wg), -Umax * Wg / (Wr + Wg), Umax}, {Vmax, -Vmax * Wg / (Wg + Wb), -Vmax * Wb / (Wg + Wb)}};
 
-        private static readonly double[,] I = {
-            {1, 0, (Wg + Wb) / Vmax},
-            {1, Wb * (Wb - 1) / Wg / Umax, Wr * (Wr - 1) / Wg / Vmax},
-            {1, (Wr + Wg) / Umax, 0}
-        };
+        private static readonly double[,] I =
+            {{1, 0, (Wg + Wb) / Vmax}, {1, Wb * (Wb - 1) / Wg / Umax, Wr * (Wr - 1) / Wg / Vmax}, {1, (Wr + Wg) / Umax, 0}};
 
         private static byte ToByte (double x) {
             int rounded = (int) Math.Round(x * 255.0);

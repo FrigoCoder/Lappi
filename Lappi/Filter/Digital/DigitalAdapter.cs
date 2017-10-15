@@ -7,12 +7,12 @@ namespace Lappi.Filter.Digital {
 
     public class DigitalAdapter : DigitalFilter {
 
-        private readonly double[] _coefficients;
-
         public int Left { get; }
         public int Right { get; }
         public int Radius { get; }
         public Func<int, double> Function => x => _coefficients[x - Left];
+
+        private readonly double[] _coefficients;
 
         public DigitalAdapter (AnalogFilter analog, double scale) {
             Left = NonZeroLeft(analog, scale);
