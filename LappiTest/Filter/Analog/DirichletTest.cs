@@ -31,29 +31,29 @@ namespace LappiTest.Filter.Analog {
 
         private class DirichletNaive : AnalogFilter, ResamplingFilter {
 
-            public double Left => -_n;
-            public double Right => _n;
-            public double Radius => _n;
+            public double Left => -n;
+            public double Right => n;
+            public double Radius => n;
 
             public Func<double, double> Function => x => {
-                if( Math.Abs(x) >= _n ) {
+                if( Math.Abs(x) >= n ) {
                     return 0;
                 }
 
-                double z = x / _n * Math.PI;
+                double z = x / n * Math.PI;
 
                 double result = 0.5;
-                for( int k = 1; k < _n; k++ ) {
+                for( int k = 1; k < n; k++ ) {
                     result += Math.Cos(k * z);
                 }
-                result += 0.5 * Math.Cos(_n * z);
-                return result / _n;
+                result += 0.5 * Math.Cos(n * z);
+                return result / n;
             };
 
-            private readonly int _n;
+            private readonly int n;
 
             public DirichletNaive (int n) {
-                _n = n;
+                this.n = n;
             }
 
         }

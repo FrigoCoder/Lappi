@@ -8,13 +8,11 @@ using NUnit.Framework;
 
 namespace LappiTest {
 
-    using T = RGB8;
-
     [TestFixture]
     public class ImageTest {
 
-        private Image<T> Image;
-        private readonly Random Random = new Random();
+        private Image<Rgb8> image;
+        private readonly Random random = new Random();
 
         [Test]
         public void Can_load_640_by_480_white_image () {
@@ -64,9 +62,9 @@ namespace LappiTest {
         public void Saved_image_is_same_as_loaded_image () {
             string fileName = Path.GetRandomFileName();
             try {
-                Image<T> saved = CreateRandomImage(512, 512);
+                Image<Rgb8> saved = CreateRandomImage(512, 512);
                 saved.Save(fileName);
-                Image<T> loaded = Image<T>.Load(fileName);
+                Image<Rgb8> loaded = Image<Rgb8>.Load(fileName);
                 AssertEquals(saved, loaded);
             } finally {
                 new FileInfo(fileName).Delete();
@@ -74,40 +72,40 @@ namespace LappiTest {
         }
 
         private void LoadImage (string filename) {
-            Image = Image<T>.Load("LappiTest\\Resources\\ImageTest\\" + filename);
+            image = Image<Rgb8>.Load("LappiTest\\Resources\\ImageTest\\" + filename);
         }
 
-        private Image<T> CreateRandomImage (int xs, int ys) {
-            Image<T> result = new Image<T>(xs, ys);
+        private Image<Rgb8> CreateRandomImage (int xs, int ys) {
+            Image<Rgb8> result = new Image<Rgb8>(xs, ys);
             for( int x = 0; x < xs; x++ ) {
                 for( int y = 0; y < ys; y++ ) {
-                    Color color = Color.FromArgb(Random.Next(256), Random.Next(256), Random.Next(256));
-                    result[x, y] = (T) Activator.CreateInstance(typeof(T), color);
+                    Color color = Color.FromArgb(random.Next(256), random.Next(256), random.Next(256));
+                    result[x, y] = (Rgb8) Activator.CreateInstance(typeof(Rgb8), color);
                 }
             }
             return result;
         }
 
         private void AssertDimensions (int xs, int ys) {
-            Assert.That(Image.Xs, Is.EqualTo(xs));
-            Assert.That(Image.Ys, Is.EqualTo(ys));
+            Assert.That(image.Xs, Is.EqualTo(xs));
+            Assert.That(image.Ys, Is.EqualTo(ys));
         }
 
         private void AssertPixel (int x, int y, Color color) {
-            T value = (T) Activator.CreateInstance(typeof(T), color);
-            Assert.That(Image[x, y], Is.EqualTo(value));
+            Rgb8 value = (Rgb8) Activator.CreateInstance(typeof(Rgb8), color);
+            Assert.That(image[x, y], Is.EqualTo(value));
         }
 
         private void AssertSolidColor (Color color) {
-            T value = (T) Activator.CreateInstance(typeof(T), color);
-            for( int x = 0; x < Image.Xs; x++ ) {
-                for( int y = 0; y < Image.Ys; y++ ) {
-                    Assert.That(Image[x, y], Is.EqualTo(value));
+            Rgb8 value = (Rgb8) Activator.CreateInstance(typeof(Rgb8), color);
+            for( int x = 0; x < image.Xs; x++ ) {
+                for( int y = 0; y < image.Ys; y++ ) {
+                    Assert.That(image[x, y], Is.EqualTo(value));
                 }
             }
         }
 
-        private void AssertEquals (Image<T> expected, Image<T> actual) {
+        private void AssertEquals (Image<Rgb8> expected, Image<Rgb8> actual) {
             Assert.That(actual.Xs, Is.EqualTo(expected.Xs));
             Assert.That(actual.Ys, Is.EqualTo(expected.Ys));
             for( int x = 0; x < actual.Xs; x++ ) {

@@ -10,23 +10,23 @@ namespace Lappi.Filter.Digital {
         public int Left { get; }
         public int Right { get; }
         public int Radius { get; }
-        public Func<int, double> Function => x => _coefficients[x - Left];
+        public Func<int, double> Function => x => coefficients[x - Left];
 
-        private readonly double[] _coefficients;
+        private readonly double[] coefficients;
 
         public DigitalAdapter (AnalogFilter analog, double scale) {
             Left = NonZeroLeft(analog, scale);
             Right = NonZeroRight(analog, scale);
             Radius = Math.Max(Math.Abs(Left), Math.Abs(Right));
-            _coefficients = new double[Right - Left + 1];
-            for( int i = 0; i < _coefficients.Length; i++ ) {
-                _coefficients[i] = analog.Function((i + Left) / scale);
+            coefficients = new double[Right - Left + 1];
+            for( int i = 0; i < coefficients.Length; i++ ) {
+                coefficients[i] = analog.Function((i + Left) / scale);
             }
         }
 
         public override string ToString () {
             return GetType().Name + "{Left = " + Left + ", Right = " + Right + ", Radius = " + Radius + ", Coefficients=[" +
-                string.Join(", ", _coefficients) + "]}";
+                string.Join(", ", coefficients) + "]}";
         }
 
         [SuppressMessage("ReSharper", "CompareOfFloatsByEqualityOperator")]

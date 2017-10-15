@@ -2,19 +2,19 @@
 
 namespace Lappi {
 
-    public struct RGB8 : Colorspace {
+    public struct Rgb8 : Colorspace {
 
         public readonly byte R;
         public readonly byte G;
         public readonly byte B;
 
-        public RGB8 (byte r, byte g, byte b) {
+        public Rgb8 (byte r, byte g, byte b) {
             R = r;
             G = g;
             B = b;
         }
 
-        public RGB8 (Color color) {
+        public Rgb8 (Color color) {
             R = color.R;
             G = color.G;
             B = color.B;

@@ -6,19 +6,19 @@ namespace Lappi {
     /// <summary>
     ///     Based on https://en.wikipedia.org/wiki/YUV#SDTV_with_BT.601
     /// </summary>
-    public class YUVD : Colorspace {
+    public class YuvD : Colorspace {
 
         public readonly double Y;
         public readonly double U;
         public readonly double V;
 
-        public YUVD (double y, double u, double v) {
+        public YuvD (double y, double u, double v) {
             Y = y;
             U = u;
             V = v;
         }
 
-        public YUVD (Color color) {
+        public YuvD (Color color) {
             Y = (F[0, 0] * color.R + F[0, 1] * color.G + F[0, 2] * color.B) / 255;
             U = (F[1, 0] * color.R + F[1, 1] * color.G + F[1, 2] * color.B) / 255;
             V = (F[2, 0] * color.R + F[2, 1] * color.G + F[2, 2] * color.B) / 255;
@@ -42,7 +42,8 @@ namespace Lappi {
         private const double Umax = 0.436;
         private const double Vmax = 0.615;
 
-        private static readonly double[,] F ={{Wr, Wg, Wb}, {-Umax * Wr / (Wr + Wg), -Umax * Wg / (Wr + Wg), Umax}, {Vmax, -Vmax * Wg / (Wg + Wb), -Vmax * Wb / (Wg + Wb)}};
+        private static readonly double[,] F =
+            {{Wr, Wg, Wb}, {-Umax * Wr / (Wr + Wg), -Umax * Wg / (Wr + Wg), Umax}, {Vmax, -Vmax * Wg / (Wg + Wb), -Vmax * Wb / (Wg + Wb)}};
 
         private static readonly double[,] I =
             {{1, 0, (Wg + Wb) / Vmax}, {1, Wb * (Wb - 1) / Wg / Umax, Wr * (Wr - 1) / Wg / Vmax}, {1, (Wr + Wg) / Umax, 0}};

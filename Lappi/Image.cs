@@ -20,12 +20,12 @@ namespace Lappi {
 
         public readonly int Xs;
         public readonly int Ys;
-        private readonly T[,] Pixels;
+        private readonly T[,] pixels;
 
         public Image (int xs, int ys) {
             Xs = xs;
             Ys = ys;
-            Pixels = new T[xs, ys];
+            pixels = new T[xs, ys];
         }
 
         public void Save (string filename) {
@@ -40,8 +40,8 @@ namespace Lappi {
         }
 
         public T this [int x, int y] {
-            get => Pixels[x, y];
-            set => Pixels[x, y] = value;
+            get => pixels[x, y];
+            set => pixels[x, y] = value;
         }
 
     }
