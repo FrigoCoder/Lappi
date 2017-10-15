@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Lappi.Filter.Digital {
@@ -12,15 +13,15 @@ namespace Lappi.Filter.Digital {
         }
 
         [SuppressMessage("ReSharper", "CompareOfFloatsByEqualityOperator")]
-        public double Sample (double[] v, int center) {
+        public double Sample (double[] source, int center) {
             double result = 0;
             double sum = 0;
             int left = Math.Max(center + filter.Left, 0);
-            int right = Math.Min(center + filter.Right, v.Length - 1);
+            int right = Math.Min(center + filter.Right, source.Length - 1);
             Func<int, double> function = filter.Function;
             for( int index = left; index <= right; index++ ) {
                 double weight = function(index - center);
-                result += v[index] * weight;
+                result += source[index] * weight;
                 sum += Math.Abs(weight);
             }
             return sum == 0 ? 0 : result / sum;
@@ -32,6 +33,14 @@ namespace Lappi.Filter.Digital {
                 result[i] = Sample(source, i);
             }
             return result;
+        }
+
+        public double[] Downsample (double[]source, int factor, int shift) {
+            List<double> result = new List<double>();
+            for( int i = shift; i < source.Length; i += factor ) {
+                result.Add(Sample(source, i));
+            }
+            return result.ToArray();
         }
 
     }
