@@ -31,7 +31,10 @@ namespace Lappi.Filter.Digital {
                 result += (dynamic) source[index] * weight;
                 sum += Math.Abs(weight);
             }
-            return sum == 0 ? 0 : (dynamic) result / sum;
+            if( sum != 0 ) {
+                result /= (dynamic) sum;
+            }
+            return result;
         }
 
         public T[] Convolute (T[] source) {
