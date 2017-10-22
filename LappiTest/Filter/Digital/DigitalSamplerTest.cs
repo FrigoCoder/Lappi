@@ -74,6 +74,14 @@ namespace LappiTest.Filter.Digital {
         }
 
         [TestCase]
+        public void Upsample_with_factor_2_and_shift_1 () {
+            double[] downsampled = {4.5, 16.5, 32.333333333333333333333333333333};
+            double[] expected = {1.5, 2.25, 5.25, 8.25, 12.2083333333333333, 21.5555555555555555};
+            DigitalSampler sampler = new DigitalSampler(new DigitalAdapter(new Linear(), 2.0));
+            Assert.That(sampler.Upsample(downsampled, 2, 1), Is.EqualTo(expected));
+        }
+
+        [TestCase]
         public void Can_handle_float_arrays () {
             float[] array = {1, 4, 9, 16, 25, 36};
             float[] expected = {2, 4.5f, 9.5f, 16.5f, 25.5f, 32.333333333333333333333333333333f};
