@@ -25,9 +25,9 @@ namespace Lappi.Filter.Digital {
             double sum = 0;
             int left = Math.Max(center + filter.Left, 0);
             int right = Math.Min(center + filter.Right, source.Length - 1);
-            Func<int, double> function = filter.Kernel;
+            Func<int, double> kernel = filter.Kernel;
             for( int index = left; index <= right; index++ ) {
-                double weight = function(index - center);
+                double weight = kernel(index - center);
                 result += (dynamic) source[index] * weight;
                 sum += Math.Abs(weight);
             }
