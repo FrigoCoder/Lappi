@@ -52,6 +52,13 @@ namespace LappiTest.Filter.Digital {
         }
 
         [TestCase]
+        public void Convolute_with_dirichlet_filter_preserves_constant_array () {
+            double[] constant = {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2};
+            DigitalSampler sampler = new DigitalSampler(new DigitalAdapter(new Dirichlet(4.0), 2.0));
+            Assert.That(sampler.Convolute(constant), Is.EqualTo(constant));
+        }
+
+        [TestCase]
         public void Downsample_with_factor_2_and_shift_0 () {
             double[] expected = {2, 9.5, 25.5};
             DigitalSampler sampler = new DigitalSampler(new DigitalAdapter(new Linear(), 2.0));
