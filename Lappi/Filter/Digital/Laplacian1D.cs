@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace Lappi.Filter.Digital {
 
@@ -15,16 +16,8 @@ namespace Lappi.Filter.Digital {
         public Tuple<double[], double[]> Transform (double[] source) {
             double[] downsampled = analysis.Downsample(source, 2, 0);
             double[] upsampled = synthesis.Upsample(downsampled, 2, 0);
-            double[] difference = GetDifference(source, upsampled);
+            double[] difference = source.Zip(upsampled, (x, y) => x - y).ToArray();
             return Tuple.Create(downsampled, difference);
-        }
-
-        private double[] GetDifference (double[] source, double[] upsampled) {
-            double[] difference = new double[source.Length];
-            for( int i = 0; i < difference.Length; i++ ) {
-                difference[i] = source[i] - upsampled[i];
-            }
-            return difference;
         }
 
     }
