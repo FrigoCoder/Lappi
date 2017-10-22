@@ -8,7 +8,7 @@ namespace Lappi.Filter.Analog {
         public double Right => Radius;
         public double Radius { get; }
 
-        public Func<double, double> Function => x => {
+        public Func<double, double> Kernel => x => {
             double t = Math.Abs(x);
             if( t > Radius ) {
                 return 0;

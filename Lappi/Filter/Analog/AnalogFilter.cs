@@ -7,7 +7,7 @@ namespace Lappi.Filter.Analog {
         double Left { get; }
         double Right { get; }
         double Radius { get; }
-        Func<double, double> Function { get; }
+        Func<double, double> Kernel { get; }
 
     }
 

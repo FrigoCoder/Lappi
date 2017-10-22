@@ -14,7 +14,7 @@ namespace LappiTest.Filter {
         public static void AssertCoefficients (DigitalFilter adapter, double[] coeffs) {
             double[] actual = new double[adapter.Right - adapter.Left + 1];
             for( int x = adapter.Left; x <= adapter.Right; x++ ) {
-                actual[x - adapter.Left] = adapter.Function(x);
+                actual[x - adapter.Left] = adapter.Kernel(x);
             }
             Assert.That(actual, Is.EqualTo(coeffs).Within(1E-15));
         }
@@ -24,7 +24,7 @@ namespace LappiTest.Filter {
             Assert.That(actual.Right, Is.EqualTo(expected.Right));
             Assert.That(actual.Radius, Is.EqualTo(expected.Radius));
             for( double x = actual.Left - granularity; x <= actual.Right + granularity; x += granularity ) {
-                Assert.That(actual.Function(x), Is.EqualTo(expected.Function(x)).Within(1E-15));
+                Assert.That(actual.Kernel(x), Is.EqualTo(expected.Kernel(x)).Within(1E-15));
             }
         }
 

@@ -7,7 +7,7 @@ namespace Lappi.Filter.Digital {
         int Left { get; }
         int Right { get; }
         int Radius { get; }
-        Func<int, double> Function { get; }
+        Func<int, double> Kernel { get; }
 
     }
 

@@ -40,7 +40,7 @@ namespace LappiTest.Filter.Analog {
             public double Right => n;
             public double Radius => n;
 
-            public Func<double, double> Function => x => {
+            public Func<double, double> Kernel => x => {
                 if( Math.Abs(x) >= n ) {
                     return 0;
                 }

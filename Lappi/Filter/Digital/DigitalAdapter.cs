@@ -10,7 +10,7 @@ namespace Lappi.Filter.Digital {
         public int Left { get; }
         public int Right { get; }
         public int Radius { get; }
-        public Func<int, double> Function => x => coefficients[x - Left];
+        public Func<int, double> Kernel => x => coefficients[x - Left];
         private readonly double[] coefficients;
 
         public DigitalAdapter (AnalogFilter analog, double scale) {
@@ -19,7 +19,7 @@ namespace Lappi.Filter.Digital {
             Radius = Math.Max(Math.Abs(Left), Math.Abs(Right));
             coefficients = new double[Right - Left + 1];
             for( int i = 0; i < coefficients.Length; i++ ) {
-                coefficients[i] = analog.Function((i + Left) / scale);
+                coefficients[i] = analog.Kernel((i + Left) / scale);
             }
         }
 
@@ -31,7 +31,7 @@ namespace Lappi.Filter.Digital {
         [SuppressMessage("ReSharper", "CompareOfFloatsByEqualityOperator")]
         private static int NonZeroLeft (AnalogFilter analog, double scale) {
             int left = Convert.ToInt32(Math.Ceiling(analog.Left * scale));
-            while( analog.Function(left / scale) == 0 ) {
+            while( analog.Kernel(left / scale) == 0 ) {
                 left++;
             }
             return left;
@@ -40,7 +40,7 @@ namespace Lappi.Filter.Digital {
         [SuppressMessage("ReSharper", "CompareOfFloatsByEqualityOperator")]
         private static int NonZeroRight (AnalogFilter analog, double scale) {
             int right = Convert.ToInt32(Math.Floor(analog.Right * scale));
-            while( analog.Function(right / scale) == 0 ) {
+            while( analog.Kernel(right / scale) == 0 ) {
                 right--;
             }
             return right;
