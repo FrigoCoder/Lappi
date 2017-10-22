@@ -80,6 +80,7 @@
     <Compile Include="Filter\Analog\LinearTest.cs" />
     <Compile Include="Filter\Digital\DigitalAdapterTest.cs" />
     <Compile Include="Filter\Digital\DigitalSamplerTest.cs" />
+    <Compile Include="Filter\Digital\Laplacian1DTest.cs" />
     <Compile Include="Filter\FilterTestUtil.cs" />
     <Compile Include="ImageTest.cs" />
     <Compile Include="Rgb8Test.cs" />
