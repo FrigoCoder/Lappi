@@ -4,7 +4,14 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Lappi.Filter.Digital {
 
-    public class DigitalSampler {
+    public class DigitalSampler : DigitalSampler<double> {
+
+        public DigitalSampler (DigitalFilter filter) : base(filter) {
+        }
+
+    }
+
+    public class DigitalSampler<T> where T : new() {
 
         private readonly DigitalFilter filter;
 
@@ -13,30 +20,30 @@ namespace Lappi.Filter.Digital {
         }
 
         [SuppressMessage("ReSharper", "CompareOfFloatsByEqualityOperator")]
-        public double Sample (double[] source, int center) {
-            double result = 0;
+        public T Sample (T[] source, int center) {
+            T result = new T();
             double sum = 0;
             int left = Math.Max(center + filter.Left, 0);
             int right = Math.Min(center + filter.Right, source.Length - 1);
             Func<int, double> function = filter.Function;
             for( int index = left; index <= right; index++ ) {
                 double weight = function(index - center);
-                result += source[index] * weight;
+                result += (dynamic) source[index] * weight;
                 sum += Math.Abs(weight);
             }
-            return sum == 0 ? 0 : result / sum;
+            return sum == 0 ? 0 : (dynamic) result / sum;
         }
 
-        public double[] Convolute (double[] source) {
-            double[] result = new double[source.Length];
+        public T[] Convolute (T[] source) {
+            T[] result = new T[source.Length];
             for( int i = 0; i < result.Length; i++ ) {
                 result[i] = Sample(source, i);
             }
             return result;
         }
 
-        public double[] Downsample (double[]source, int factor, int shift) {
-            List<double> result = new List<double>();
+        public T[] Downsample (T[]source, int factor, int shift) {
+            List<T> result = new List<T>();
             for( int i = shift; i < source.Length; i += factor ) {
                 result.Add(Sample(source, i));
             }
