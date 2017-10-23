@@ -73,6 +73,7 @@
     <Compile Include="Filter\Digital\DigitalAdapter.cs" />
     <Compile Include="Filter\Digital\DigitalFilter.cs" />
     <Compile Include="Filter\Digital\DigitalSampler.cs" />
+    <Compile Include="Filter\Digital\HighpassAdapter.cs" />
     <Compile Include="Filter\Digital\Laplacian1D.cs" />
     <Compile Include="Image.cs" />
     <Compile Include="MainForm.cs">
