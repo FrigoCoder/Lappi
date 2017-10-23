@@ -11,7 +11,6 @@ namespace LappiTest.Filter.Digital {
     public class DigitalSamplerTest {
 
         private readonly double[] source = {1, 4, 9, 16, 25, 36};
-        private readonly double[] blurred = {2, 4.5, 9.5, 16.5, 25.5, 32.333333333333333333333333333333};
 
         [TestCase]
         public void Sample_with_scale_1_linear_filter_returns_array_value () {
@@ -24,8 +23,9 @@ namespace LappiTest.Filter.Digital {
         [TestCase]
         public void Sample_with_scale_2_linear_filter_blurs_linearly () {
             DigitalSampler sampler = new DigitalSampler(new DigitalAdapter(new Linear(), 2.0));
+            double[] expected = {2, 4.5, 9.5, 16.5, 25.5, 32.333333333333333333333333333333};
             for( int i = 0; i < source.Length; i++ ) {
-                Assert.That(sampler.Sample(source, i), Is.EqualTo(blurred[i]));
+                Assert.That(sampler.Sample(source, i), Is.EqualTo(expected[i]));
             }
         }
 
@@ -50,20 +50,21 @@ namespace LappiTest.Filter.Digital {
         [TestCase]
         public void Convolute_with_scale_2_linear_filter_blurs_linearly () {
             DigitalSampler sampler = new DigitalSampler(new DigitalAdapter(new Linear(), 2.0));
-            Assert.That(sampler.Convolute(source), Is.EqualTo(blurred));
+            double[] expected = {2, 4.5, 9.5, 16.5, 25.5, 32.333333333333333333333333333333};
+            Assert.That(sampler.Convolute(source), Is.EqualTo(expected));
         }
 
         [TestCase]
         public void Convolute_with_lowpass_filter_preserves_constant_array () {
-            double[] constant = {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2};
             DigitalSampler sampler = new DigitalSampler(new DigitalAdapter(new Dirichlet(4.0), 2.0));
+            double[] constant = {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2};
             Assert.That(sampler.Convolute(constant), Is.EqualTo(constant));
         }
 
         [TestCase]
         public void Convolute_with_highpass_filter_preserves_nyquist_array () {
-            double[] nyquist = {2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2};
             DigitalSampler sampler = new DigitalSampler(new HighpassAdapter(new DigitalAdapter(new Dirichlet(4.0), 2.0)));
+            double[] nyquist = {2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2};
             Assert.That(sampler.Convolute(nyquist), Is.EqualTo(nyquist).Within(1E-15));
         }
 
