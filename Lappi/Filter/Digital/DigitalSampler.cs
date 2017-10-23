@@ -31,10 +31,22 @@ namespace Lappi.Filter.Digital {
             return result;
         }
 
+        public T SampleHighpass (T[] source, int center) {
+            return (dynamic) source[center] - Sample(source, center);
+        }
+
         public T[] Convolute (T[] source) {
             T[] result = new T[source.Length];
             for( int i = 0; i < result.Length; i++ ) {
                 result[i] = Sample(source, i);
+            }
+            return result;
+        }
+
+        public T[] ConvoluteHighpass (T[] source) {
+            T[] result = new T[source.Length];
+            for( int i = 0; i < result.Length; i++ ) {
+                result[i] = SampleHighpass(source, i);
             }
             return result;
         }

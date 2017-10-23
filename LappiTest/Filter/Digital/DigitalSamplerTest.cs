@@ -42,6 +42,15 @@ namespace LappiTest.Filter.Digital {
         }
 
         [TestCase]
+        public void SampleHighpass_returns_difference_between_original_and_blurred () {
+            DigitalSampler sampler = new DigitalSampler(new DigitalAdapter(new Linear(), 2.0));
+            double[] expected = {-1, -0.5, -0.5, -0.5, -0.5, 3.6666666666666666};
+            for( int i = 0; i < source.Length; i++ ) {
+                Assert.That(sampler.SampleHighpass(source, i), Is.EqualTo(expected[i]).Within(1E-14));
+            }
+        }
+
+        [TestCase]
         public void Convolute_with_scale_1_linear_filter_returns_array () {
             DigitalSampler sampler = new DigitalSampler(new DigitalAdapter(new Linear(), 1.0));
             Assert.That(sampler.Convolute(source), Is.EqualTo(source));
@@ -69,7 +78,7 @@ namespace LappiTest.Filter.Digital {
         }
 
         [TestCase]
-        public void Convolution_with_lowpass_and_highpass_is_complementary () {
+        public void Convolute_with_lowpass_and_highpass_is_complementary () {
             DigitalSampler lowpass = new DigitalSampler(new DigitalAdapter(new Linear(), 2.0));
             DigitalSampler highpass = new DigitalSampler(new HighpassAdapter(new DigitalAdapter(new Linear(), 2.0)));
             double[] sum = lowpass.Convolute(source).Zip(highpass.Convolute(source), (x, y) => x + y).ToArray();
@@ -77,13 +86,43 @@ namespace LappiTest.Filter.Digital {
         }
 
         [TestCase]
-        public void Convolution_with_lowpass_and_highpass_is_complementary_at_nonboundaries () {
+        public void Convolute_with_lowpass_and_highpass_is_complementary_at_nonboundaries () {
             DigitalSampler lowpass = new DigitalSampler(new DigitalAdapter(new Linear(), 2.0));
             DigitalSampler highpass = new DigitalSampler(new HighpassAdapter(new DigitalAdapter(new Linear(), 2.0)));
             double[] sum = lowpass.Convolute(source).Zip(highpass.Convolute(source), (x, y) => x + y).ToArray();
             for( int i = 1; i < sum.Length - 1; i++ ) {
                 Assert.That(sum[i], Is.EqualTo(source[i]));
             }
+        }
+
+        [TestCase]
+        public void Convolute_can_handle_float_arrays () {
+            DigitalSampler<float> sampler = new DigitalSampler<float>(new DigitalAdapter(new Linear(), 2.0));
+            float[] array = {1, 4, 9, 16, 25, 36};
+            float[] expected = {2, 4.5f, 9.5f, 16.5f, 25.5f, 32.333333333333333333333333333333f};
+            Assert.That(sampler.Convolute(array), Is.EqualTo(expected));
+        }
+
+        [TestCase]
+        public void ConvoluteHighpass_returns_difference_between_original_and_blurred () {
+            DigitalSampler sampler = new DigitalSampler(new DigitalAdapter(new Linear(), 2.0));
+            double[] expected = {-1, -0.5, -0.5, -0.5, -0.5, 3.6666666666666666};
+            Assert.That(sampler.ConvoluteHighpass(source), Is.EqualTo(expected).Within(1E-14));
+        }
+
+        [TestCase]
+        public void Convolute_and_ConvoluteHighPass_are_complementary () {
+            DigitalSampler sampler = new DigitalSampler(new DigitalAdapter(new Linear(), 2.0));
+            double[] sum = sampler.Convolute(source).Zip(sampler.ConvoluteHighpass(source), (x, y) => x + y).ToArray();
+            Assert.That(sum, Is.EqualTo(source));
+        }
+
+        [TestCase]
+        public void ConvoluteHighpass_can_handle_float_arrays_even_if_imprecise_as_fuck () {
+            DigitalSampler<float> sampler = new DigitalSampler<float>(new DigitalAdapter(new Linear(), 2.0));
+            float[] array = {1, 4, 9, 16, 25, 36};
+            float[] expected = {-1f, -0.5f, -0.5f, -0.5f, -0.5f, 3.6666666666666666f};
+            Assert.That(sampler.ConvoluteHighpass(array), Is.EqualTo(expected).Within(1E-5));
         }
 
         [TestCase]
@@ -114,14 +153,6 @@ namespace LappiTest.Filter.Digital {
             double[] downsampled = {4.5, 16.5, 32.333333333333333333333333333333};
             double[] expected = {1.5, 2.25, 5.25, 8.25, 12.2083333333333333, 21.5555555555555555};
             Assert.That(sampler.Upsample(downsampled, 2, 1), Is.EqualTo(expected));
-        }
-
-        [TestCase]
-        public void Can_handle_float_arrays () {
-            DigitalSampler<float> sampler = new DigitalSampler<float>(new DigitalAdapter(new Linear(), 2.0));
-            float[] array = {1, 4, 9, 16, 25, 36};
-            float[] expected = {2, 4.5f, 9.5f, 16.5f, 25.5f, 32.333333333333333333333333333333f};
-            Assert.That(sampler.Convolute(array), Is.EqualTo(expected));
         }
 
     }
