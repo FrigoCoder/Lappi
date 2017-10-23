@@ -7,14 +7,14 @@ namespace LappiTest.Filter {
 
     public static class FilterTestUtil {
 
-        public static void AssertCoefficients (AnalogFilter analog, double scale, double[] coeffs) {
-            AssertCoefficients(new DigitalAdapter(analog, scale), coeffs);
+        public static void AssertCoefficients (AnalogFilter filter, double scale, double[] coeffs) {
+            AssertCoefficients(new DigitalAdapter(filter, scale), coeffs);
         }
 
-        public static void AssertCoefficients (DigitalFilter adapter, double[] coeffs) {
-            double[] actual = new double[adapter.Right - adapter.Left + 1];
-            for( int x = adapter.Left; x <= adapter.Right; x++ ) {
-                actual[x - adapter.Left] = adapter.Kernel(x);
+        public static void AssertCoefficients (DigitalFilter filter, double[] coeffs) {
+            double[] actual = new double[filter.Right - filter.Left + 1];
+            for( int x = filter.Left; x <= filter.Right; x++ ) {
+                actual[x - filter.Left] = filter.Kernel(x);
             }
             Assert.That(actual, Is.EqualTo(coeffs).Within(1E-15));
         }
