@@ -7,14 +7,14 @@ namespace Lappi.Filter.Digital {
         public int Left { get; }
         public int Right { get; }
         public int Radius { get; }
-        public Func<int, double> Kernel => x => coefficients[x - Left];
-        private readonly double[] coefficients;
+        public double[] Coefficients { get; }
+        public Func<int, double> Kernel => x => Coefficients[x - Left];
 
         public HighpassAdapter (DigitalFilter filter) {
             Left = filter.Left;
             Right = filter.Right;
             Radius = filter.Radius;
-            coefficients = CreateCoefficients(filter);
+            Coefficients = CreateCoefficients(filter);
         }
 
         private static double[] CreateCoefficients (DigitalFilter filter) {

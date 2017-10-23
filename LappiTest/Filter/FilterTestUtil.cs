@@ -12,11 +12,7 @@ namespace LappiTest.Filter {
         }
 
         public static void AssertCoefficients (DigitalFilter filter, double[] coeffs) {
-            double[] actual = new double[filter.Right - filter.Left + 1];
-            for( int x = filter.Left; x <= filter.Right; x++ ) {
-                actual[x - filter.Left] = filter.Kernel(x);
-            }
-            Assert.That(actual, Is.EqualTo(coeffs).Within(1E-15));
+            Assert.That(filter.Coefficients, Is.EqualTo(coeffs).Within(1E-15));
         }
 
         public static void AssertFiltersEqual (AnalogFilter actual, AnalogFilter expected, double granularity) {
