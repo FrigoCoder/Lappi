@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Lappi.Filter.Digital {
@@ -46,11 +45,11 @@ namespace Lappi.Filter.Digital {
         }
 
         public T[] Downsample (T[] source, int factor, int shift) {
-            List<T> result = new List<T>();
-            for( int i = shift; i < source.Length; i += factor ) {
-                result.Add(Sample(source, i));
+            T[] result = new T[source.Length / factor];
+            for( int i = 0; i < result.Length; i++ ) {
+                result[i] = Sample(source, i * factor + shift);
             }
-            return result.ToArray();
+            return result;
         }
 
         public T[] Upsample (T[] source, int factor, int shift) {
