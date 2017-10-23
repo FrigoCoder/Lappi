@@ -18,21 +18,16 @@ namespace Lappi.Filter.Digital {
             this.filter = filter;
         }
 
-        [SuppressMessage("ReSharper", "CompareOfFloatsByEqualityOperator")]
         public T Sample (T[] source, int center) {
-            T result = new T();
-            double sum = 0;
             int left = Math.Max(center + filter.Left, 0);
             int right = Math.Min(center + filter.Right, source.Length - 1);
             Func<int, double> kernel = filter.Kernel;
+            T result = new T();
             for( int index = left; index <= right; index++ ) {
                 double weight = kernel(index - center);
                 result += (dynamic) source[index] * weight;
-                sum += Math.Abs(weight);
             }
-            if( sum != 0 ) {
-                result /= (dynamic) sum;
-            }
+            result /= (dynamic) Normalize(center, left, right);
             return result;
         }
 
@@ -63,6 +58,16 @@ namespace Lappi.Filter.Digital {
                 v[i * factor + shift] = source[i];
             }
             return Convolute(v);
+        }
+
+        [SuppressMessage("ReSharper", "CompareOfFloatsByEqualityOperator")]
+        private double Normalize (int center, int left, int right) {
+            double sum = 0;
+            Func<int, double> kernel = filter.Kernel;
+            for( int i = left; i <= right; i++ ) {
+                sum += Math.Abs(kernel(i - center));
+            }
+            return sum == 0 ? 1 : sum;
         }
 
     }
