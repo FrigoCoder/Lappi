@@ -8,11 +8,7 @@ namespace LappiTest.Filter {
     public static class FilterTestUtil {
 
         public static void AssertCoefficients (AnalogFilter filter, double scale, double[] coeffs) {
-            AssertCoefficients(new DigitalAdapter(filter, scale), coeffs);
-        }
-
-        public static void AssertCoefficients (DigitalFilter filter, double[] coeffs) {
-            Assert.That(filter.Coefficients, Is.EqualTo(coeffs).Within(1E-15));
+            Assert.That(new DigitalAdapter(filter, scale).Coefficients, Is.EqualTo(coeffs).Within(1E-15));
         }
 
         public static void AssertFiltersEqual (AnalogFilter actual, AnalogFilter expected, double granularity) {

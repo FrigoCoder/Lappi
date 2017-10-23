@@ -15,7 +15,7 @@ namespace LappiTest.Filter.Digital {
             Assert.That(filter.Left, Is.EqualTo(-1));
             Assert.That(filter.Right, Is.EqualTo(1));
             Assert.That(filter.Radius, Is.EqualTo(1));
-            FilterTestUtil.AssertCoefficients(filter, coefficients);
+            Assert.That(filter.Coefficients, Is.EqualTo(coefficients));
         }
 
         [TestCase]
@@ -26,7 +26,7 @@ namespace LappiTest.Filter.Digital {
             Assert.That(filter.Left, Is.EqualTo(-1));
             Assert.That(filter.Right, Is.EqualTo(3));
             Assert.That(filter.Radius, Is.EqualTo(3));
-            FilterTestUtil.AssertCoefficients(filter, coefficients);
+            Assert.That(filter.Coefficients, Is.EqualTo(coefficients));
         }
 
     }

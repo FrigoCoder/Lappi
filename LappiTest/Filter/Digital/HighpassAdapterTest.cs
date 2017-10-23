@@ -12,7 +12,7 @@ namespace LappiTest.Filter.Digital {
         public void Highpass_of_linear_filter () {
             DigitalFilter highpass = new HighpassAdapter(new DigitalAdapter(new Linear(), 2.0));
             double[] expected = {-0.25, 0.5, -0.25};
-            FilterTestUtil.AssertCoefficients(highpass, expected);
+            Assert.That(highpass.Coefficients, Is.EqualTo(expected));
         }
 
         [TestCase]
@@ -23,7 +23,7 @@ namespace LappiTest.Filter.Digital {
                 -0.3142087182578655, 0.5000000000000000, -0.3142087182578655, 0.0000000000000000, 0.0935378601665930, 0.0000000000000000,
                 -0.0417611648699562, 0.0000000000000000, 0.0124320229612286
             };
-            FilterTestUtil.AssertCoefficients(highpass, expected);
+            Assert.That(highpass.Coefficients, Is.EqualTo(expected).Within(1E-15));
         }
 
     }
