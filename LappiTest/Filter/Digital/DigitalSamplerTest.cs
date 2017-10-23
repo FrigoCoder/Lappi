@@ -70,57 +70,57 @@ namespace LappiTest.Filter.Digital {
 
         [TestCase]
         public void Convolution_with_lowpass_and_highpass_is_complementary () {
-            double[] low = new DigitalSampler(new DigitalAdapter(new Linear(), 2.0)).Convolute(source);
-            double[] high = new DigitalSampler(new HighpassAdapter(new DigitalAdapter(new Linear(), 2.0))).Convolute(source);
-            double[] sum = low.Zip(high, (x, y) => x + y).ToArray();
+            DigitalSampler lowpass = new DigitalSampler(new DigitalAdapter(new Linear(), 2.0));
+            DigitalSampler highpass = new DigitalSampler(new HighpassAdapter(new DigitalAdapter(new Linear(), 2.0)));
+            double[] sum = lowpass.Convolute(source).Zip(highpass.Convolute(source), (x, y) => x + y).ToArray();
             Assert.That(sum, Is.EqualTo(source));
         }
 
         [TestCase]
         public void Convolution_with_lowpass_and_highpass_is_complementary_at_nonboundaries () {
-            double[] low = new DigitalSampler(new DigitalAdapter(new Linear(), 2.0)).Convolute(source);
-            double[] high = new DigitalSampler(new HighpassAdapter(new DigitalAdapter(new Linear(), 2.0))).Convolute(source);
-            double[] sum = low.Zip(high, (x, y) => x + y).ToArray();
-            for( int i = 1; i < low.Length - 1; i++ ) {
+            DigitalSampler lowpass = new DigitalSampler(new DigitalAdapter(new Linear(), 2.0));
+            DigitalSampler highpass = new DigitalSampler(new HighpassAdapter(new DigitalAdapter(new Linear(), 2.0)));
+            double[] sum = lowpass.Convolute(source).Zip(highpass.Convolute(source), (x, y) => x + y).ToArray();
+            for( int i = 1; i < sum.Length - 1; i++ ) {
                 Assert.That(sum[i], Is.EqualTo(source[i]));
             }
         }
 
         [TestCase]
         public void Downsample_with_factor_2_and_shift_0 () {
-            double[] expected = {2, 9.5, 25.5};
             DigitalSampler sampler = new DigitalSampler(new DigitalAdapter(new Linear(), 2.0));
+            double[] expected = {2, 9.5, 25.5};
             Assert.That(sampler.Downsample(source, 2, 0), Is.EqualTo(expected));
         }
 
         [TestCase]
         public void Downsample_with_factor_2_and_shift_1 () {
-            double[] expected = {4.5, 16.5, 32.333333333333333333333333333333};
             DigitalSampler sampler = new DigitalSampler(new DigitalAdapter(new Linear(), 2.0));
+            double[] expected = {4.5, 16.5, 32.333333333333333333333333333333};
             Assert.That(sampler.Downsample(source, 2, 1), Is.EqualTo(expected));
         }
 
         [TestCase]
         public void Upsample_with_factor_2_and_shift_0 () {
+            DigitalSampler sampler = new DigitalSampler(new DigitalAdapter(new Linear(), 2.0));
             double[] downsampled = {2, 9.5, 25.5};
             double[] expected = {1.3333333333333333, 2.875, 4.75, 8.75, 12.75, 8.5};
-            DigitalSampler sampler = new DigitalSampler(new DigitalAdapter(new Linear(), 2.0));
             Assert.That(sampler.Upsample(downsampled, 2, 0), Is.EqualTo(expected));
         }
 
         [TestCase]
         public void Upsample_with_factor_2_and_shift_1 () {
+            DigitalSampler sampler = new DigitalSampler(new DigitalAdapter(new Linear(), 2.0));
             double[] downsampled = {4.5, 16.5, 32.333333333333333333333333333333};
             double[] expected = {1.5, 2.25, 5.25, 8.25, 12.2083333333333333, 21.5555555555555555};
-            DigitalSampler sampler = new DigitalSampler(new DigitalAdapter(new Linear(), 2.0));
             Assert.That(sampler.Upsample(downsampled, 2, 1), Is.EqualTo(expected));
         }
 
         [TestCase]
         public void Can_handle_float_arrays () {
+            DigitalSampler<float> sampler = new DigitalSampler<float>(new DigitalAdapter(new Linear(), 2.0));
             float[] array = {1, 4, 9, 16, 25, 36};
             float[] expected = {2, 4.5f, 9.5f, 16.5f, 25.5f, 32.333333333333333333333333333333f};
-            DigitalSampler<float> sampler = new DigitalSampler<float>(new DigitalAdapter(new Linear(), 2.0));
             Assert.That(sampler.Convolute(array), Is.EqualTo(expected));
         }
 
