@@ -1,4 +1,6 @@
-﻿using Lappi.Filter.Analog;
+﻿using System.Linq;
+
+using Lappi.Filter.Analog;
 using Lappi.Filter.Digital;
 
 using NUnit.Framework;
@@ -52,10 +54,35 @@ namespace LappiTest.Filter.Digital {
         }
 
         [TestCase]
-        public void Convolute_with_dirichlet_filter_preserves_constant_array () {
+        public void Convolute_with_lowpass_filter_preserves_constant_array () {
             double[] constant = {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2};
             DigitalSampler sampler = new DigitalSampler(new DigitalAdapter(new Dirichlet(4.0), 2.0));
             Assert.That(sampler.Convolute(constant), Is.EqualTo(constant));
+        }
+
+        [TestCase]
+        public void Convolute_with_highpass_filter_preserves_nyquist_array () {
+            double[] nyquist = {2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2};
+            DigitalSampler sampler = new DigitalSampler(new HighpassAdapter(new DigitalAdapter(new Dirichlet(4.0), 2.0)));
+            Assert.That(sampler.Convolute(nyquist), Is.EqualTo(nyquist).Within(1E-15));
+        }
+
+        [TestCase]
+        public void Convolution_with_lowpass_and_highpass_is_complementary () {
+            double[] low = new DigitalSampler(new DigitalAdapter(new Linear(), 2.0)).Convolute(source);
+            double[] high = new DigitalSampler(new HighpassAdapter(new DigitalAdapter(new Linear(), 2.0))).Convolute(source);
+            double[] sum = low.Zip(high, (x, y) => x + y).ToArray();
+            Assert.That(sum, Is.EqualTo(source));
+        }
+
+        [TestCase]
+        public void Convolution_with_lowpass_and_highpass_is_complementary_at_nonboundaries () {
+            double[] low = new DigitalSampler(new DigitalAdapter(new Linear(), 2.0)).Convolute(source);
+            double[] high = new DigitalSampler(new HighpassAdapter(new DigitalAdapter(new Linear(), 2.0))).Convolute(source);
+            double[] sum = low.Zip(high, (x, y) => x + y).ToArray();
+            for( int i = 1; i < low.Length - 1; i++ ) {
+                Assert.That(sum[i], Is.EqualTo(source[i]));
+            }
         }
 
         [TestCase]

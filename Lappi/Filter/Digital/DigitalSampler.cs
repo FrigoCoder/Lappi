@@ -62,12 +62,20 @@ namespace Lappi.Filter.Digital {
 
         [SuppressMessage("ReSharper", "CompareOfFloatsByEqualityOperator")]
         private double Normalize (int center, int left, int right) {
-            double sum = 0;
             Func<int, double> kernel = filter.Kernel;
-            for( int i = left; i <= right; i++ ) {
-                sum += kernel(i - center);
+            double sum = 0;
+            for( int index = left; index <= right; index++ ) {
+                sum += kernel(index - center);
             }
-            return sum == 0 ? 1 : sum;
+            double altSum = 0;
+            for( int index = left; index <= right; index += 2 ) {
+                altSum += kernel(index - center);
+            }
+            for( int index = left + 1; index <= right; index += 2 ) {
+                altSum -= kernel(index - center);
+            }
+            double result = Math.Max(Math.Abs(sum), Math.Abs(altSum));
+            return result == 0 ? 1 : result;
         }
 
     }
