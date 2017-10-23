@@ -65,7 +65,7 @@ namespace Lappi.Filter.Digital {
             double sum = 0;
             Func<int, double> kernel = filter.Kernel;
             for( int i = left; i <= right; i++ ) {
-                sum += Math.Abs(kernel(i - center));
+                sum += kernel(i - center);
             }
             return sum == 0 ? 1 : sum;
         }
