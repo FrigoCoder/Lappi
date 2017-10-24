@@ -64,6 +64,7 @@
     <Compile Include="Filter\Digital\DigitalAdapterTest.cs" />
     <Compile Include="Filter\Digital\DigitalSamplerTest.cs" />
     <Compile Include="Filter\Digital\HighpassAdapterTest.cs" />
+    <Compile Include="Filter\Digital\IntegralArrayTest.cs" />
     <Compile Include="Filter\Digital\Laplacian1DTest.cs" />
     <Compile Include="ImageTest.cs" />
     <Compile Include="Rgb8Test.cs" />
