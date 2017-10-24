@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 
 namespace Lappi.Filter.Digital {
 
@@ -17,7 +18,7 @@ namespace Lappi.Filter.Digital {
 
         public DigitalSampler (DigitalFilter filter) {
             this.filter = filter;
-            coefficients = filter.Coefficients;
+            coefficients = Normalize(filter.Coefficients);
         }
 
         public T Sample (T[] source, int center) {
@@ -88,6 +89,14 @@ namespace Lappi.Filter.Digital {
             }
             double result = Math.Max(Math.Abs(sum), Math.Abs(altSum));
             return result == 0 ? 1 : result;
+        }
+
+        [SuppressMessage("ReSharper", "CompareOfFloatsByEqualityOperator")]
+        private static double[] Normalize (double[] coefficients) {
+            double sum = coefficients.Sum();
+            double altSum = coefficients.Select((x, i) => i % 2 == 0 ? x : -x).Sum();
+            double factor = Math.Max(Math.Abs(sum), Math.Abs(altSum));
+            return factor == 0 ? coefficients : coefficients.Select(x => x / factor).ToArray();
         }
 
     }
