@@ -13,18 +13,19 @@ namespace Lappi.Filter.Digital {
     public class DigitalSampler<T> where T : new() {
 
         private readonly DigitalFilter filter;
+        private readonly double[] coefficients;
 
         public DigitalSampler (DigitalFilter filter) {
             this.filter = filter;
+            coefficients = filter.Coefficients;
         }
 
         public T Sample (T[] source, int center) {
             int left = Math.Max(center + filter.Left, 0);
             int right = Math.Min(center + filter.Right, source.Length - 1);
-            Func<int, double> kernel = filter.Kernel;
             T result = new T();
             for( int index = left; index <= right; index++ ) {
-                double weight = kernel(index - center);
+                double weight = coefficients[index - center - filter.Left];
                 result += (dynamic) source[index] * weight;
             }
             result /= (dynamic) Normalize(center, left, right);
@@ -74,17 +75,16 @@ namespace Lappi.Filter.Digital {
 
         [SuppressMessage("ReSharper", "CompareOfFloatsByEqualityOperator")]
         private double Normalize (int center, int left, int right) {
-            Func<int, double> kernel = filter.Kernel;
             double sum = 0;
             for( int index = left; index <= right; index++ ) {
-                sum += kernel(index - center);
+                sum += coefficients[index - center - filter.Left];
             }
             double altSum = 0;
             for( int index = left; index <= right; index += 2 ) {
-                altSum += kernel(index - center);
+                altSum += coefficients[index - center - filter.Left];
             }
             for( int index = left + 1; index <= right; index += 2 ) {
-                altSum -= kernel(index - center);
+                altSum -= coefficients[index - center - filter.Left];
             }
             double result = Math.Max(Math.Abs(sum), Math.Abs(altSum));
             return result == 0 ? 1 : result;
