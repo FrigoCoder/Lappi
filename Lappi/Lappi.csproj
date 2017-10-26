@@ -76,6 +76,7 @@
     <Compile Include="Filter\Digital\HighpassAdapter.cs" />
     <Compile Include="Filter\Digital\IntegralArray.cs" />
     <Compile Include="Filter\Digital\Laplacian1D.cs" />
+    <Compile Include="Filter\Digital\Wavelet1D.cs" />
     <Compile Include="Image.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
