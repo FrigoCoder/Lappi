@@ -1,6 +1,6 @@
 ﻿namespace Lappi.Filter.Digital {
 
-    public class IntegralArray<T> {
+    public class IntegralArray<T> where T : new() {
 
         private readonly T[] integral;
 
@@ -12,7 +12,7 @@
         }
 
         public T Sum (int left, int right) {
-            return (dynamic) integral[right + 1] - integral[left];
+            return left <= right ? (dynamic) integral[right + 1] - integral[left] : new T();
         }
 
     }
