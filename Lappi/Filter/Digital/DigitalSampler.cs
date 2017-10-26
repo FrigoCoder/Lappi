@@ -65,6 +65,14 @@ namespace Lappi.Filter.Digital {
             return result;
         }
 
+        public T[] DownsampleHighpass (T[] source, int factor, int shift) {
+            T[] result = new T[source.Length / factor];
+            for( int i = 0; i < result.Length; i++ ) {
+                result[i] = SampleHighpass(source, i * factor + shift);
+            }
+            return result;
+        }
+
         public T[] Upsample (T[] source, int factor, int shift) {
             T[] v = new T[source.Length * factor];
             if( default(T) == null ) {

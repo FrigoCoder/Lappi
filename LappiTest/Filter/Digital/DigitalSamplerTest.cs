@@ -140,6 +140,20 @@ namespace LappiTest.Filter.Digital {
         }
 
         [TestCase]
+        public void DownsampleHighpass_with_factor_2_and_shift_0 () {
+            DigitalSampler sampler = new DigitalSampler(new DigitalAdapter(new Linear(), 2.0));
+            double[] expected = {-1, -0.5, -0.5};
+            Assert.That(sampler.DownsampleHighpass(source, 2, 0), Is.EqualTo(expected));
+        }
+
+        [TestCase]
+        public void DownsampleHighpass_with_factor_2_and_shift_1 () {
+            DigitalSampler sampler = new DigitalSampler(new DigitalAdapter(new Linear(), 2.0));
+            double[] expected = {-0.5, -0.5, 3.6666666666666666};
+            Assert.That(sampler.DownsampleHighpass(source, 2, 1), Is.EqualTo(expected).Within(1E-14));
+        }
+
+        [TestCase]
         public void Upsample_with_factor_2_and_shift_0 () {
             DigitalSampler sampler = new DigitalSampler(new DigitalAdapter(new Linear(), 2.0));
             double[] downsampled = {2, 9.5, 25.5};
