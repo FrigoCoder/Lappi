@@ -20,6 +20,15 @@ namespace Lappi.Filter.Digital {
             return Tuple.Create(downsampled, difference);
         }
 
+        public double[] Transform (Tuple<double[], double[]> tuple) {
+            return Transform(tuple.Item1, tuple.Item2);
+        }
+
+        public double[] Transform (double[] downsampled, double[] difference) {
+            double[] upsampled = synthesis.Upsample(downsampled, 2, 0);
+            return upsampled.Zip(difference, (x, y) => x + y).ToArray();
+        }
+
     }
 
 }

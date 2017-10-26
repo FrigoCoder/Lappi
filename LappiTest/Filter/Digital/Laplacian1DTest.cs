@@ -34,6 +34,11 @@ namespace LappiTest.Filter.Digital {
             Assert.That(result.Item2, Is.EqualTo(expected).Within(1E-15));
         }
 
+        [TestCase]
+        public void Inverse_transform_perfectly_reconstructs_signal () {
+            Assert.That(laplacian.Transform(laplacian.Transform(source)), Is.EqualTo(source));
+        }
+
     }
 
 }
