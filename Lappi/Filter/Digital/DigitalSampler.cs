@@ -86,6 +86,19 @@ namespace Lappi.Filter.Digital {
             return Convolute(v);
         }
 
+        public T[] UpsampleHighpass (T[] source, int factor, int shift) {
+            T[] v = new T[source.Length * factor];
+            if( default(T) == null ) {
+                for( int i = 0; i < v.Length; i++ ) {
+                    v[i] = new T();
+                }
+            }
+            for( int i = 0; i < source.Length; i++ ) {
+                v[i * factor + shift] = source[i];
+            }
+            return ConvoluteHighpass(v);
+        }
+
         [SuppressMessage("ReSharper", "CompareOfFloatsByEqualityOperator")]
         private double Normalize (int left, int right) {
             double sum = Math.Abs(sums.Sum(left, right));

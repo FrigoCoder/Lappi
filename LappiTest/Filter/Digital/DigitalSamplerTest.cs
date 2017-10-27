@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 using Lappi.Filter.Analog;
 using Lappi.Filter.Digital;
@@ -167,6 +168,24 @@ namespace LappiTest.Filter.Digital {
             double[] downsampled = {4.5, 16.5, 32.333333333333333333333333333333};
             double[] expected = {1.5, 2.25, 5.25, 8.25, 12.2083333333333333, 21.5555555555555555};
             Assert.That(sampler.Upsample(downsampled, 2, 1), Is.EqualTo(expected));
+        }
+
+        [TestCase]
+        public void UpsampleHighpass_with_factor_2_and_shift_0 () {
+            DigitalSampler sampler = new DigitalSampler(new DigitalAdapter(new Linear(), 2.0));
+            double[] downsampled = {2, 9.5, 25.5};
+            double[] expected = {0.66666666666666666, -2.875, 4.75, -8.75, 12.75, -8.5};
+            double[] actual = sampler.UpsampleHighpass(downsampled, 2, 0);
+            Console.WriteLine(string.Join(", ", actual));
+            Assert.That(actual, Is.EqualTo(expected).Within(1E-14));
+        }
+
+        [TestCase]
+        public void UpsampleHighpass_with_factor_2_and_shift_1 () {
+            DigitalSampler sampler = new DigitalSampler(new DigitalAdapter(new Linear(), 2.0));
+            double[] downsampled = {4.5, 16.5, 32.333333333333333333333333333333};
+            double[] expected = {-1.5, 2.25, -5.25, 8.25, -12.20833333333333333333333333, 10.777777777777777777};
+            Assert.That(sampler.UpsampleHighpass(downsampled, 2, 1), Is.EqualTo(expected));
         }
 
     }
