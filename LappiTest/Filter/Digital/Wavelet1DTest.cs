@@ -1,6 +1,4 @@
-﻿using System;
-
-using Lappi.Filter.Analog;
+﻿using Lappi.Filter.Analog;
 using Lappi.Filter.Digital;
 
 using NUnit.Framework;
@@ -10,47 +8,38 @@ namespace LappiTest.Filter.Digital {
     [TestFixture]
     public class Wavelet1DTest {
 
+        private readonly double[] source = {1, 4, 9, 16, 25, 36, 49, 64, 81, 100, 121, 144};
+        private readonly DigitalFilter lowpass = new DigitalAdapter(new Linear(), 2.0);
+        private readonly DigitalFilter highpass = new HighpassAdapter(new DigitalAdapter(new Linear(), 2.0));
+
         [TestCase]
         public void Transform_returns_correct_lowpass_vector () {
-            double[] source = {1, 4, 9, 16, 25, 36};
-            DigitalFilter lowpass = new DigitalAdapter(new Linear(), 2.0);
-            DigitalFilter highpass = new DigitalAdapter(new Linear(), 2.0);
-            Wavelet1D wavelet = new Wavelet1D(lowpass, highpass);
-
-            double[] expected = {2, 9.5, 25.5};
-            Tuple<double[], double[]> result = wavelet.Forward(source);
-            Assert.That(result.Item1, Is.EqualTo(expected));
+            Wavelet1D wavelet = new Wavelet1D(lowpass, highpass, lowpass, highpass);
+            double[] expected = {2, 9.5, 25.5, 49.5, 81.5, 121.5};
+            double[] actual = wavelet.Forward(source).Item1;
+            Assert.That(actual, Is.EqualTo(expected), "\nExpected: " + string.Join(", ", expected) + "\nActual: " + string.Join(", ", actual));
         }
 
         [TestCase]
         public void Transform_returns_correct_highpass_vector () {
-            double[] source = {1, 4, 9, 16, 25, 36};
-            DigitalFilter lowpass = new DigitalAdapter(new Linear(), 2.0);
-            DigitalFilter highpass = new DigitalAdapter(new Linear(), 2.0);
-            Wavelet1D wavelet = new Wavelet1D(lowpass, highpass);
-
-            double[] expected = {-0.5, -0.5, 3.6666666666666666};
-            Tuple<double[], double[]> result = wavelet.Forward(source);
-            Assert.That(result.Item2, Is.EqualTo(expected).Within(1E-14));
+            Wavelet1D wavelet = new Wavelet1D(lowpass, highpass, lowpass, highpass);
+            double[] expected = {-0.5, -0.5, -0.5, -0.5, -0.5, 55.6666666666666666};
+            double[] actual = wavelet.Forward(source).Item2;
+            Assert.That(actual, Is.EqualTo(expected).Within(1E-15),
+                "\nExpected: " + string.Join(", ", expected) + "\nActual: " + string.Join(", ", actual));
         }
 
         [Ignore("#1: DigitalSampler normalization bug - Lowpass and highpass filters are inconsistent due to boundary handling")]
         [TestCase]
         public void Inverse_transform_perfectly_reconstructs_signal_with_CDF_5_3_filters () {
-            double[] source = {1, 4, 9, 16, 25, 36, 49, 64, 81, 100, 121, 144};
-            DigitalFilter lowpass = new CoefficientAdapter(2, new[] {-0.125, 0.25, 0.75, 0.25, -0.125});
-            DigitalFilter highpass = new CoefficientAdapter(1, new[] {0.25, 0.5, 0.25});
-            Wavelet1D wavelet = new Wavelet1D(lowpass, highpass);
+            Wavelet1D wavelet = new Wavelet1D(CDF53.AnalysisLowpass, CDF53.AnalysisHighpass, CDF53.SynthesisLowpass, CDF53.SynthesisHighpass);
             double[] actual = wavelet.Inverse(wavelet.Forward(source));
-            Assert.That(actual, Is.EqualTo(source));
+            Assert.That(actual, Is.EqualTo(source), "\nExpected: " + string.Join(", ", source) + "\nActual: " + string.Join(", ", actual));
         }
 
         [TestCase]
         public void Inverse_transform_perfectly_reconstructs_signal_with_CDF_5_3_filters_at_boundaries () {
-            double[] source = {1, 4, 9, 16, 25, 36, 49, 64, 81, 100, 121, 144};
-            DigitalFilter lowpass = new CoefficientAdapter(2, new[] {-0.125, 0.25, 0.75, 0.25, -0.125});
-            DigitalFilter highpass = new CoefficientAdapter(1, new[] {0.25, 0.5, 0.25});
-            Wavelet1D wavelet = new Wavelet1D(lowpass, highpass);
+            Wavelet1D wavelet = new Wavelet1D(CDF53.AnalysisLowpass, CDF53.AnalysisHighpass, CDF53.SynthesisLowpass, CDF53.SynthesisHighpass);
             double[] actual = wavelet.Inverse(wavelet.Forward(source));
             for( int i = 2; i < actual.Length - 3; i++ ) {
                 Assert.That(actual[i], Is.EqualTo(source[i]), "Index " + i);
@@ -60,20 +49,9 @@ namespace LappiTest.Filter.Digital {
         [Ignore("#1: DigitalSampler normalization bug - Lowpass and highpass filters are inconsistent due to boundary handling")]
         [TestCase]
         public void Inverse_transform_perfectly_reconstructs_signal_with_CDF_9_7_filters () {
-            double[] source = {1, 4, 9, 16, 25, 36, 49, 64, 81, 100, 121, 144};
-            DigitalFilter lowpass = new CoefficientAdapter(4,
-                new[] {
-                    0.02674874108097600, -0.01686411844287495, -0.07822326652898785, 0.26686411844287230, 0.60294901823635790, 0.26686411844287230,
-                    -0.07822326652898785, -0.01686411844287495, 0.02674874108097600
-                });
-            DigitalFilter highpass = new CoefficientAdapter(3,
-                new[] {
-                    -0.045635881557124740, -0.028771763114249785, 0.295635881557123500, 0.557543526228497000, 0.295635881557123500,
-                    -0.028771763114249785, -0.045635881557124740
-                });
-            Wavelet1D wavelet = new Wavelet1D(lowpass, highpass);
+            Wavelet1D wavelet = new Wavelet1D(CDF97.AnalysisLowpass, CDF97.AnalysisHighpass, CDF97.SynthesisLowpass, CDF97.SynthesisHighpass);
             double[] actual = wavelet.Inverse(wavelet.Forward(source));
-            Assert.That(actual, Is.EqualTo(source));
+            Assert.That(actual, Is.EqualTo(source), "\nExpected: " + string.Join(", ", source) + "\nActual: " + string.Join(", ", actual));
         }
 
     }
