@@ -12,56 +12,51 @@ namespace LappiTest.Filter.Digital {
     public class DigitalSamplerTest {
 
         private readonly double[] source = {1, 4, 9, 16, 25, 36};
+        private readonly DigitalSampler linear1 = new DigitalSampler(new DigitalAdapter(new Linear(), 1.0));
+        private readonly DigitalSampler linear2 = new DigitalSampler(new DigitalAdapter(new Linear(), 2.0));
 
         [TestCase]
         public void Sample_with_scale_1_linear_filter_returns_array_value () {
-            DigitalSampler sampler = new DigitalSampler(new DigitalAdapter(new Linear(), 1.0));
             for( int i = 0; i < source.Length; i++ ) {
-                Assert.That(sampler.Sample(source, i), Is.EqualTo(source[i]));
+                Assert.That(linear1.Sample(source, i), Is.EqualTo(source[i]));
             }
         }
 
         [TestCase]
         public void Sample_with_scale_2_linear_filter_blurs_linearly () {
-            DigitalSampler sampler = new DigitalSampler(new DigitalAdapter(new Linear(), 2.0));
             double[] expected = {2, 4.5, 9.5, 16.5, 25.5, 32.333333333333333333333333333333};
             for( int i = 0; i < source.Length; i++ ) {
-                Assert.That(sampler.Sample(source, i), Is.EqualTo(expected[i]));
+                Assert.That(linear2.Sample(source, i), Is.EqualTo(expected[i]));
             }
         }
 
         [TestCase]
         public void Sample_beyond_left_boundary_returns_0 () {
-            DigitalSampler sampler = new DigitalSampler(new DigitalAdapter(new Linear(), 2.0));
-            Assert.That(sampler.Sample(source, -2), Is.EqualTo(0));
+            Assert.That(linear2.Sample(source, -2), Is.EqualTo(0));
         }
 
         [TestCase]
         public void Sample_beyond_right_boundary_returns_0 () {
-            DigitalSampler sampler = new DigitalSampler(new DigitalAdapter(new Linear(), 2.0));
-            Assert.That(sampler.Sample(source, source.Length + 1), Is.EqualTo(0));
+            Assert.That(linear2.Sample(source, source.Length + 1), Is.EqualTo(0));
         }
 
         [TestCase]
         public void SampleHighpass_returns_difference_between_original_and_blurred () {
-            DigitalSampler sampler = new DigitalSampler(new DigitalAdapter(new Linear(), 2.0));
             double[] expected = {-1, -0.5, -0.5, -0.5, -0.5, 3.6666666666666666};
             for( int i = 0; i < source.Length; i++ ) {
-                Assert.That(sampler.SampleHighpass(source, i), Is.EqualTo(expected[i]).Within(1E-14));
+                Assert.That(linear2.SampleHighpass(source, i), Is.EqualTo(expected[i]).Within(1E-14));
             }
         }
 
         [TestCase]
         public void Convolute_with_scale_1_linear_filter_returns_array () {
-            DigitalSampler sampler = new DigitalSampler(new DigitalAdapter(new Linear(), 1.0));
-            Assert.That(sampler.Convolute(source), Is.EqualTo(source));
+            Assert.That(linear1.Convolute(source), Is.EqualTo(source));
         }
 
         [TestCase]
         public void Convolute_with_scale_2_linear_filter_blurs_linearly () {
-            DigitalSampler sampler = new DigitalSampler(new DigitalAdapter(new Linear(), 2.0));
             double[] expected = {2, 4.5, 9.5, 16.5, 25.5, 32.333333333333333333333333333333};
-            Assert.That(sampler.Convolute(source), Is.EqualTo(expected));
+            Assert.That(linear2.Convolute(source), Is.EqualTo(expected));
         }
 
         [TestCase]
@@ -80,17 +75,15 @@ namespace LappiTest.Filter.Digital {
 
         [Ignore("#1: DigitalSampler normalization bug - Lowpass and highpass filters are inconsistent due to boundary handling"), TestCase]
         public void Convolute_with_lowpass_and_highpass_is_complementary () {
-            DigitalSampler lowpass = new DigitalSampler(new DigitalAdapter(new Linear(), 2.0));
             DigitalSampler highpass = new DigitalSampler(new HighpassAdapter(new DigitalAdapter(new Linear(), 2.0)));
-            double[] sum = lowpass.Convolute(source).Zip(highpass.Convolute(source), (x, y) => x + y).ToArray();
+            double[] sum = linear2.Convolute(source).Zip(highpass.Convolute(source), (x, y) => x + y).ToArray();
             Assert.That(sum, Is.EqualTo(source));
         }
 
         [TestCase]
         public void Convolute_with_lowpass_and_highpass_is_complementary_at_nonboundaries () {
-            DigitalSampler lowpass = new DigitalSampler(new DigitalAdapter(new Linear(), 2.0));
             DigitalSampler highpass = new DigitalSampler(new HighpassAdapter(new DigitalAdapter(new Linear(), 2.0)));
-            double[] sum = lowpass.Convolute(source).Zip(highpass.Convolute(source), (x, y) => x + y).ToArray();
+            double[] sum = linear2.Convolute(source).Zip(highpass.Convolute(source), (x, y) => x + y).ToArray();
             for( int i = 1; i < sum.Length - 1; i++ ) {
                 Assert.That(sum[i], Is.EqualTo(source[i]));
             }
@@ -106,15 +99,13 @@ namespace LappiTest.Filter.Digital {
 
         [TestCase]
         public void ConvoluteHighpass_returns_difference_between_original_and_blurred () {
-            DigitalSampler sampler = new DigitalSampler(new DigitalAdapter(new Linear(), 2.0));
             double[] expected = {-1, -0.5, -0.5, -0.5, -0.5, 3.6666666666666666};
-            Assert.That(sampler.ConvoluteHighpass(source), Is.EqualTo(expected).Within(1E-14));
+            Assert.That(linear2.ConvoluteHighpass(source), Is.EqualTo(expected).Within(1E-14));
         }
 
         [TestCase]
         public void Convolute_and_ConvoluteHighPass_are_complementary () {
-            DigitalSampler sampler = new DigitalSampler(new DigitalAdapter(new Linear(), 2.0));
-            double[] sum = sampler.Convolute(source).Zip(sampler.ConvoluteHighpass(source), (x, y) => x + y).ToArray();
+            double[] sum = linear2.Convolute(source).Zip(linear2.ConvoluteHighpass(source), (x, y) => x + y).ToArray();
             Assert.That(sum, Is.EqualTo(source));
         }
 
@@ -128,64 +119,56 @@ namespace LappiTest.Filter.Digital {
 
         [TestCase]
         public void Downsample_with_factor_2_and_shift_0 () {
-            DigitalSampler sampler = new DigitalSampler(new DigitalAdapter(new Linear(), 2.0));
             double[] expected = {2, 9.5, 25.5};
-            Assert.That(sampler.Downsample(source, 2, 0), Is.EqualTo(expected));
+            Assert.That(linear2.Downsample(source, 2, 0), Is.EqualTo(expected));
         }
 
         [TestCase]
         public void Downsample_with_factor_2_and_shift_1 () {
-            DigitalSampler sampler = new DigitalSampler(new DigitalAdapter(new Linear(), 2.0));
             double[] expected = {4.5, 16.5, 32.333333333333333333333333333333};
-            Assert.That(sampler.Downsample(source, 2, 1), Is.EqualTo(expected));
+            Assert.That(linear2.Downsample(source, 2, 1), Is.EqualTo(expected));
         }
 
         [TestCase]
         public void DownsampleHighpass_with_factor_2_and_shift_0 () {
-            DigitalSampler sampler = new DigitalSampler(new DigitalAdapter(new Linear(), 2.0));
             double[] expected = {-1, -0.5, -0.5};
-            Assert.That(sampler.DownsampleHighpass(source, 2, 0), Is.EqualTo(expected));
+            Assert.That(linear2.DownsampleHighpass(source, 2, 0), Is.EqualTo(expected));
         }
 
         [TestCase]
         public void DownsampleHighpass_with_factor_2_and_shift_1 () {
-            DigitalSampler sampler = new DigitalSampler(new DigitalAdapter(new Linear(), 2.0));
             double[] expected = {-0.5, -0.5, 3.6666666666666666};
-            Assert.That(sampler.DownsampleHighpass(source, 2, 1), Is.EqualTo(expected).Within(1E-14));
+            Assert.That(linear2.DownsampleHighpass(source, 2, 1), Is.EqualTo(expected).Within(1E-14));
         }
 
         [TestCase]
         public void Upsample_with_factor_2_and_shift_0 () {
-            DigitalSampler sampler = new DigitalSampler(new DigitalAdapter(new Linear(), 2.0));
             double[] downsampled = {2, 9.5, 25.5};
             double[] expected = {1.3333333333333333, 2.875, 4.75, 8.75, 12.75, 8.5};
-            Assert.That(sampler.Upsample(downsampled, 2, 0), Is.EqualTo(expected));
+            Assert.That(linear2.Upsample(downsampled, 2, 0), Is.EqualTo(expected));
         }
 
         [TestCase]
         public void Upsample_with_factor_2_and_shift_1 () {
-            DigitalSampler sampler = new DigitalSampler(new DigitalAdapter(new Linear(), 2.0));
             double[] downsampled = {4.5, 16.5, 32.333333333333333333333333333333};
             double[] expected = {1.5, 2.25, 5.25, 8.25, 12.2083333333333333, 21.5555555555555555};
-            Assert.That(sampler.Upsample(downsampled, 2, 1), Is.EqualTo(expected));
+            Assert.That(linear2.Upsample(downsampled, 2, 1), Is.EqualTo(expected));
         }
 
         [TestCase]
         public void UpsampleHighpass_with_factor_2_and_shift_0 () {
-            DigitalSampler sampler = new DigitalSampler(new DigitalAdapter(new Linear(), 2.0));
             double[] downsampled = {2, 9.5, 25.5};
             double[] expected = {0.66666666666666666, -2.875, 4.75, -8.75, 12.75, -8.5};
-            double[] actual = sampler.UpsampleHighpass(downsampled, 2, 0);
+            double[] actual = linear2.UpsampleHighpass(downsampled, 2, 0);
             Console.WriteLine(string.Join(", ", actual));
             Assert.That(actual, Is.EqualTo(expected).Within(1E-14));
         }
 
         [TestCase]
         public void UpsampleHighpass_with_factor_2_and_shift_1 () {
-            DigitalSampler sampler = new DigitalSampler(new DigitalAdapter(new Linear(), 2.0));
             double[] downsampled = {4.5, 16.5, 32.333333333333333333333333333333};
             double[] expected = {-1.5, 2.25, -5.25, 8.25, -12.20833333333333333333333333, 10.777777777777777777};
-            Assert.That(sampler.UpsampleHighpass(downsampled, 2, 1), Is.EqualTo(expected));
+            Assert.That(linear2.UpsampleHighpass(downsampled, 2, 1), Is.EqualTo(expected));
         }
 
     }
