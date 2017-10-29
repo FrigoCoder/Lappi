@@ -3,6 +3,8 @@ using System.Linq;
 
 namespace Lappi.Filter.Digital {
 
+    using DigitalSampler = DigitalSampler<double>;
+
     public class Laplacian1D {
 
         private readonly DigitalSampler analysis;
