@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 using Lappi.Filter.Analog;
 using Lappi.Filter.Digital;
@@ -32,13 +33,15 @@ namespace LappiTest.Filter.Digital {
         }
 
         [TestCase]
-        public void Sample_beyond_left_boundary_returns_0 () {
-            Assert.That(linear2.Sample(source, -2), Is.EqualTo(0));
+        public void Sample_beyond_left_boundary_throws_exception () {
+            Assert.That(() => linear2.Sample(source, -2), Throws.TypeOf<IndexOutOfRangeException>());
+            Assert.That(() => linear2.Sample(source, -1), Throws.TypeOf<IndexOutOfRangeException>());
         }
 
         [TestCase]
-        public void Sample_beyond_right_boundary_returns_0 () {
-            Assert.That(linear2.Sample(source, source.Length + 1), Is.EqualTo(0));
+        public void Sample_beyond_right_boundary_throws_exception () {
+            Assert.That(() => linear2.Sample(source, source.Length), Throws.TypeOf<IndexOutOfRangeException>());
+            Assert.That(() => linear2.Sample(source, source.Length + 1), Throws.TypeOf<IndexOutOfRangeException>());
         }
 
         [TestCase]

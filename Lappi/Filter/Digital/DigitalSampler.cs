@@ -19,6 +19,9 @@ namespace Lappi.Filter.Digital {
         }
 
         public virtual T Sample (T[] source, int center) {
+            if( center < 0 || source.Length <= center ) {
+                throw new IndexOutOfRangeException();
+            }
             int shift = center + filter.Left;
             int left = Math.Max(0, -shift);
             int right = Math.Min(coefficients.Length - 1, source.Length - 1 - shift);
