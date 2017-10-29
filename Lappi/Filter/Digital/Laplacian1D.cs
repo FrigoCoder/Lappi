@@ -1,34 +1,38 @@
 ﻿using System;
-using System.Linq;
 
 namespace Lappi.Filter.Digital {
 
-    using DigitalSampler = DigitalSampler<double>;
+    public class Laplacian1D<T> where T : new() {
 
-    public class Laplacian1D {
-
-        private readonly DigitalSampler analysis;
-        private readonly DigitalSampler synthesis;
+        private readonly DigitalSampler<T> analysis;
+        private readonly DigitalSampler<T> synthesis;
 
         public Laplacian1D (DigitalFilter analysis, DigitalFilter synthesis) {
-            this.analysis = new DigitalSampler(analysis);
-            this.synthesis = new DigitalSampler(synthesis);
+            this.analysis = new DigitalSampler<T>(analysis);
+            this.synthesis = new DigitalSampler<T>(synthesis);
         }
 
-        public Tuple<double[], double[]> Forward (double[] source) {
-            double[] downsampled = analysis.Downsample(source, 2, 0);
-            double[] upsampled = synthesis.Upsample(downsampled, 2, 0);
-            double[] difference = source.Zip(upsampled, (x, y) => x - y).ToArray();
+        public Tuple<T[], T[]> Forward (T[] source) {
+            T[] downsampled = analysis.Downsample(source, 2, 0);
+            T[] upsampled = synthesis.Upsample(downsampled, 2, 0);
+            T[] difference = new T[source.Length];
+            for( int i = 0; i < difference.Length; i++ ) {
+                difference[i] = (dynamic) source[i] - upsampled[i];
+            }
             return Tuple.Create(downsampled, difference);
         }
 
-        public double[] Inverse (Tuple<double[], double[]> tuple) {
+        public T[] Inverse (Tuple<T[], T[]> tuple) {
             return Inverse(tuple.Item1, tuple.Item2);
         }
 
-        public double[] Inverse (double[] downsampled, double[] difference) {
-            double[] upsampled = synthesis.Upsample(downsampled, 2, 0);
-            return upsampled.Zip(difference, (x, y) => x + y).ToArray();
+        public T[] Inverse (T[] downsampled, T[] difference) {
+            T[] upsampled = synthesis.Upsample(downsampled, 2, 0);
+            T[] result = new T[difference.Length];
+            for( int i = 0; i < result.Length; i++ ) {
+                result[i] = (dynamic) upsampled[i] + difference[i];
+            }
+            return result;
         }
 
     }
