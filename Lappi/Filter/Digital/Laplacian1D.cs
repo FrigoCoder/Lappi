@@ -13,18 +13,18 @@ namespace Lappi.Filter.Digital {
             this.synthesis = new DigitalSampler(synthesis);
         }
 
-        public Tuple<double[], double[]> Transform (double[] source) {
+        public Tuple<double[], double[]> Forward (double[] source) {
             double[] downsampled = analysis.Downsample(source, 2, 0);
             double[] upsampled = synthesis.Upsample(downsampled, 2, 0);
             double[] difference = source.Zip(upsampled, (x, y) => x - y).ToArray();
             return Tuple.Create(downsampled, difference);
         }
 
-        public double[] Transform (Tuple<double[], double[]> tuple) {
-            return Transform(tuple.Item1, tuple.Item2);
+        public double[] Inverse (Tuple<double[], double[]> tuple) {
+            return Inverse(tuple.Item1, tuple.Item2);
         }
 
-        public double[] Transform (double[] downsampled, double[] difference) {
+        public double[] Inverse (double[] downsampled, double[] difference) {
             double[] upsampled = synthesis.Upsample(downsampled, 2, 0);
             return upsampled.Zip(difference, (x, y) => x + y).ToArray();
         }

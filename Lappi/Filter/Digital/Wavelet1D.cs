@@ -17,19 +17,19 @@ namespace Lappi.Filter.Digital {
             synthesisHighpass = new DigitalSampler(analysisLowpass);
         }
 
-        public Tuple<double[], double[]> Transform (double[] source) {
+        public Tuple<double[], double[]> Forward (double[] source) {
             double[] low = analysisLowpass.Downsample(source, 2, 0);
             double[] high = analysisHighpass.DownsampleHighpass(source, 2, 1);
             return Tuple.Create(low, high);
         }
 
-        public double[] Transform (Tuple<double[], double[]> tuple) {
-            double[] result = Transform(tuple.Item1, tuple.Item2);
+        public double[] Inverse (Tuple<double[], double[]> tuple) {
+            double[] result = Inverse(tuple.Item1, tuple.Item2);
             Console.WriteLine(string.Join(", ", result));
             return result;
         }
 
-        public double[] Transform (double[] low, double[] high) {
+        public double[] Inverse (double[] low, double[] high) {
             double[] v1 = synthesisLowpass.Upsample(low, 2, 1);
             double[] v2 = synthesisHighpass.UpsampleHighpass(high, 2, 0);
             double[] result = v1.Zip(v2, (x, y) => 2 * (x + y)).ToArray();

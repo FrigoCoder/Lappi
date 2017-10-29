@@ -18,7 +18,7 @@ namespace LappiTest.Filter.Digital {
             Wavelet1D wavelet = new Wavelet1D(lowpass, highpass);
 
             double[] expected = {2, 9.5, 25.5};
-            Tuple<double[], double[]> result = wavelet.Transform(source);
+            Tuple<double[], double[]> result = wavelet.Forward(source);
             Assert.That(result.Item1, Is.EqualTo(expected));
         }
 
@@ -30,7 +30,7 @@ namespace LappiTest.Filter.Digital {
             Wavelet1D wavelet = new Wavelet1D(lowpass, highpass);
 
             double[] expected = {-0.5, -0.5, 3.6666666666666666};
-            Tuple<double[], double[]> result = wavelet.Transform(source);
+            Tuple<double[], double[]> result = wavelet.Forward(source);
             Assert.That(result.Item2, Is.EqualTo(expected).Within(1E-14));
         }
 
@@ -40,7 +40,7 @@ namespace LappiTest.Filter.Digital {
             DigitalFilter lowpass = new CoefficientAdapter(2, new[] {-0.125, 0.25, 0.75, 0.25, -0.125});
             DigitalFilter highpass = new CoefficientAdapter(1, new[] {0.25, 0.5, 0.25});
             Wavelet1D wavelet = new Wavelet1D(lowpass, highpass);
-            double[] actual = wavelet.Transform(wavelet.Transform(source));
+            double[] actual = wavelet.Inverse(wavelet.Forward(source));
             Assert.That(actual, Is.EqualTo(source));
         }
 
@@ -58,7 +58,7 @@ namespace LappiTest.Filter.Digital {
                     -0.028771763114249785, -0.045635881557124740
                 });
             Wavelet1D wavelet = new Wavelet1D(lowpass, highpass);
-            double[] actual = wavelet.Transform(wavelet.Transform(source));
+            double[] actual = wavelet.Inverse(wavelet.Forward(source));
             Assert.That(actual, Is.EqualTo(source));
         }
 
