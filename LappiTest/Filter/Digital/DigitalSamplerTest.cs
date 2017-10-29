@@ -17,6 +17,9 @@ namespace LappiTest.Filter.Digital {
         private readonly double[] blurred = {2, 4.5, 9.5, 16.5, 25.5, 32.333333333333333333333333333333};
         private readonly DigitalSampler linear1 = new DigitalSampler(new DigitalAdapter(new Linear(), 1.0));
         private readonly DigitalSampler linear2 = new DigitalSampler(new DigitalAdapter(new Linear(), 2.0));
+        private readonly DigitalSampler linear2Highpass = new DigitalSampler(new HighpassAdapter(new DigitalAdapter(new Linear(), 2.0)));
+        private readonly DigitalSampler dirichlet4 = new DigitalSampler(new DigitalAdapter(new Dirichlet(4.0), 2.0));
+        private readonly DigitalSampler dirichlet4Highpass = new DigitalSampler(new HighpassAdapter(new DigitalAdapter(new Dirichlet(4.0), 2.0)));
 
         [TestCase]
         public void Sample_with_scale_1_linear_filter_returns_array_value () {
@@ -56,29 +59,29 @@ namespace LappiTest.Filter.Digital {
 
         [TestCase]
         public void Convolute_with_lowpass_filter_preserves_constant_array () {
-            DigitalSampler sampler = new DigitalSampler(new DigitalAdapter(new Dirichlet(4.0), 2.0));
             double[] constant = {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2};
-            Assert.That(sampler.Convolute(constant), Is.EqualTo(constant));
+            Assert.That(dirichlet4.Convolute(constant), Is.EqualTo(constant));
         }
 
         [TestCase]
         public void Convolute_with_highpass_filter_preserves_nyquist_array () {
-            DigitalSampler sampler = new DigitalSampler(new HighpassAdapter(new DigitalAdapter(new Dirichlet(4.0), 2.0)));
             double[] nyquist = {2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2};
-            Assert.That(sampler.Convolute(nyquist), Is.EqualTo(nyquist).Within(1E-15));
+            Assert.That(dirichlet4Highpass.Convolute(nyquist), Is.EqualTo(nyquist).Within(1E-15));
         }
 
         [Ignore("#1: DigitalSampler normalization bug - Lowpass and highpass filters are inconsistent due to boundary handling"), TestCase]
         public void Convolute_with_lowpass_and_highpass_is_complementary () {
-            DigitalSampler highpass = new DigitalSampler(new HighpassAdapter(new DigitalAdapter(new Linear(), 2.0)));
-            double[] sum = linear2.Convolute(source).Zip(highpass.Convolute(source), (x, y) => x + y).ToArray();
+            double[] low = linear2.Convolute(source);
+            double[] high = linear2Highpass.Convolute(source);
+            double[] sum = low.Zip(high, (x, y) => x + y).ToArray();
             Assert.That(sum, Is.EqualTo(source));
         }
 
         [TestCase]
         public void Convolute_with_lowpass_and_highpass_is_complementary_at_nonboundaries () {
-            DigitalSampler highpass = new DigitalSampler(new HighpassAdapter(new DigitalAdapter(new Linear(), 2.0)));
-            double[] sum = linear2.Convolute(source).Zip(highpass.Convolute(source), (x, y) => x + y).ToArray();
+            double[] low = linear2.Convolute(source);
+            double[] high = linear2Highpass.Convolute(source);
+            double[] sum = low.Zip(high, (x, y) => x + y).ToArray();
             for( int i = 1; i < sum.Length - 1; i++ ) {
                 Assert.That(sum[i], Is.EqualTo(source[i]));
             }
