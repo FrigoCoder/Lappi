@@ -29,7 +29,7 @@ namespace LappiTest.Filter.Digital {
 
         [TestCase]
         public void Difference_is_correct () {
-            double[] expected = {-0.3333333333333333, 1.125, 4.25, 7.25, 12.25, 27.5};
+            double[] expected = {-1.6666666666666666, -1.75, -0.5, -1.5, -0.5, 19};
             Tuple<double[], double[]> result = laplacian.Forward(source);
             Assert.That(result.Item2, Is.EqualTo(expected).Within(1E-15));
         }
