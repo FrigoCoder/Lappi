@@ -34,6 +34,20 @@ namespace LappiTest.Filter.Digital {
         }
 
         [TestCase]
+        public void Convolute_nulls_constant_array () {
+            double[] constant = {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2};
+            double[] expected = new double[constant.Length];
+            Assert.That(dirichlet4.Convolute(constant), Is.EqualTo(expected));
+        }
+
+        [Ignore("#1: DigitalSampler normalization bug - Lowpass and highpass filters are inconsistent due to boundary handling")]
+        [TestCase]
+        public void Convolute_preserves_nyquist_array () {
+            double[] nyquist = {2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2};
+            Assert.That(dirichlet4.Convolute(nyquist), Is.EqualTo(nyquist).Within(1E-15));
+        }
+
+        [TestCase]
         public void Lowpass_Convolute_and_highpass_Convolute_are_complementary () {
             double[] low = linear2Lowpass.Convolute(source);
             double[] high = linear2.Convolute(source);

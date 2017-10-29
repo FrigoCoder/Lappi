@@ -63,13 +63,30 @@ namespace LappiTest.Filter.Digital {
             Assert.That(dirichlet4.Convolute(constant), Is.EqualTo(constant));
         }
 
+        [Ignore("#1: DigitalSampler normalization bug - Lowpass and highpass filters are inconsistent due to boundary handling")]
+        [TestCase]
+        public void Convolute_with_lowpass_filter_nulls_nyquist_array () {
+            double[] nyquist = {2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2};
+            double[] expected = new double[nyquist.Length];
+            Assert.That(dirichlet4.Convolute(nyquist), Is.EqualTo(expected));
+        }
+
+        [Ignore("#1: DigitalSampler normalization bug - Lowpass and highpass filters are inconsistent due to boundary handling")]
+        [TestCase]
+        public void Convolute_with_highpass_filter_nulls_constant_array () {
+            double[] constant = {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2};
+            double[] expected = new double[constant.Length];
+            Assert.That(dirichlet4Highpass.Convolute(constant), Is.EqualTo(expected));
+        }
+
         [TestCase]
         public void Convolute_with_highpass_filter_preserves_nyquist_array () {
             double[] nyquist = {2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2};
             Assert.That(dirichlet4Highpass.Convolute(nyquist), Is.EqualTo(nyquist).Within(1E-15));
         }
 
-        [Ignore("#1: DigitalSampler normalization bug - Lowpass and highpass filters are inconsistent due to boundary handling"), TestCase]
+        [Ignore("#1: DigitalSampler normalization bug - Lowpass and highpass filters are inconsistent due to boundary handling")]
+        [TestCase]
         public void Convolute_with_lowpass_and_highpass_is_complementary () {
             double[] low = linear2.Convolute(source);
             double[] high = linear2Highpass.Convolute(source);
