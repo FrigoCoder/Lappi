@@ -12,6 +12,7 @@ namespace LappiTest.Filter.Digital {
     public class DigitalSamplerTest {
 
         private readonly double[] source = {1, 4, 9, 16, 25, 36};
+        private readonly double[] blurred = {2, 4.5, 9.5, 16.5, 25.5, 32.333333333333333333333333333333};
         private readonly DigitalSampler linear1 = new DigitalSampler(new DigitalAdapter(new Linear(), 1.0));
         private readonly DigitalSampler linear2 = new DigitalSampler(new DigitalAdapter(new Linear(), 2.0));
 
@@ -24,9 +25,8 @@ namespace LappiTest.Filter.Digital {
 
         [TestCase]
         public void Sample_with_scale_2_linear_filter_blurs_linearly () {
-            double[] expected = {2, 4.5, 9.5, 16.5, 25.5, 32.333333333333333333333333333333};
             for( int i = 0; i < source.Length; i++ ) {
-                Assert.That(linear2.Sample(source, i), Is.EqualTo(expected[i]));
+                Assert.That(linear2.Sample(source, i), Is.EqualTo(blurred[i]));
             }
         }
 
@@ -42,7 +42,7 @@ namespace LappiTest.Filter.Digital {
 
         [TestCase]
         public void SampleHighpass_returns_difference_between_original_and_blurred () {
-            double[] expected = {-1, -0.5, -0.5, -0.5, -0.5, 3.6666666666666666};
+            double[] expected = source.Zip(blurred, (x, y) => x - y).ToArray();
             for( int i = 0; i < source.Length; i++ ) {
                 Assert.That(linear2.SampleHighpass(source, i), Is.EqualTo(expected[i]).Within(1E-14));
             }
@@ -55,8 +55,7 @@ namespace LappiTest.Filter.Digital {
 
         [TestCase]
         public void Convolute_with_scale_2_linear_filter_blurs_linearly () {
-            double[] expected = {2, 4.5, 9.5, 16.5, 25.5, 32.333333333333333333333333333333};
-            Assert.That(linear2.Convolute(source), Is.EqualTo(expected));
+            Assert.That(linear2.Convolute(source), Is.EqualTo(blurred));
         }
 
         [TestCase]
