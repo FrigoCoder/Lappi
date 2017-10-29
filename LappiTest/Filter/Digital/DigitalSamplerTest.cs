@@ -15,6 +15,13 @@ namespace LappiTest.Filter.Digital {
 
         private readonly double[] source = {1, 4, 9, 16, 25, 36};
         private readonly double[] blurred = {2, 4.5, 9.5, 16.5, 25.5, 32.333333333333333333333333333333};
+        private readonly double[] zeroes = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+        private readonly double[] constant = {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2};
+        private readonly double[] shortConstant = {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2};
+
+        private readonly double[] nyquist =
+            {2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2};
+
         private readonly DigitalSampler linear1 = new DigitalSampler(new DigitalAdapter(new Linear(), 1.0));
         private readonly DigitalSampler linear2 = new DigitalSampler(new DigitalAdapter(new Linear(), 2.0));
         private readonly DigitalSampler linear2Highpass = new DigitalSampler(new HighpassAdapter(new DigitalAdapter(new Linear(), 2.0)));
@@ -59,29 +66,23 @@ namespace LappiTest.Filter.Digital {
 
         [TestCase]
         public void Convolute_with_lowpass_filter_preserves_constant_array () {
-            double[] constant = {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2};
             Assert.That(dirichlet4.Convolute(constant), Is.EqualTo(constant));
         }
 
         [Ignore("#1: DigitalSampler normalization bug - Lowpass and highpass filters are inconsistent due to boundary handling")]
         [TestCase]
         public void Convolute_with_lowpass_filter_nulls_nyquist_array () {
-            double[] nyquist = {2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2};
-            double[] expected = new double[nyquist.Length];
-            Assert.That(dirichlet4.Convolute(nyquist), Is.EqualTo(expected));
+            Assert.That(dirichlet4.Convolute(nyquist), Is.EqualTo(zeroes));
         }
 
         [Ignore("#1: DigitalSampler normalization bug - Lowpass and highpass filters are inconsistent due to boundary handling")]
         [TestCase]
         public void Convolute_with_highpass_filter_nulls_constant_array () {
-            double[] constant = {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2};
-            double[] expected = new double[constant.Length];
-            Assert.That(dirichlet4Highpass.Convolute(constant), Is.EqualTo(expected));
+            Assert.That(dirichlet4Highpass.Convolute(constant), Is.EqualTo(zeroes));
         }
 
         [TestCase]
         public void Convolute_with_highpass_filter_preserves_nyquist_array () {
-            double[] nyquist = {2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2};
             Assert.That(dirichlet4Highpass.Convolute(nyquist), Is.EqualTo(nyquist).Within(1E-15));
         }
 
@@ -113,6 +114,11 @@ namespace LappiTest.Filter.Digital {
         }
 
         [TestCase]
+        public void Downsample_preserves_constant_array () {
+            Assert.That(linear2.Downsample(constant, 2, 0), Is.EqualTo(shortConstant));
+        }
+
+        [TestCase]
         public void Downsample_with_factor_2_and_shift_0 () {
             double[] expected = {2, 9.5, 25.5};
             Assert.That(linear2.Downsample(source, 2, 0), Is.EqualTo(expected));
@@ -124,18 +130,49 @@ namespace LappiTest.Filter.Digital {
             Assert.That(linear2.Downsample(source, 2, 1), Is.EqualTo(expected));
         }
 
+        [Ignore("#1: DigitalSampler normalization bug - Lowpass and highpass filters are inconsistent due to boundary handling")]
+        [TestCase]
+        public void Upsample_preserves_constant_array () {
+            Assert.That(linear2.Upsample(shortConstant, 2, 1), Is.EqualTo(shortConstant));
+        }
+
+        [TestCase]
+        public void Upsample_preserves_constant_array_at_nonboundaries () {
+            double[] upsampled = linear2.Upsample(shortConstant, 2, 0);
+            for( int i = 1; i < constant.Length - 1; i++ ) {
+                Assert.That(upsampled[i], Is.EqualTo(constant[i]));
+            }
+        }
+
         [TestCase]
         public void Upsample_with_factor_2_and_shift_0 () {
             double[] downsampled = {2, 9.5, 25.5};
-            double[] expected = {1.3333333333333333, 2.875, 4.75, 8.75, 12.75, 8.5};
+            double[] expected = {2.6666666666666666, 5.75, 9.5, 17.5, 25.5, 17};
             Assert.That(linear2.Upsample(downsampled, 2, 0), Is.EqualTo(expected));
         }
 
         [TestCase]
         public void Upsample_with_factor_2_and_shift_1 () {
             double[] downsampled = {4.5, 16.5, 32.333333333333333333333333333333};
-            double[] expected = {1.5, 2.25, 5.25, 8.25, 12.2083333333333333, 21.5555555555555555};
+            double[] expected = {3, 4.5, 10.5, 16.5, 24.4166666666666666, 43.1111111111111111};
             Assert.That(linear2.Upsample(downsampled, 2, 1), Is.EqualTo(expected));
+        }
+
+        [Ignore("#1: DigitalSampler normalization bug - Lowpass and highpass filters are inconsistent due to boundary handling")]
+        [TestCase]
+        public void Downsample_upsample_preserves_constant_array () {
+            double[] downsampled = linear2.Downsample(constant, 2, 0);
+            double[] upsampled = linear2.Upsample(downsampled, 2, 0);
+            Assert.That(upsampled, Is.EqualTo(constant));
+        }
+
+        [TestCase]
+        public void Downsample_upsample_preserves_constant_array_at_nonboundaries () {
+            double[] downsampled = linear2.Downsample(constant, 2, 0);
+            double[] upsampled = linear2.Upsample(downsampled, 2, 0);
+            for( int i = 1; i < upsampled.Length - 1; i++ ) {
+                Assert.That(upsampled[i], Is.EqualTo(constant[i]));
+            }
         }
 
     }

@@ -57,7 +57,7 @@ namespace Lappi.Filter.Digital {
                 }
             }
             for( int i = 0; i < source.Length; i++ ) {
-                v[i * factor + shift] = source[i];
+                v[i * factor + shift] = (dynamic) source[i] * 2;
             }
             return Convolute(v);
         }
