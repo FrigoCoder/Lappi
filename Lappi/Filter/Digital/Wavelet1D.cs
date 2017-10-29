@@ -32,18 +32,16 @@ namespace Lappi.Filter.Digital {
         }
 
         public double[] Inverse (Tuple<double[], double[]> tuple) {
-            double[] result = Inverse(tuple.Item1, tuple.Item2);
-            Console.WriteLine(string.Join(", ", result));
-            return result;
+            return Inverse(tuple.Item1, tuple.Item2);
         }
 
         public double[] Inverse (double[] low, double[] high) {
-            double[] v1 = synthesisLowpass.Upsample(low, 2, 1);
-            double[] v2 = synthesisHighpass.Upsample(high, 2, 0);
-            double[] result = v1.Zip(v2, (x, y) => 2 * (x + y)).ToArray();
-            Console.WriteLine(string.Join(", ", v1));
-            Console.WriteLine(string.Join(", ", v2));
-            Console.WriteLine(string.Join(", ", result));
+            double[] v1 = synthesisLowpass.Upsample(low, 2, 0);
+            double[] v2 = synthesisHighpass.Upsample(high, 2, 1);
+            double[] result = v1.Zip(v2, (x, y) => x + y).ToArray();
+            Console.WriteLine("Low upsampled: " + string.Join(", ", v1));
+            Console.WriteLine("High upsampeld: " + string.Join(", ", v2));
+            Console.WriteLine("Added: " + string.Join(", ", result));
             return result;
         }
 
