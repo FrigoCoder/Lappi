@@ -69,6 +69,8 @@
     <Compile Include="Filter\Analog\Dirichlet.cs" />
     <Compile Include="Filter\Analog\Linear.cs" />
     <Compile Include="Filter\Analog\ResamplingFilter.cs" />
+    <Compile Include="Filter\Digital\CDF53.cs" />
+    <Compile Include="Filter\Digital\CDF97.cs" />
     <Compile Include="Filter\Digital\CoefficientAdapter.cs" />
     <Compile Include="Filter\Digital\DigitalAdapter.cs" />
     <Compile Include="Filter\Digital\DigitalFilter.cs" />
