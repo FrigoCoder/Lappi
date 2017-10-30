@@ -130,6 +130,20 @@ namespace LappiTest.Filter.Digital {
             Assert.That(linear2.Downsample(source, 2, 1), Is.EqualTo(expected));
         }
 
+        [TestCase]
+        public void Downsample_can_handle_odd_length_arrays_with_shift_0 () {
+            double[] odd = {1, 4, 9, 16, 25};
+            double[] expected = {2, 9.5, 22};
+            Assert.That(linear2.Downsample(odd, 2, 0), Is.EqualTo(expected));
+        }
+
+        [TestCase]
+        public void Downsample_can_handle_odd_length_arrays_with_shift_1 () {
+            double[] odd = {1, 4, 9, 16, 25};
+            double[] expected = {4.5, 16.5};
+            Assert.That(linear2.Downsample(odd, 2, 1), Is.EqualTo(expected));
+        }
+
         [Ignore("#1: DigitalSampler normalization bug - Lowpass and highpass filters are inconsistent due to boundary handling")]
         [TestCase]
         public void Upsample_preserves_constant_array () {
