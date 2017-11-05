@@ -71,6 +71,19 @@ namespace LappiTest {
             }
         }
 
+        [Test]
+        public void Image_initialization_from_double_matrix () {
+            double[,] pixels = {{1, 2, 3}, {4, 5, 6}};
+            Image<double> doubleImage = new Image<double>(pixels);
+            Assert.That(doubleImage.Xs, Is.EqualTo(3));
+            Assert.That(doubleImage.Ys, Is.EqualTo(2));
+            for( int x = 0; x < 3; x++ ) {
+                for( int y = 0; y < 2; y++ ) {
+                    Assert.That(doubleImage[x, y], Is.EqualTo(pixels[y, x]));
+                }
+            }
+        }
+
         private void LoadImage (string filename) {
             image = Image<Rgb8>.Load("LappiTest\\Resources\\ImageTest\\" + filename);
         }

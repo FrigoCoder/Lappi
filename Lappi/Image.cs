@@ -3,7 +3,7 @@ using System.Drawing;
 
 namespace Lappi {
 
-    public class Image<T> where T : Colorspace {
+    public class Image<T> {
 
         public static Image<T> Load (string filename) {
             using( Bitmap bitmap = new Bitmap(filename) ) {
@@ -25,14 +25,24 @@ namespace Lappi {
         public Image (int xs, int ys) {
             Xs = xs;
             Ys = ys;
-            pixels = new T[xs, ys];
+            pixels = new T[ys, xs];
+        }
+
+        public Image (T[,] pixels) {
+            Xs = pixels.GetLength(1);
+            Ys = pixels.GetLength(0);
+            this.pixels = pixels;
         }
 
         public void Save (string filename) {
+            if( !typeof(Colorspace).IsAssignableFrom(typeof(T)) ) {
+                throw new ArgumentException();
+            }
             using( Bitmap bitmap = new Bitmap(Xs, Ys) ) {
                 for( int x = 0; x < Xs; x++ ) {
                     for( int y = 0; y < Ys; y++ ) {
-                        bitmap.SetPixel(x, y, this[x, y].ToColor());
+                        Colorspace color = (dynamic) this[x, y];
+                        bitmap.SetPixel(x, y, color.ToColor());
                     }
                 }
                 bitmap.Save(filename);
@@ -40,8 +50,8 @@ namespace Lappi {
         }
 
         public T this [int x, int y] {
-            get => pixels[x, y];
-            set => pixels[x, y] = value;
+            get => pixels[y, x];
+            set => pixels[y, x] = value;
         }
 
     }
