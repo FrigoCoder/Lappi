@@ -17,7 +17,7 @@ namespace Lappi.Filter.Digital {
         public Tuple<Image<T>, Image<T>> Forward (Image<T> image) {
             Image<T> downsampled = DownSample(image);
             Image<T> upsampled = UpSample(downsampled, image.Xs, image.Ys);
-            Image<T> difference = Difference(image, upsampled);
+            Image<T> difference = image - upsampled;
             return Tuple.Create(downsampled, difference);
         }
 
@@ -27,7 +27,7 @@ namespace Lappi.Filter.Digital {
 
         public Image<T> Inverse (Image<T> downsampled, Image<T> difference) {
             Image<T> upsampled = UpSample(downsampled, difference.Xs, difference.Ys);
-            return Sum(upsampled, difference);
+            return upsampled + difference;
         }
 
         private Image<T> DownSample (Image<T> image) {
@@ -54,26 +54,6 @@ namespace Lappi.Filter.Digital {
                 full.Rows[y] = synthesis.Upsample(half.Rows[y], 2, 0, xs);
             }
             return full;
-        }
-
-        private Image<T> Sum (Image<T> upsampled, Image<T> difference) {
-            Image<T> result = new Image<T>(difference.Xs, difference.Ys);
-            for( int x = 0; x < result.Xs; x++ ) {
-                for( int y = 0; y < result.Ys; y++ ) {
-                    result[x, y] = (dynamic) upsampled[x, y] + difference[x, y];
-                }
-            }
-            return result;
-        }
-
-        private Image<T> Difference (Image<T> original, Image<T> upsampled) {
-            Image<T> result = new Image<T>(original.Xs, original.Ys);
-            for( int x = 0; x < result.Xs; x++ ) {
-                for( int y = 0; y < result.Ys; y++ ) {
-                    result[x, y] = (dynamic) original[x, y] - upsampled[x, y];
-                }
-            }
-            return result;
         }
 
     }
