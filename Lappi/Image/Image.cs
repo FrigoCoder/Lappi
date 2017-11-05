@@ -70,14 +70,10 @@ namespace Lappi.Image {
         }
 
         public void Save (string filename) {
-            if( !typeof(Colorspace).IsAssignableFrom(typeof(T)) ) {
-                throw new ArgumentException();
-            }
             using( Bitmap bitmap = new Bitmap(Xs, Ys) ) {
                 for( int x = 0; x < Xs; x++ ) {
                     for( int y = 0; y < Ys; y++ ) {
-                        Colorspace color = (dynamic) this[x, y];
-                        bitmap.SetPixel(x, y, color.ToColor());
+                        bitmap.SetPixel(x, y, ((dynamic) this[x, y]).ToColor());
                     }
                 }
                 bitmap.Save(filename);
