@@ -15,6 +15,7 @@ namespace LappiTest.Filter.Digital {
 
         private readonly double[] source = {1, 4, 9, 16, 25, 36};
         private readonly double[] blurred = {2, 4.5, 9.5, 16.5, 25.5, 32.333333333333333333333333333333};
+
         private readonly double[] zeroes = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
         private readonly double[] constant = {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2};
         private readonly double[] shortConstant = {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2};
@@ -170,6 +171,20 @@ namespace LappiTest.Filter.Digital {
             double[] downsampled = {4.5, 16.5, 32.333333333333333333333333333333};
             double[] expected = {3, 4.5, 10.5, 16.5, 24.4166666666666666, 43.1111111111111111};
             Assert.That(linear2.Upsample(downsampled, 2, 1), Is.EqualTo(expected));
+        }
+
+        [TestCase]
+        public void Upsample_can_handle_odd_length_arrays_with_shift_0 () {
+            double[] downsampled = {2, 9.5, 22};
+            double[] expected = {2.6666666666666666, 5.75, 9.5, 15.75, 29.333333333333333};
+            Assert.That(linear2.Upsample(downsampled, 2, 0, 5), Is.EqualTo(expected));
+        }
+
+        [TestCase]
+        public void Upsample_can_handle_odd_length_arrays_with_shift_1 () {
+            double[] downsampled = {4.5, 16.5};
+            double[] expected = {3, 4.5, 10.5, 16.5, 11};
+            Assert.That(linear2.Upsample(downsampled, 2, 1, 5), Is.EqualTo(expected));
         }
 
         [Ignore("#1: DigitalSampler normalization bug - Lowpass and highpass filters are inconsistent due to boundary handling")]
