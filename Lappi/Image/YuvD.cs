@@ -2,7 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 
-namespace Lappi {
+namespace Lappi.Image {
 
     /// <summary>
     ///     Based on https://en.wikipedia.org/wiki/YUV#SDTV_with_BT.601

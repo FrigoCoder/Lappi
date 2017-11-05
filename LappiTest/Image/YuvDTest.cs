@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-using Lappi;
+using Lappi.Image;
 
 using NUnit.Framework;
 
@@ -37,6 +37,27 @@ namespace LappiTest.Image {
             Assert.That(new YuvD(Color.Red).ToColor().ToArgb(), Is.EqualTo(Color.Red.ToArgb()));
             Assert.That(new YuvD(Color.Lime).ToColor().ToArgb(), Is.EqualTo(Color.Lime.ToArgb()));
             Assert.That(new YuvD(Color.Blue).ToColor().ToArgb(), Is.EqualTo(Color.Blue.ToArgb()));
+        }
+
+        [Test]
+        public void Arithmetic_operators_are_correct () {
+            Assert.That(new YuvD(1, 2, 3) + new YuvD(2, 3, 5), Is.EqualTo(new YuvD(3, 5, 8)));
+            Assert.That(new YuvD(1, 2, 3) - new YuvD(2, 3, 5), Is.EqualTo(new YuvD(-1, -1, -2)));
+            Assert.That(new YuvD(1, 2, 3) * 2, Is.EqualTo(new YuvD(2, 4, 6)));
+            Assert.That(new YuvD(1, 2, 3) / 2, Is.EqualTo(new YuvD(0.5, 1, 1.5)));
+        }
+
+        [Test]
+        public void Equality_operators_are_correct () {
+            YuvD color1 = new YuvD(1, 2, 3);
+            YuvD color2 = new YuvD(1, 2, 3);
+            YuvD color3 = new YuvD(2, 3, 5);
+            Assert.True(color1 == color2);
+            Assert.True(color1 != color3);
+            Assert.True(color1.Equals(color2));
+            Assert.False(color1 == color3);
+            Assert.False(color1 != color2);
+            Assert.False(color1.Equals(color3));
         }
 
     }

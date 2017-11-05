@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace Lappi {
+namespace Lappi.Image {
 
     public struct Rgb8 {
 
