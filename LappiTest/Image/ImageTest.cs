@@ -132,6 +132,14 @@ namespace LappiTest.Image {
             Assert.That(image1 + image2, Is.EqualTo(expected));
         }
 
+        [Test]
+        public void Images_can_be_subtracted () {
+            Image<double> image1 = new Image<double>(new double[,] {{2, 3, 4}, {5, 6, 7}});
+            Image<double> image2 = new Image<double>(new double[,] {{1, 1, 1}, {1, 1, 1}});
+            Image<double> expected = new Image<double>(new double[,] {{1, 2, 3}, {4, 5, 6}});
+            Assert.That(image1 - image2, Is.EqualTo(expected));
+        }
+
         private Image<T> LoadImage<T> (string filename) {
             return Image<T>.Load("LappiTest\\Resources\\ImageTest\\" + filename);
         }
