@@ -46,7 +46,27 @@ namespace LappiTest.Filter.Digital {
             AssertEquals(laplacian.Inverse(laplacian.Forward(source)), source);
         }
 
-        private void AssertEquals (Image<double> actual, Image<double> expected) {
+        [TestCase]
+        public void Lenna_is_perfectly_reconstructed_after_5_steps () {
+            Laplacian2D<YuvD> transform = new Laplacian2D<YuvD>(CDF97.AnalysisLowpass, CDF97.SynthesisLowpass);
+            Image<YuvD> lenna = Image<YuvD>.Load("LappiTest\\Resources\\ImageTest\\Lenna.png");
+            Tuple<Image<YuvD>, Image<YuvD>> level1 = transform.Forward(lenna);
+            Tuple<Image<YuvD>, Image<YuvD>> level2 = transform.Forward(level1.Item1);
+            Tuple<Image<YuvD>, Image<YuvD>> level3 = transform.Forward(level2.Item1);
+            Tuple<Image<YuvD>, Image<YuvD>> level4 = transform.Forward(level3.Item1);
+            Tuple<Image<YuvD>, Image<YuvD>> level5 = transform.Forward(level4.Item1);
+
+            level4.Item2.Save("c:\\test.png");
+
+            level4 = Tuple.Create(transform.Inverse(level5), level4.Item2);
+            level3 = Tuple.Create(transform.Inverse(level4), level3.Item2);
+            level2 = Tuple.Create(transform.Inverse(level3), level2.Item2);
+            level1 = Tuple.Create(transform.Inverse(level2), level1.Item2);
+
+            AssertEquals(transform.Inverse(level1), lenna);
+        }
+
+        private void AssertEquals<T> (Image<T> actual, Image<T> expected) {
             Assert.That(actual.Xs, Is.EqualTo(expected.Xs));
             Assert.That(actual.Ys, Is.EqualTo(expected.Ys));
             for( int x = 0; x < actual.Xs; x++ ) {

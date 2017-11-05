@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-using Lappi;
+using Lappi.Image;
 
 using NUnit.Framework;
 
