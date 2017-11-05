@@ -1,4 +1,6 @@
-﻿using Lappi.Filter.Analog;
+﻿using System;
+
+using Lappi.Filter.Analog;
 using Lappi.Filter.Digital;
 using Lappi.Image;
 
@@ -56,6 +58,17 @@ namespace LappiTest.Filter.Digital {
             for( int x = 0; x < actual.Xs; x++ ) {
                 for( int y = 0; y < actual.Ys; y++ ) {
                     Assert.That(actual[x, y], Is.EqualTo(expected[x, y]).Within(1E-14), "Fails at [" + x + ", " + y + "]");
+                }
+            }
+        }
+
+        private void AssertEquals (Image<YuvD> actual, Image<YuvD> expected) {
+            Comparison<YuvD> comparer = (a, b) => Math.Abs(a.Y - b.Y) + Math.Abs(a.U - b.U) + Math.Abs(a.V - b.V) < 1E-15 ? 0 : 1;
+            Assert.That(actual.Xs, Is.EqualTo(expected.Xs));
+            Assert.That(actual.Ys, Is.EqualTo(expected.Ys));
+            for( int x = 0; x < actual.Xs; x++ ) {
+                for( int y = 0; y < actual.Ys; y++ ) {
+                    Assert.That(actual[x, y], Is.EqualTo(expected[x, y]).Using(comparer));
                 }
             }
         }
