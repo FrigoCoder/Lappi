@@ -84,6 +84,22 @@ namespace LappiTest {
             }
         }
 
+        [Test]
+        public void Image_rows_can_be_indexed () {
+            double[] array = {1, 2, 3};
+            Image<double> imageDouble = new Image<double>(3, 2);
+            imageDouble.Rows[0] = array;
+            Assert.That(imageDouble.Rows[0], Is.EqualTo(array));
+        }
+
+        [Test]
+        public void Image_columns_can_be_indexed () {
+            double[] array = {1, 2};
+            Image<double> imageDouble = new Image<double>(3, 2);
+            imageDouble.Columns[0] = array;
+            Assert.That(imageDouble.Columns[0], Is.EqualTo(array));
+        }
+
         private void LoadImage (string filename) {
             image = Image<Rgb8>.Load("LappiTest\\Resources\\ImageTest\\" + filename);
         }
