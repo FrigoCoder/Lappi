@@ -32,8 +32,8 @@ namespace Lappi.Filter.Digital {
         }
 
         public double[] Inverse (double[] low, double[] high) {
-            double[] v1 = synthesisLowpass.Upsample(low, 2, 0);
-            double[] v2 = synthesisHighpass.Upsample(high, 2, 1);
+            double[] v1 = synthesisLowpass.Upsample(low, 2, 0, low.Length + high.Length);
+            double[] v2 = synthesisHighpass.Upsample(high, 2, 1, low.Length + high.Length);
             return v1.Zip(v2, (x, y) => x + y).ToArray();
         }
 
