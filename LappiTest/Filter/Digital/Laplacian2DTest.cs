@@ -1,7 +1,4 @@
-﻿using System;
-
-using Lappi;
-using Lappi.Filter.Analog;
+﻿using Lappi.Filter.Analog;
 using Lappi.Filter.Digital;
 using Lappi.Image;
 
@@ -27,7 +24,7 @@ namespace LappiTest.Filter.Digital {
         [TestCase]
         public void Forward_transform_produces_correct_downsampled_image () {
             Image<double> expected = new Image<double>(new[,] {{2, 9.5, 25.5}, {2, 9.5, 25.5}});
-            AssertEquals(laplacian.Forward(source).Item1, expected);
+            AssertEquals(laplacian.Forward(source)[0], expected);
         }
 
         [TestCase]
@@ -38,7 +35,7 @@ namespace LappiTest.Filter.Digital {
                 {-1.6666666666666666, -1.7500000000000000, -0.5000000000000000, -1.5000000000000000, -0.5, 19.0000000000000000},
                 {-0.7777777777777777, +0.1666666666666666, +2.6666666666666666, +4.3333333333333333, +8.0, 24.6666666666666666}
             });
-            AssertEquals(laplacian.Forward(source).Item2, expected);
+            AssertEquals(laplacian.Forward(source)[1], expected);
         }
 
         [TestCase]
@@ -50,18 +47,18 @@ namespace LappiTest.Filter.Digital {
         public void Lenna_is_perfectly_reconstructed_after_5_steps () {
             Laplacian2D<YuvD> transform = new Laplacian2D<YuvD>(CDF97.AnalysisLowpass, CDF97.SynthesisLowpass);
             Image<YuvD> lenna = Image<YuvD>.Load("LappiTest\\Resources\\ImageTest\\Lenna.png");
-            Tuple<Image<YuvD>, Image<YuvD>> level1 = transform.Forward(lenna);
-            Tuple<Image<YuvD>, Image<YuvD>> level2 = transform.Forward(level1.Item1);
-            Tuple<Image<YuvD>, Image<YuvD>> level3 = transform.Forward(level2.Item1);
-            Tuple<Image<YuvD>, Image<YuvD>> level4 = transform.Forward(level3.Item1);
-            Tuple<Image<YuvD>, Image<YuvD>> level5 = transform.Forward(level4.Item1);
+            Image<YuvD>[] level1 = transform.Forward(lenna);
+            Image<YuvD>[] level2 = transform.Forward(level1[0]);
+            Image<YuvD>[] level3 = transform.Forward(level2[0]);
+            Image<YuvD>[] level4 = transform.Forward(level3[0]);
+            Image<YuvD>[] level5 = transform.Forward(level4[0]);
 
-            level4.Item2.Save("c:\\test.png");
+            level4[1].Save("c:\\test.png");
 
-            level4 = Tuple.Create(transform.Inverse(level5), level4.Item2);
-            level3 = Tuple.Create(transform.Inverse(level4), level3.Item2);
-            level2 = Tuple.Create(transform.Inverse(level3), level2.Item2);
-            level1 = Tuple.Create(transform.Inverse(level2), level1.Item2);
+            level4[0] = transform.Inverse(level5);
+            level3[0] = transform.Inverse(level4);
+            level2[0] = transform.Inverse(level3);
+            level1[0] = transform.Inverse(level2);
 
             AssertEquals(transform.Inverse(level1), lenna);
         }

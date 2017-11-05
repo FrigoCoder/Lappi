@@ -2,7 +2,6 @@
 using System.Drawing;
 using System.IO;
 
-using Lappi;
 using Lappi.Image;
 
 using NUnit.Framework;

@@ -1,6 +1,4 @@
-﻿using System;
-
-using Lappi.Image;
+﻿using Lappi.Image;
 
 namespace Lappi.Filter.Digital {
 
@@ -14,14 +12,14 @@ namespace Lappi.Filter.Digital {
             this.synthesis = new DigitalSampler<T>(synthesis);
         }
 
-        public Tuple<Image<T>, Image<T>> Forward (Image<T> image) {
+        public Image<T>[] Forward (Image<T> image) {
             Image<T> downsampled = DownSample(image);
             Image<T> upsampled = UpSample(downsampled, image.Xs, image.Ys);
             Image<T> difference = image - upsampled;
-            return Tuple.Create(downsampled, difference);
+            return new[] {downsampled, difference};
         }
 
-        public Image<T> Inverse (Tuple<Image<T>, Image<T>> tuple) => Inverse(tuple.Item1, tuple.Item2);
+        public Image<T> Inverse (Image<T>[] tuple) => Inverse(tuple[0], tuple[1]);
 
         public Image<T> Inverse (Image<T> downsampled, Image<T> difference) {
             Image<T> upsampled = UpSample(downsampled, difference.Xs, difference.Ys);
