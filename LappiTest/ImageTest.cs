@@ -105,6 +105,24 @@ namespace LappiTest {
             }
         }
 
+        [Test]
+        public void Same_images_are_equal () {
+            Image<double> image1 = new Image<double>(new double[,] {{1, 2, 3}, {4, 5, 6}});
+            Image<double> image2 = new Image<double>(new double[,] {{1, 2, 3}, {4, 5, 6}});
+            Assert.True(image1.Equals(image2));
+            Assert.True(image1 == image2);
+            Assert.False(image1 != image2);
+        }
+
+        [Test]
+        public void Different_images_are_not_equal () {
+            Image<double> image1 = new Image<double>(new double[,] {{1, 2, 3}, {4, 5, 6}});
+            Image<double> image2 = new Image<double>(new double[,] {{1, 2, 3}, {4, 5, 7}});
+            Assert.False(image1.Equals(image2));
+            Assert.False(image1 == image2);
+            Assert.True(image1 != image2);
+        }
+
         private Image<T> LoadImage<T> (string filename) {
             return Image<T>.Load("LappiTest\\Resources\\ImageTest\\" + filename);
         }

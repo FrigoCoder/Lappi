@@ -18,6 +18,14 @@ namespace Lappi {
             }
         }
 
+        public static bool operator == (Image<T> image1, Image<T> image2) {
+            return ReferenceEquals(image1, null) ? ReferenceEquals(image2, null) : image1.Equals(image2);
+        }
+
+        public static bool operator != (Image<T> image1, Image<T> image2) {
+            return ReferenceEquals(image1, null) ? !ReferenceEquals(image2, null) : !image1.Equals(image2);
+        }
+
         public readonly int Xs;
         public readonly int Ys;
         public readonly RowIndexer<T> Rows;
@@ -48,6 +56,25 @@ namespace Lappi {
                 }
                 bitmap.Save(filename);
             }
+        }
+
+        public override bool Equals (object obj) {
+            Image<T> that = obj as Image<T>;
+            if( ReferenceEquals(that, null) || that.Xs != Xs || that.Ys != Ys ) {
+                return false;
+            }
+            for( int x = 0; x < Xs; x++ ) {
+                for( int y = 0; y < Ys; y++ ) {
+                    if( (dynamic) that[x, y] != this[x, y] ) {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
+        public override int GetHashCode () {
+            throw new NotSupportedException();
         }
 
         public T this [int x, int y] {
