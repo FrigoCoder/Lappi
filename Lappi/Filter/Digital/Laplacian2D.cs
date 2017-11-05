@@ -21,9 +21,7 @@ namespace Lappi.Filter.Digital {
             return Tuple.Create(downsampled, difference);
         }
 
-        public Image<T> Inverse (Tuple<Image<T>, Image<T>> tuple) {
-            return Inverse(tuple.Item1, tuple.Item2);
-        }
+        public Image<T> Inverse (Tuple<Image<T>, Image<T>> tuple) => Inverse(tuple.Item1, tuple.Item2);
 
         public Image<T> Inverse (Image<T> downsampled, Image<T> difference) {
             Image<T> upsampled = UpSample(downsampled, difference.Xs, difference.Ys);

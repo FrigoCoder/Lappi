@@ -23,10 +23,8 @@ namespace Lappi.Filter.Digital {
             }
         }
 
-        public override string ToString () {
-            return GetType().Name + "{Left = " + Left + ", Right = " + Right + ", Radius = " + Radius + ", Coefficients=[" +
-                string.Join(", ", Coefficients) + "]}";
-        }
+        public override string ToString () => GetType().Name + "{Left = " + Left + ", Right = " + Right + ", Radius = " + Radius +
+            ", Coefficients=[" + string.Join(", ", Coefficients) + "]}";
 
         [SuppressMessage("ReSharper", "CompareOfFloatsByEqualityOperator")]
         private static int NonZeroLeft (AnalogFilter analog, double scale) {

@@ -5,9 +5,7 @@
         public HighpassSampler (DigitalFilter filter) : base(filter) {
         }
 
-        public override T Sample (T[] source, int center) {
-            return (dynamic) source[center] - base.Sample(source, center);
-        }
+        public override T Sample (T[] source, int center) => (dynamic) source[center] - base.Sample(source, center);
 
     }
 

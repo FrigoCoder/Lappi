@@ -22,9 +22,7 @@ namespace Lappi.Filter.Digital {
             return Tuple.Create(downsampled, difference);
         }
 
-        public T[] Inverse (Tuple<T[], T[]> tuple) {
-            return Inverse(tuple.Item1, tuple.Item2);
-        }
+        public T[] Inverse (Tuple<T[], T[]> tuple) => Inverse(tuple.Item1, tuple.Item2);
 
         public T[] Inverse (T[] downsampled, T[] difference) {
             T[] upsampled = synthesis.Upsample(downsampled, 2, 0, difference.Length);

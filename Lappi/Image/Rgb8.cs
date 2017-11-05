@@ -20,9 +20,7 @@ namespace Lappi {
             B = color.B;
         }
 
-        public Color ToColor () {
-            return Color.FromArgb(R, G, B);
-        }
+        public Color ToColor () => Color.FromArgb(R, G, B);
 
     }
 

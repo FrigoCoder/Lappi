@@ -140,9 +140,7 @@ namespace LappiTest.Image {
             Assert.That(image1 - image2, Is.EqualTo(expected));
         }
 
-        private Image<T> LoadImage<T> (string filename) {
-            return Image<T>.Load("LappiTest\\Resources\\ImageTest\\" + filename);
-        }
+        private Image<T> LoadImage<T> (string filename) => Image<T>.Load("LappiTest\\Resources\\ImageTest\\" + filename);
 
         private Image<T> CreateRandomImage<T> (int xs, int ys) {
             Image<T> result = new Image<T>(xs, ys);

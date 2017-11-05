@@ -11,9 +11,7 @@
             }
         }
 
-        public T Sum (int left, int right) {
-            return left <= right ? (dynamic) integral[right + 1] - integral[left] : new T();
-        }
+        public T Sum (int left, int right) => left <= right ? (dynamic) integral[right + 1] - integral[left] : new T();
 
     }
 

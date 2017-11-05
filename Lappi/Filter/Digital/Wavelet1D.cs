@@ -27,9 +27,7 @@ namespace Lappi.Filter.Digital {
             return Tuple.Create(low, high);
         }
 
-        public double[] Inverse (Tuple<double[], double[]> tuple) {
-            return Inverse(tuple.Item1, tuple.Item2);
-        }
+        public double[] Inverse (Tuple<double[], double[]> tuple) => Inverse(tuple.Item1, tuple.Item2);
 
         public double[] Inverse (double[] low, double[] high) {
             double[] v1 = synthesisLowpass.Upsample(low, 2, 0, low.Length + high.Length);

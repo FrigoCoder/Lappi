@@ -49,9 +49,7 @@ namespace Lappi.Filter.Digital {
             return result;
         }
 
-        public T[] Upsample (T[] source, int factor, int shift) {
-            return Upsample(source, factor, shift, source.Length * factor);
-        }
+        public T[] Upsample (T[] source, int factor, int shift) => Upsample(source, factor, shift, source.Length * factor);
 
         public T[] Upsample (T[] source, int factor, int shift, int length) {
             T[] v = new T[length];
