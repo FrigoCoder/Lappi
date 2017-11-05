@@ -26,6 +26,19 @@ namespace Lappi.Image {
             return ReferenceEquals(image1, null) ? !ReferenceEquals(image2, null) : !image1.Equals(image2);
         }
 
+        public static Image<T> operator + (Image<T> image1, Image<T> image2) {
+            if( image1.Xs != image2.Xs || image1.Ys != image2.Ys ) {
+                throw new ArgumentException();
+            }
+            Image<T> result = new Image<T>(image1.Xs, image2.Ys);
+            for( int x = 0; x < result.Xs; x++ ) {
+                for( int y = 0; y < result.Ys; y++ ) {
+                    result[x, y] = (dynamic) image1[x, y] + image2[x, y];
+                }
+            }
+            return result;
+        }
+
         public readonly int Xs;
         public readonly int Ys;
         public readonly RowIndexer<T> Rows;
