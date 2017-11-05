@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace Lappi.Image {
+namespace Lappi {
 
     public struct Rgb8 {
 
@@ -20,7 +20,9 @@ namespace Lappi.Image {
             B = color.B;
         }
 
-        public Color ToColor () => Color.FromArgb(R, G, B);
+        public Color ToColor () {
+            return Color.FromArgb(R, G, B);
+        }
 
     }
 
