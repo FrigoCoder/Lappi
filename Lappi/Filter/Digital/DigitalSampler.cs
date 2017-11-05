@@ -42,7 +42,7 @@ namespace Lappi.Filter.Digital {
         }
 
         public T[] Downsample (T[] source, int factor, int shift) {
-            T[] result = new T[source.Length / factor];
+            T[] result = new T[(source.Length - shift + factor - 1) / factor];
             for( int i = 0; i < result.Length; i++ ) {
                 result[i] = Sample(source, i * factor + shift);
             }
