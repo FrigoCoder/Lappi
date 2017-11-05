@@ -1,5 +1,7 @@
 ﻿using System;
 
+using Lappi.Image;
+
 namespace Lappi.Filter.Digital {
 
     public class Laplacian2D<T> where T : new() {

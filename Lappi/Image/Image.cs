@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
 
-namespace Lappi {
+namespace Lappi.Image {
 
     public class Image<T> {
 

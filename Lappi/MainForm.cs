@@ -9,7 +9,7 @@ namespace Lappi {
             AutoSize = true;
             Controls.Add(new PictureBox {
                 AutoSize = true,
-                Image = Image.FromFile("Resources\\Lenna.png")
+                Image = System.Drawing.Image.FromFile("Resources\\Lenna.png")
             });
         }
 

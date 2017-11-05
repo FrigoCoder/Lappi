@@ -3,6 +3,7 @@
 using Lappi;
 using Lappi.Filter.Analog;
 using Lappi.Filter.Digital;
+using Lappi.Image;
 
 using NUnit.Framework;
 
