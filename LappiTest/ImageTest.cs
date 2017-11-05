@@ -73,30 +73,36 @@ namespace LappiTest {
         [Test]
         public void Image_initialization_from_double_matrix () {
             double[,] pixels = {{1, 2, 3}, {4, 5, 6}};
-            Image<double> doubleImage = new Image<double>(pixels);
-            Assert.That(doubleImage.Xs, Is.EqualTo(3));
-            Assert.That(doubleImage.Ys, Is.EqualTo(2));
+            Image<double> image = new Image<double>(pixels);
+            Assert.That(image.Xs, Is.EqualTo(3));
+            Assert.That(image.Ys, Is.EqualTo(2));
             for( int x = 0; x < 3; x++ ) {
                 for( int y = 0; y < 2; y++ ) {
-                    Assert.That(doubleImage[x, y], Is.EqualTo(pixels[y, x]));
+                    Assert.That(image[x, y], Is.EqualTo(pixels[y, x]));
                 }
             }
         }
 
         [Test]
         public void Image_rows_can_be_indexed () {
+            Image<double> image = new Image<double>(3, 2);
             double[] array = {1, 2, 3};
-            Image<double> imageDouble = new Image<double>(3, 2);
-            imageDouble.Rows[0] = array;
-            Assert.That(imageDouble.Rows[0], Is.EqualTo(array));
+            image.Rows[0] = array;
+            Assert.That(image.Rows[0], Is.EqualTo(array));
+            for( int x = 0; x < image.Xs; x++ ) {
+                Assert.That(image[x, 0], Is.EqualTo(array[x]));
+            }
         }
 
         [Test]
         public void Image_columns_can_be_indexed () {
+            Image<double> image = new Image<double>(3, 2);
             double[] array = {1, 2};
-            Image<double> imageDouble = new Image<double>(3, 2);
-            imageDouble.Columns[0] = array;
-            Assert.That(imageDouble.Columns[0], Is.EqualTo(array));
+            image.Columns[0] = array;
+            Assert.That(image.Columns[0], Is.EqualTo(array));
+            for( int y = 0; y < image.Ys; y++ ) {
+                Assert.That(image[0, y], Is.EqualTo(array[y]));
+            }
         }
 
         private Image<T> LoadImage<T> (string filename) {
