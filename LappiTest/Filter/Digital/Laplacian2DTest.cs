@@ -1,4 +1,6 @@
-﻿using Lappi;
+﻿using System;
+
+using Lappi;
 using Lappi.Filter.Analog;
 using Lappi.Filter.Digital;
 
@@ -30,8 +32,10 @@ namespace LappiTest.Filter.Digital {
         [TestCase]
         public void Forward_transform_produces_correct_difference_image () {
             Image<double> expected = new Image<double>(new[,] {
-                {-1.6666666666666666, -1.75, -0.5, -1.5, -0.5, 19}, {-1.6666666666666666, -1.75, -0.5, -1.5, -0.5, 19},
-                {-1.6666666666666666, -1.75, -0.5, -1.5, -0.5, 19}, {-1.6666666666666666, -1.75, -0.5, -1.5, -0.5, 19}
+                {-2.5555555555555555, -3.6666666666666666, -3.6666666666666666, -7.3333333333333333, -9.0, 13.3333333333333333},
+                {-1.6666666666666666, -1.7500000000000000, -0.5000000000000000, -1.5000000000000000, -0.5, 19.0000000000000000},
+                {-1.6666666666666666, -1.7500000000000000, -0.5000000000000000, -1.5000000000000000, -0.5, 19.0000000000000000},
+                {-0.7777777777777777, +0.1666666666666666, +2.6666666666666666, +4.3333333333333333, +8.0, 24.6666666666666666}
             });
             AssertEquals(laplacian.Forward(source).Item2, expected);
         }
@@ -46,7 +50,7 @@ namespace LappiTest.Filter.Digital {
             Assert.That(actual.Ys, Is.EqualTo(expected.Ys));
             for( int x = 0; x < actual.Xs; x++ ) {
                 for( int y = 0; y < actual.Ys; y++ ) {
-                    Assert.That(actual[x, y], Is.EqualTo(expected[x, y]), "Fails at [" + x + ", " + y + "]");
+                    Assert.That(actual[x, y], Is.EqualTo(expected[x, y]).Within(1E-14), "Fails at [" + x + ", " + y + "]");
                 }
             }
         }
