@@ -23,13 +23,13 @@ namespace LappiTest.Filter.Digital {
         }
 
         [TestCase]
-        public void Downsample_works_correctly () {
+        public void Forward_transform_produces_correct_downsampled_signal () {
             double[] expected = {2, 9.5, 25.5};
             Assert.That(laplacian.Forward(source).Item1, Is.EqualTo(expected));
         }
 
         [TestCase]
-        public void Difference_is_correct () {
+        public void Forward_transform_produces_correct_difference_signal () {
             double[] expected = {-1.6666666666666666, -1.75, -0.5, -1.5, -0.5, 19};
             Assert.That(laplacian.Forward(source).Item2, Is.EqualTo(expected).Within(1E-15));
         }
