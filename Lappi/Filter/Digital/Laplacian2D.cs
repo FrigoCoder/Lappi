@@ -14,7 +14,7 @@ namespace Lappi.Filter.Digital {
 
         public Tuple<Image<T>, Image<T>> Forward (Image<T> image) {
             Image<T> downsampled = DownSample(image);
-            Image<T> upsampled = UpSample(downsampled);
+            Image<T> upsampled = UpSample(downsampled, image.Xs, image.Ys);
             Image<T> difference = Difference(image, upsampled);
             return Tuple.Create(downsampled, difference);
         }
@@ -24,7 +24,7 @@ namespace Lappi.Filter.Digital {
         }
 
         public Image<T> Inverse (Image<T> downsampled, Image<T> difference) {
-            Image<T> upsampled = UpSample(downsampled);
+            Image<T> upsampled = UpSample(downsampled, difference.Xs, difference.Ys);
             return Sum(upsampled, difference);
         }
 
@@ -41,15 +41,15 @@ namespace Lappi.Filter.Digital {
             return quarter;
         }
 
-        private Image<T> UpSample (Image<T> quarter) {
-            Image<T> half = new Image<T>(quarter.Xs, quarter.Ys * 2);
+        private Image<T> UpSample (Image<T> quarter, int xs, int ys) {
+            Image<T> half = new Image<T>(quarter.Xs, ys);
             for( int x = 0; x < half.Xs; x++ ) {
-                half.Columns[x] = synthesis.Upsample(quarter.Columns[x], 2, 0);
+                half.Columns[x] = synthesis.Upsample(quarter.Columns[x], 2, 0, ys);
             }
 
-            Image<T> full = new Image<T>(quarter.Xs * 2, quarter.Ys * 2);
+            Image<T> full = new Image<T>(xs, ys);
             for( int y = 0; y < full.Ys; y++ ) {
-                full.Rows[y] = synthesis.Upsample(half.Rows[y], 2, 0);
+                full.Rows[y] = synthesis.Upsample(half.Rows[y], 2, 0, xs);
             }
             return full;
         }
