@@ -61,7 +61,7 @@ namespace LappiTest {
         public void Saved_image_is_same_as_loaded_image () {
             string fileName = Path.GetRandomFileName();
             try {
-                Image<Rgb8> saved = CreateRandomImage(512, 512);
+                Image<Rgb8> saved = CreateRandomImage<Rgb8>(512, 512);
                 saved.Save(fileName);
                 Image<Rgb8> loaded = Image<Rgb8>.Load(fileName);
                 AssertEquals(saved, loaded);
