@@ -64,7 +64,7 @@ namespace LappiTest {
                 Image<Rgb8> saved = CreateRandomImage<Rgb8>(512, 512);
                 saved.Save(fileName);
                 Image<Rgb8> loaded = Image<Rgb8>.Load(fileName);
-                AssertEquals(saved, loaded);
+                Assert.That(saved, Is.EqualTo(loaded));
             } finally {
                 new FileInfo(fileName).Delete();
             }
@@ -153,16 +153,6 @@ namespace LappiTest {
             for( int x = 0; x < image.Xs; x++ ) {
                 for( int y = 0; y < image.Ys; y++ ) {
                     Assert.That(image[x, y], Is.EqualTo(value));
-                }
-            }
-        }
-
-        private void AssertEquals<T> (Image<T> expected, Image<T> actual) {
-            Assert.That(actual.Xs, Is.EqualTo(expected.Xs));
-            Assert.That(actual.Ys, Is.EqualTo(expected.Ys));
-            for( int x = 0; x < actual.Xs; x++ ) {
-                for( int y = 0; y < actual.Ys; y++ ) {
-                    Assert.That(actual[x, y], Is.EqualTo(expected[x, y]));
                 }
             }
         }

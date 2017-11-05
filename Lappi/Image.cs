@@ -65,7 +65,7 @@ namespace Lappi {
             }
             for( int x = 0; x < Xs; x++ ) {
                 for( int y = 0; y < Ys; y++ ) {
-                    if( (dynamic) that[x, y] != this[x, y] ) {
+                    if( !Equals(that[x, y], this[x, y]) ) {
                         return false;
                     }
                 }
