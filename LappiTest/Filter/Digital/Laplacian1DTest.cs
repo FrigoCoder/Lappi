@@ -44,7 +44,7 @@ namespace LappiTest.Filter.Digital {
         [TestCase]
         public void Forward_transform_produces_correct_difference_signal_from_odd_length_source () {
             double[] expected = {-1.6666666666666666, -1.75, -0.5, 0.25, -4.3333333333333333};
-            Assert.That(laplacian.Forward(odd).Item2, Is.EqualTo(expected));
+            Assert.That(laplacian.Forward(odd).Item2, Is.EqualTo(expected).Within(1E-15));
         }
 
         [TestCase]
