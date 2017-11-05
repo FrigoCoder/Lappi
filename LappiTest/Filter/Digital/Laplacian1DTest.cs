@@ -13,6 +13,7 @@ namespace LappiTest.Filter.Digital {
     public class Laplacian1DTest {
 
         private readonly double[] source = {1, 4, 9, 16, 25, 36};
+        private readonly double[] odd = {1, 4, 9, 16, 25};
         private readonly DigitalFilter analysis = new DigitalAdapter(new Linear(), 2.0);
         private readonly DigitalFilter synthesis = new DigitalAdapter(new Linear(), 2.0);
         private Laplacian1D laplacian;
@@ -35,8 +36,25 @@ namespace LappiTest.Filter.Digital {
         }
 
         [TestCase]
+        public void Forward_transform_produces_correct_downsampled_signal_from_odd_length_source () {
+            double[] expected = {2, 9.5, 22};
+            Assert.That(laplacian.Forward(odd).Item1, Is.EqualTo(expected));
+        }
+
+        [TestCase]
+        public void Forward_transform_produces_correct_difference_signal_from_odd_length_source () {
+            double[] expected = {-1.6666666666666666, -1.75, -0.5, 0.25, -4.3333333333333333};
+            Assert.That(laplacian.Forward(odd).Item2, Is.EqualTo(expected));
+        }
+
+        [TestCase]
         public void Inverse_transform_perfectly_reconstructs_signal () {
             Assert.That(laplacian.Inverse(laplacian.Forward(source)), Is.EqualTo(source));
+        }
+
+        [TestCase]
+        public void Inverse_transform_perfectly_reconstructs_odd_length_signal () {
+            Assert.That(laplacian.Inverse(laplacian.Forward(odd)), Is.EqualTo(odd));
         }
 
         [TestCase]
