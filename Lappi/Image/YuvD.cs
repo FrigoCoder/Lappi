@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 
 namespace Lappi {
@@ -6,7 +7,14 @@ namespace Lappi {
     /// <summary>
     ///     Based on https://en.wikipedia.org/wiki/YUV#SDTV_with_BT.601
     /// </summary>
-    public class YuvD {
+    public struct YuvD {
+
+        public static bool operator == (YuvD a, YuvD b) => a.Equals(b);
+        public static bool operator != (YuvD a, YuvD b) => !a.Equals(b);
+        public static YuvD operator + (YuvD a, YuvD b) => new YuvD(a.Y + b.Y, a.U + b.U, a.V + b.V);
+        public static YuvD operator - (YuvD a, YuvD b) => new YuvD(a.Y - b.Y, a.U - b.U, a.V - b.V);
+        public static YuvD operator * (YuvD a, double x) => new YuvD(a.Y * x, a.U * x, a.V * x);
+        public static YuvD operator / (YuvD a, double x) => new YuvD(a.Y / x, a.U / x, a.V / x);
 
         public readonly double Y;
         public readonly double U;
@@ -31,9 +39,18 @@ namespace Lappi {
             return Color.FromArgb(ToByte(r), ToByte(g), ToByte(b));
         }
 
-        public override string ToString () {
-            return "YUVDouble(" + Y + "," + U + "," + V + ")";
+        public override string ToString () => $"YUVDouble({Y},{U},{V})";
+
+        [SuppressMessage("ReSharper", "CompareOfFloatsByEqualityOperator")]
+        public override bool Equals (object obj) {
+            if( !(obj is YuvD) ) {
+                return false;
+            }
+            YuvD that = (YuvD) obj;
+            return that.Y == Y && that.U == U && that.V == V;
         }
+
+        public override int GetHashCode () => GetType().GetHashCode() + 31 * (Y.GetHashCode() + 31 * (U.GetHashCode() + 31 * V.GetHashCode()));
 
         private const double Wr = 0.299;
         private const double Wg = 1.000 - Wr - Wb;
