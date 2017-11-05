@@ -24,6 +24,12 @@ namespace LappiTest.Filter.Digital {
             AssertCoefficients(new Linear(), 4.0, new[] {0.25, 0.5, 0.75, 1.0, 0.75, 0.5, 0.25});
         }
 
+        [TestCase]
+        public void ToString_is_correct () {
+            DigitalAdapter adapter = new DigitalAdapter(new Linear(), 2.0);
+            Assert.That(adapter.ToString(), Is.EqualTo("DigitalAdapter{Left = -1, Right = 1, Radius = 1, Coefficients=[0,5, 1, 0,5]}"));
+        }
+
         private void AssertRanges (AnalogFilter filter, double scale, int left, int right, int radius) {
             DigitalAdapter adapter = new DigitalAdapter(filter, scale);
             Assert.That(adapter.Left, Is.EqualTo(left));
