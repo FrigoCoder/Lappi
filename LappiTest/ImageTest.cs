@@ -103,12 +103,12 @@ namespace LappiTest {
             return Image<T>.Load("LappiTest\\Resources\\ImageTest\\" + filename);
         }
 
-        private Image<Rgb8> CreateRandomImage (int xs, int ys) {
-            Image<Rgb8> result = new Image<Rgb8>(xs, ys);
+        private Image<T> CreateRandomImage<T> (int xs, int ys) {
+            Image<T> result = new Image<T>(xs, ys);
             for( int x = 0; x < xs; x++ ) {
                 for( int y = 0; y < ys; y++ ) {
                     Color color = Color.FromArgb(random.Next(256), random.Next(256), random.Next(256));
-                    result[x, y] = (Rgb8) Activator.CreateInstance(typeof(Rgb8), color);
+                    result[x, y] = (T) Activator.CreateInstance(typeof(T), color);
                 }
             }
             return result;
