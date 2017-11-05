@@ -1,4 +1,6 @@
-﻿using Lappi.Image;
+﻿using System.Linq;
+
+using Lappi.Image;
 
 namespace Lappi.Filter.Digital {
 
@@ -12,21 +14,24 @@ namespace Lappi.Filter.Digital {
             this.synthesis = new DigitalSampler<T>(synthesis);
         }
 
-        public Image<T>[] Forward (Image<T> image) {
-            Image<T> downsampled = DownSample(image);
-            Image<T> upsampled = UpSample(downsampled, image.Xs, image.Ys);
-            Image<T> difference = image - upsampled;
-            return new[] {downsampled, difference};
+        public Image<T>[] Forward (Image<T> image, int steps = 1) {
+            Image<T>[] scales = new Image<T>[steps + 1];
+            scales[0] = image;
+            for( int i = 0; i < scales.Length - 1; i++ ) {
+                scales[i + 1] = Downsample(scales[i]);
+                scales[i] -= Upsample(scales[i + 1], scales[i].Xs, scales[i].Ys);
+            }
+            return scales.Reverse().ToArray();
         }
 
-        public Image<T> Inverse (Image<T>[] tuple) => Inverse(tuple[0], tuple[1]);
-
-        public Image<T> Inverse (Image<T> downsampled, Image<T> difference) {
-            Image<T> upsampled = UpSample(downsampled, difference.Xs, difference.Ys);
-            return upsampled + difference;
+        public Image<T> Inverse (Image<T>[] scales) {
+            for( int i = 1; i < scales.Length; i++ ) {
+                scales[i] += Upsample(scales[i - 1], scales[i].Xs, scales[i].Ys);
+            }
+            return scales[scales.Length - 1];
         }
 
-        private Image<T> DownSample (Image<T> image) {
+        private Image<T> Downsample (Image<T> image) {
             Image<T> half = new Image<T>(image.Xs / 2, image.Ys);
             for( int y = 0; y < image.Ys; y++ ) {
                 half.Rows[y] = analysis.Downsample(image.Rows[y], 2, 0);
@@ -39,7 +44,7 @@ namespace Lappi.Filter.Digital {
             return quarter;
         }
 
-        private Image<T> UpSample (Image<T> quarter, int xs, int ys) {
+        private Image<T> Upsample (Image<T> quarter, int xs, int ys) {
             Image<T> half = new Image<T>(quarter.Xs, ys);
             for( int x = 0; x < half.Xs; x++ ) {
                 half.Columns[x] = synthesis.Upsample(quarter.Columns[x], 2, 0, ys);

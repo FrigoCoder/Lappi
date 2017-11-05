@@ -18,9 +18,9 @@ namespace Lappi {
             Image<YuvD> image = Image<YuvD>.Load("Resources\\Lenna.png");
 
             Laplacian2D<YuvD> laplacian = new Laplacian2D<YuvD>(CDF97.AnalysisLowpass, CDF97.SynthesisLowpass);
-            Tuple<Image<YuvD>, Image<YuvD>> tuple = laplacian.Forward(image);
-            Image<YuvD> low = tuple.Item1;
-            Image<YuvD> high = tuple.Item2;
+            Image<YuvD>[] tuple = laplacian.Forward(image);
+            Image<YuvD> low = tuple[0];
+            Image<YuvD> high = tuple[1];
             for( int x = 0; x < high.Xs; x++ ) {
                 for( int y = 0; y < high.Ys; y++ ) {
                     high[x, y] += new YuvD(0.5, 0, 0);

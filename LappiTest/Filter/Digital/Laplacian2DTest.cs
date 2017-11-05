@@ -47,20 +47,7 @@ namespace LappiTest.Filter.Digital {
         public void Lenna_is_perfectly_reconstructed_after_5_steps () {
             Laplacian2D<YuvD> transform = new Laplacian2D<YuvD>(CDF97.AnalysisLowpass, CDF97.SynthesisLowpass);
             Image<YuvD> lenna = Image<YuvD>.Load("LappiTest\\Resources\\ImageTest\\Lenna.png");
-            Image<YuvD>[] level1 = transform.Forward(lenna);
-            Image<YuvD>[] level2 = transform.Forward(level1[0]);
-            Image<YuvD>[] level3 = transform.Forward(level2[0]);
-            Image<YuvD>[] level4 = transform.Forward(level3[0]);
-            Image<YuvD>[] level5 = transform.Forward(level4[0]);
-
-            level4[1].Save("c:\\test.png");
-
-            level4[0] = transform.Inverse(level5);
-            level3[0] = transform.Inverse(level4);
-            level2[0] = transform.Inverse(level3);
-            level1[0] = transform.Inverse(level2);
-
-            AssertEquals(transform.Inverse(level1), lenna);
+            AssertEquals(transform.Inverse(transform.Forward(lenna, 5)), lenna);
         }
 
         private void AssertEquals<T> (Image<T> actual, Image<T> expected) {
