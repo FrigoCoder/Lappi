@@ -64,7 +64,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Colorspace.cs" />
+    <Compile Include="Image\Colorspace.cs" />
     <Compile Include="Filter\Analog\AnalogFilter.cs" />
     <Compile Include="Filter\Analog\Dirichlet.cs" />
     <Compile Include="Filter\Analog\Linear.cs" />
@@ -81,13 +81,13 @@
     <Compile Include="Filter\Digital\Laplacian1D.cs" />
     <Compile Include="Filter\Digital\Laplacian2D.cs" />
     <Compile Include="Filter\Digital\Wavelet1D.cs" />
-    <Compile Include="Image.cs" />
+    <Compile Include="Image\Image.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Program.cs" />
-    <Compile Include="Rgb8.cs" />
-    <Compile Include="YuvD.cs" />
+    <Compile Include="Image\Rgb8.cs" />
+    <Compile Include="Image\YuvD.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />

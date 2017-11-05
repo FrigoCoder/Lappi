@@ -69,9 +69,9 @@
     <Compile Include="Filter\Digital\Laplacian1DTest.cs" />
     <Compile Include="Filter\Digital\Laplacian2DTest.cs" />
     <Compile Include="Filter\Digital\Wavelet1DTest.cs" />
-    <Compile Include="ImageTest.cs" />
-    <Compile Include="Rgb8Test.cs" />
-    <Compile Include="YuvDTest.cs" />
+    <Compile Include="Image\ImageTest.cs" />
+    <Compile Include="Image\Rgb8Test.cs" />
+    <Compile Include="Image\YuvDTest.cs" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
