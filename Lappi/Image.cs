@@ -24,17 +24,14 @@ namespace Lappi {
         public readonly ColumnIndexer<T> Columns;
         private readonly T[,] pixels;
 
-        public Image (int xs, int ys) {
-            Xs = xs;
-            Ys = ys;
-            pixels = new T[ys, xs];
-            Rows = new RowIndexer<T>(this);
-            Columns = new ColumnIndexer<T>(this);
+        public Image (int xs, int ys) : this(new T[ys, xs]) {
         }
 
         public Image (T[,] pixels) {
             Xs = pixels.GetLength(1);
             Ys = pixels.GetLength(0);
+            Rows = new RowIndexer<T>(this);
+            Columns = new ColumnIndexer<T>(this);
             this.pixels = pixels;
         }
 
