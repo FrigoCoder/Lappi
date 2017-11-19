@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Linq;
 
 namespace Lappi.Image {
 
@@ -76,6 +77,10 @@ namespace Lappi.Image {
                 }
                 bitmap.Save(filename);
             }
+        }
+
+        public override string ToString () {
+            return "{" + string.Join(", ", Enumerable.Range(0, Ys).Select(y => "{" + string.Join(", ", Rows[y]) + "}")) + "}";
         }
 
         public override bool Equals (object obj) {

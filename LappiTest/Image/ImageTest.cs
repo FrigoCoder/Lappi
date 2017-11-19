@@ -139,6 +139,12 @@ namespace LappiTest.Image {
             Assert.That(image1 - image2, Is.EqualTo(expected));
         }
 
+        [Test]
+        public void ToString_works_correctly () {
+            Image<double> image = new Image<double>(new double[,] {{1, 2, 3}, {4, 5, 6}});
+            Assert.That(image.ToString(), Is.EqualTo("{{1, 2, 3}, {4, 5, 6}}"));
+        }
+
         private Image<T> LoadImage<T> (string filename) => Image<T>.Load("LappiTest\\Resources\\ImageTest\\" + filename);
 
         private Image<T> CreateRandomImage<T> (int xs, int ys) {
