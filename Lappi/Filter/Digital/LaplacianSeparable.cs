@@ -4,12 +4,12 @@ using Lappi.Image;
 
 namespace Lappi.Filter.Digital {
 
-    public class Laplacian2D<T> where T : new() {
+    public class LaplacianSeparable<T> where T : new() {
 
         private readonly DigitalSampler<T> analysis;
         private readonly DigitalSampler<T> synthesis;
 
-        public Laplacian2D (DigitalFilter analysis, DigitalFilter synthesis) {
+        public LaplacianSeparable (DigitalFilter analysis, DigitalFilter synthesis) {
             this.analysis = new DigitalSampler<T>(analysis);
             this.synthesis = new DigitalSampler<T>(synthesis);
         }

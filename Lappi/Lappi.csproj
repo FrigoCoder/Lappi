@@ -79,7 +79,7 @@
     <Compile Include="Filter\Digital\HighpassSampler.cs" />
     <Compile Include="Filter\Digital\IntegralArray.cs" />
     <Compile Include="Filter\Digital\Laplacian1D.cs" />
-    <Compile Include="Filter\Digital\Laplacian2D.cs" />
+    <Compile Include="Filter\Digital\LaplacianSeparable.cs" />
     <Compile Include="Filter\Digital\RadialAdapter.cs" />
     <Compile Include="Filter\Digital\Wavelet1D.cs" />
     <Compile Include="Image\Image.cs" />

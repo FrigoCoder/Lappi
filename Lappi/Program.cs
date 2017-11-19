@@ -16,7 +16,7 @@ namespace Lappi {
             //            Application.Run(new MainForm());
 
             Image<YuvD> lenna = Image<YuvD>.Load("Resources\\Lenna.png");
-            Laplacian2D<YuvD> transform = new Laplacian2D<YuvD>(CDF97.AnalysisLowpass, CDF97.SynthesisLowpass);
+            LaplacianSeparable<YuvD> transform = new LaplacianSeparable<YuvD>(CDF97.AnalysisLowpass, CDF97.SynthesisLowpass);
 
             Image<YuvD>[] transformed = transform.Forward(lenna, 5);
             Image<YuvD> reconstructed = transform.Inverse(transformed);

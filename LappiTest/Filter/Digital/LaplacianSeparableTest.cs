@@ -9,18 +9,18 @@ using NUnit.Framework;
 namespace LappiTest.Filter.Digital {
 
     [TestFixture]
-    public class Laplacian2DTest {
+    public class LaplacianSeparableTest {
 
         private readonly Image<double> source = new Image<double>(new double[,]
             {{1, 4, 9, 16, 25, 36}, {1, 4, 9, 16, 25, 36}, {1, 4, 9, 16, 25, 36}, {1, 4, 9, 16, 25, 36}});
 
         private readonly DigitalFilter analysis = new DigitalAdapter(new Linear(), 2.0);
         private readonly DigitalFilter synthesis = new DigitalAdapter(new Linear(), 2.0);
-        private Laplacian2D<double> laplacian;
+        private LaplacianSeparable<double> laplacian;
 
         [SetUp]
         public void SetUp () {
-            laplacian = new Laplacian2D<double>(analysis, synthesis);
+            laplacian = new LaplacianSeparable<double>(analysis, synthesis);
         }
 
         [TestCase]
@@ -47,7 +47,7 @@ namespace LappiTest.Filter.Digital {
 
         [TestCase]
         public void Lenna_is_perfectly_reconstructed_after_5_steps () {
-            Laplacian2D<YuvD> transform = new Laplacian2D<YuvD>(CDF97.AnalysisLowpass, CDF97.SynthesisLowpass);
+            LaplacianSeparable<YuvD> transform = new LaplacianSeparable<YuvD>(CDF97.AnalysisLowpass, CDF97.SynthesisLowpass);
             Image<YuvD> lenna = Image<YuvD>.Load("LappiTest\\Resources\\ImageTest\\Lenna.png");
             AssertEquals(transform.Inverse(transform.Forward(lenna, 5)), lenna);
         }
