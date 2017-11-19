@@ -21,6 +21,7 @@ namespace Lappi {
             Image<YuvD>[] transformed = transform.Forward(lenna, 5);
             Image<YuvD> reconstructed = transform.Inverse(transformed);
 
+            transformed[0].Save($"c:\\temp\\lenna-0.png");
             for( int i = 1; i < transformed.Length; i++ ) {
                 transformed[i].Normalize();
                 transformed[i].Save($"c:\\temp\\lenna-{i}.png");
