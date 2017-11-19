@@ -25,10 +25,11 @@ namespace Lappi.Filter.Digital {
         }
 
         public Image<T> Inverse (Image<T>[] scales) {
-            for( int i = 1; i < scales.Length; i++ ) {
-                scales[i] += Upsample(scales[i - 1], scales[i].Xs, scales[i].Ys);
+            Image<T>[] result = (Image<T>[]) scales.Clone();
+            for( int i = 1; i < result.Length; i++ ) {
+                result[i] += Upsample(result[i - 1], result[i].Xs, result[i].Ys);
             }
-            return scales[scales.Length - 1];
+            return result[result.Length - 1];
         }
 
         private Image<T> Downsample (Image<T> image) {
