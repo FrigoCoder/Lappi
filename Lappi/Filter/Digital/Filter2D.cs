@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Lappi.Filter.Digital {
+﻿namespace Lappi.Filter.Digital {
 
     public interface Filter2D {
 
@@ -9,7 +7,7 @@ namespace Lappi.Filter.Digital {
         int Top { get; }
         int Bottom { get; }
         double[,] Coefficients { get; }
-        Func<int, int, double> Kernel { get; }
+        double this [int x, int y] { get; }
 
     }
 

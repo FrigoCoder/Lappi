@@ -12,7 +12,6 @@ namespace Lappi.Filter.Digital {
         public int Top { get; }
         public int Bottom { get; }
         public double[,] Coefficients { get; }
-        public Func<int, int, double> Kernel => (x, y) => Coefficients[x - Left, y - Top];
 
         public RadialAdapter (AnalogFilter filter, double scale) {
             Left = NonZeroLeft(filter, scale);
@@ -27,6 +26,8 @@ namespace Lappi.Filter.Digital {
                 }
             }
         }
+
+        public double this [int x, int y] => Coefficients[x - Left, y - Top];
 
         [SuppressMessage("ReSharper", "CompareOfFloatsByEqualityOperator")]
         private static int NonZeroLeft (AnalogFilter analog, double scale) {
