@@ -22,15 +22,10 @@ namespace Lappi.Filter.Digital {
             if( center < 0 || source.Length <= center ) {
                 throw new IndexOutOfRangeException();
             }
-            int shift = center + filter.Left;
-            int left = Math.Max(0, -shift);
-            int right = Math.Min(coefficients.Length - 1, source.Length - 1 - shift);
-            T sum = new T();
-            for( int i = left; i <= right; i++ ) {
-                sum += (dynamic) source[i + shift] * coefficients[i];
+            if( 0 <= center + filter.Left && center + filter.Right < coefficients.Length ) {
+                return SampleInner(source, center);
             }
-            sum /= (dynamic) Normalize(left, right);
-            return sum;
+            return SampleBoundary(source, center);
         }
 
         public T[] Convolute (T[] source) {
@@ -62,6 +57,28 @@ namespace Lappi.Filter.Digital {
                 v[i * factor + shift] = (dynamic) source[i] * factor;
             }
             return Convolute(v);
+        }
+
+        private T SampleInner (T[] source, int center) {
+            int shift = center + filter.Left;
+            T sum = new T();
+            for( int i = 0; i < coefficients.Length; i++ ) {
+                sum += (dynamic) source[shift + i] * coefficients[i];
+            }
+            sum /= (dynamic) Normalize(0, coefficients.Length - 1);
+            return sum;
+        }
+
+        private T SampleBoundary (T[] source, int center) {
+            int shift = center + filter.Left;
+            int left = Math.Max(0, -shift);
+            int right = Math.Min(coefficients.Length - 1, source.Length - 1 - shift);
+            T sum = new T();
+            for( int i = left; i <= right; i++ ) {
+                sum += (dynamic) source[i + shift] * coefficients[i];
+            }
+            sum /= (dynamic) Normalize(left, right);
+            return sum;
         }
 
         [SuppressMessage("ReSharper", "CompareOfFloatsByEqualityOperator")]
