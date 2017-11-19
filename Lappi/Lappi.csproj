@@ -74,6 +74,7 @@
     <Compile Include="Filter\Digital\DigitalAdapter.cs" />
     <Compile Include="Filter\Digital\DigitalFilter.cs" />
     <Compile Include="Filter\Digital\DigitalSampler.cs" />
+    <Compile Include="Filter\Digital\DigitalSampler2D.cs" />
     <Compile Include="Filter\Digital\Filter2D.cs" />
     <Compile Include="Filter\Digital\HighpassAdapter.cs" />
     <Compile Include="Filter\Digital\HighpassSampler.cs" />

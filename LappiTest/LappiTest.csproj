@@ -62,6 +62,7 @@
     <Compile Include="Filter\Analog\LinearTest.cs" />
     <Compile Include="Filter\Digital\CoefficientAdapterTest.cs" />
     <Compile Include="Filter\Digital\DigitalAdapterTest.cs" />
+    <Compile Include="Filter\Digital\DigitalSampler2DTest.cs" />
     <Compile Include="Filter\Digital\DigitalSamplerTest.cs" />
     <Compile Include="Filter\Digital\HighpassAdapterTest.cs" />
     <Compile Include="Filter\Digital\HighpassSamplerTest.cs" />
