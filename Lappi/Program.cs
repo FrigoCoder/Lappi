@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
+using Lappi.Filter.Analog;
 using Lappi.Filter.Digital;
 using Lappi.Image;
 
@@ -13,10 +14,15 @@ namespace Lappi {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            //            Application.Run(new MainForm());
-
             Image<YuvD> lenna = Image<YuvD>.Load("Resources\\Lenna.png");
-            LaplacianSeparable<YuvD> transform = new LaplacianSeparable<YuvD>(CDF97.AnalysisLowpass, CDF97.SynthesisLowpass);
+
+            Filter2D analysis = new RadialAdapter(new Dirichlet(4), 2.0);
+            Filter2D synthesis = new RadialAdapter(new Dirichlet(3), 2.0);
+            Laplacian2D<YuvD> transform = new Laplacian2D<YuvD>(analysis, synthesis);
+
+/*            DigitalFilter analysis = new DigitalAdapter(new Dirichlet(4), 2.0);
+            DigitalFilter synthesis = new DigitalAdapter(new Dirichlet(3), 2.0);
+            LaplacianSeparable<YuvD> transform = new LaplacianSeparable<YuvD>(analysis, synthesis);*/
 
             Image<YuvD>[] transformed = transform.Forward(lenna, 5);
             Image<YuvD> reconstructed = transform.Inverse(transformed);
