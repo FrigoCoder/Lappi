@@ -119,6 +119,21 @@ namespace LappiTest {
             Assert.That(fft.Inverse(fft.Forward(T)), Is.EqualTo(T).Using(Complex.Within(1E-16)));
         }
 
+        /// <summary>
+        ///     Second example from http://www.sccon.ca/sccon/fft/fft3.htm
+        /// </summary>
+        [Test]
+        public void Simple_example () {
+            Complex[] T = new Complex[8];
+            T[1] = 1;
+            Complex[] expected = {
+                new Complex(0.125, 0), new Complex(0.088, -0.088), new Complex(0, -0.125), new Complex(-0.088, -0.088), new Complex(-0.125, 0),
+                new Complex(-0.088, 0.088), new Complex(0, 0.125), new Complex(0.088, 0.088)
+            };
+            Complex[] F = fft.Forward(T);
+            Assert.That(F, Is.EqualTo(expected).Using(Complex.Within(1E-6)));
+        }
+
     }
 
 }
