@@ -9,10 +9,6 @@ namespace LappiTest {
 
     public class ComplexTest {
 
-        [SetUp]
-        public void SetUp () {
-        }
-
         [Test]
         public void Constants () {
             Assert.That(Complex.Zero, Is.EqualTo(complex(0, 0)));
