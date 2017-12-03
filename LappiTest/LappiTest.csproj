@@ -59,6 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ComplexTest.cs" />
+    <Compile Include="FftTest.cs" />
     <Compile Include="Filter\Analog\DirichletTest.cs" />
     <Compile Include="Filter\Analog\LinearTest.cs" />
     <Compile Include="Filter\Digital\CoefficientAdapterTest.cs" />

@@ -65,6 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Complex.cs" />
+    <Compile Include="FFT.cs" />
     <Compile Include="Filter\Analog\AnalogFilter.cs" />
     <Compile Include="Filter\Analog\Dirichlet.cs" />
     <Compile Include="Filter\Analog\Linear.cs" />
