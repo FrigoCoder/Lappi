@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Lappi {
@@ -9,6 +10,8 @@ namespace Lappi {
         public static Complex Zero = new Complex(0);
         public static Complex One = new Complex(1);
         public static Complex I = new Complex(0, 1);
+
+        public static implicit operator Complex (double x) => new Complex(x, 0);
 
         public static Complex operator + (Complex x) => x;
         public static Complex operator - (Complex x) => new Complex(-x.Re, -x.Im);
@@ -40,6 +43,8 @@ namespace Lappi {
 
         public static Complex Cis (double x) => new Complex(Math.Cos(x), Math.Sin(x));
 
+        public static IEqualityComparer<Complex> Within (double tolerance) => new WithinComparer(tolerance);
+
         public readonly double Re;
         public readonly double Im;
 
@@ -57,6 +62,19 @@ namespace Lappi {
         public Complex Inv () => Conj() / AbsSqr();
         public Complex Sqr () => new Complex(Re * Re - Im * Im, 2 * Re * Im);
         public override string ToString () => Re.ToString("R") + "+" + Im.ToString("R") + "i";
+
+        private class WithinComparer : IEqualityComparer<Complex> {
+
+            private readonly double tolerance;
+
+            public WithinComparer (double tolerance) {
+                this.tolerance = tolerance;
+            }
+
+            public bool Equals (Complex x, Complex y) => (x - y).AbsSqr() <= tolerance;
+            public int GetHashCode (Complex obj) => obj.GetHashCode();
+
+        }
 
     }
 
