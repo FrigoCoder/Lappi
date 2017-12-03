@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 using Lappi;
 
@@ -7,6 +8,10 @@ using NUnit.Framework;
 namespace LappiTest {
 
     public class ComplexTest {
+
+        [SetUp]
+        public void SetUp () {
+        }
 
         [Test]
         public void Constants () {
@@ -68,7 +73,7 @@ namespace LappiTest {
         public void Div () {
             Assert.That(complex(1, 2) / complex(1, 2), Is.EqualTo(complex(1, 0)));
             Assert.That(complex(2, 4) / complex(1, 2), Is.EqualTo(complex(2, 0)));
-            Assert.That(complex(1, 2) / complex(3, 4), Is.EqualTo(complex(0.44, 0.08)));
+            Assert.That(complex(1, 2) / complex(3, 4), Is.EqualTo(complex(0.44, 0.08)).Using(Within(1E-16)));
 
             Assert.That(complex(1, 2) / 0.5, Is.EqualTo(complex(2, 4)));
             Assert.That(complex(3, 1) / 2, Is.EqualTo(complex(1.5, 0.5)));
@@ -87,10 +92,10 @@ namespace LappiTest {
 
         [Test]
         public void Cis () {
-            Assert.That(Complex.Cis(0), Is.EqualTo(complex(1, 0)));
-            Assert.That(Complex.Cis(Math.PI / 2), Is.EqualTo(complex(0, 1)));
-            Assert.That(Complex.Cis(Math.PI), Is.EqualTo(complex(-1, 0)));
-            Assert.That(Complex.Cis(3 * Math.PI / 2), Is.EqualTo(complex(0, -1)));
+            Assert.That(Complex.Cis(0), Is.EqualTo(complex(1, 0)).Using(Within(1E-16)));
+            Assert.That(Complex.Cis(Math.PI / 2), Is.EqualTo(complex(0, 1)).Using(Within(1E-16)));
+            Assert.That(Complex.Cis(Math.PI), Is.EqualTo(complex(-1, 0)).Using(Within(1E-16)));
+            Assert.That(Complex.Cis(3 * Math.PI / 2), Is.EqualTo(complex(0, -1)).Using(Within(1E-16)));
         }
 
         [Test]
@@ -109,9 +114,9 @@ namespace LappiTest {
 
         [Test]
         public void Arg () {
-            Assert.That(Complex.Cis(0.1).Arg(), Is.EqualTo(0.1));
-            Assert.That((Complex.Cis(0.1) * 2).Arg(), Is.EqualTo(0.1));
-            Assert.That((Complex.Cis(0.1) * 01).Arg(), Is.EqualTo(0.1));
+            Assert.That(Complex.Cis(0.1).Arg(), Is.EqualTo(0.1).Within(1E-16));
+            Assert.That((Complex.Cis(0.1) * 2).Arg(), Is.EqualTo(0.1).Within(1E-16));
+            Assert.That((Complex.Cis(0.1) * 01).Arg(), Is.EqualTo(0.1).Within(1E-16));
         }
 
         [Test]
@@ -144,7 +149,21 @@ namespace LappiTest {
             Assert.That(complex(3, 4).Sqr(), Is.EqualTo(complex(-7, 24)));
         }
 
-        private Complex complex (double re, double im) => new Complex(re, im);
+        private class WithinComparer : IEqualityComparer<Complex> {
+
+            private readonly double tolerance;
+
+            public WithinComparer (double tolerance) {
+                this.tolerance = tolerance;
+            }
+
+            public bool Equals (Complex x, Complex y) => (x - y).AbsSqr() <= tolerance;
+            public int GetHashCode (Complex obj) => obj.GetHashCode();
+
+        }
+
+        private static Complex complex (double re, double im) => new Complex(re, im);
+        private static IEqualityComparer<Complex> Within (double tolerance) => new WithinComparer(tolerance);
 
     }
 
