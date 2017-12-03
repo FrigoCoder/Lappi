@@ -39,6 +39,32 @@ namespace LappiTest {
         }
 
         [Test]
+        public void Forward_transform_correctly_transforms_cos_signal () {
+            Complex[] T = new Complex[n];
+            for( int t = 0; t < n; t++ ) {
+                T[t] = Math.Cos(2 * Math.PI * 10 * t / n);
+            }
+            Complex[] F = fft.Forward(T);
+            for( int f = 0; f < n; f++ ) {
+                Complex expected = f == 10 ? 0.5 : f == n - 10 ? 0.5 : 0;
+                Assert.That(F[f], Is.EqualTo(expected).Using(Complex.Within(1E-16)));
+            }
+        }
+
+        [Test]
+        public void Forward_transform_correctly_transforms_sin_signal () {
+            Complex[] T = new Complex[n];
+            for( int t = 0; t < n; t++ ) {
+                T[t] = Math.Sin(2 * Math.PI * 10 * t / n);
+            }
+            Complex[] F = fft.Forward(T);
+            for( int f = 0; f < n; f++ ) {
+                Complex expected = f == 10 ? new Complex(0, -0.5) : f == n - 10 ? new Complex(0, 0.5) : 0;
+                Assert.That(F[f], Is.EqualTo(expected).Using(Complex.Within(1E-16)));
+            }
+        }
+
+        [Test]
         public void Inverse_transform_correctly_restores_constant_signal () {
             Complex[] F = new Complex[n];
             F[0] = 1;
@@ -56,6 +82,30 @@ namespace LappiTest {
             Complex[] T = fft.Inverse(F);
             for( int t = 0; t < n; t++ ) {
                 Complex expected = Complex.Cis(2 * Math.PI * 10 * t / n);
+                Assert.That(T[t], Is.EqualTo(expected).Using(Complex.Within(1E-16)));
+            }
+        }
+
+        [Test]
+        public void Inverse_transform_correctly_restores_cos_signal () {
+            Complex[] F = new Complex[n];
+            F[10] = 0.5;
+            F[n - 10] = 0.5;
+            Complex[] T = fft.Inverse(F);
+            for( int t = 0; t < n; t++ ) {
+                Complex expected = Math.Cos(2 * Math.PI * 10 * t / n);
+                Assert.That(T[t], Is.EqualTo(expected).Using(Complex.Within(1E-16)));
+            }
+        }
+
+        [Test]
+        public void Inverse_transform_correctly_restores_sin_signal () {
+            Complex[] F = new Complex[n];
+            F[10] = new Complex(0, -0.5);
+            F[n - 10] = new Complex(0, 0.5);
+            Complex[] T = fft.Inverse(F);
+            for( int t = 0; t < n; t++ ) {
+                Complex expected = Math.Sin(2 * Math.PI * 10 * t / n);
                 Assert.That(T[t], Is.EqualTo(expected).Using(Complex.Within(1E-16)));
             }
         }
