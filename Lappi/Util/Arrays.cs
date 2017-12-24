@@ -96,6 +96,28 @@ namespace Lappi.Util {
             }
         }
 
+        public static void Foreach<T> (this T[,] v, Action<T> action) {
+            foreach( T item in v ) {
+                action(item);
+            }
+        }
+
+        public static void Foreach<T> (this T[,] v, Action<T, int, int> action) {
+            for( int i = 0; i < v.GetLength(0); i++ ) {
+                for( int j = 0; j < v.GetLength(1); j++ ) {
+                    action(v[i, j], i, j);
+                }
+            }
+        }
+
+        public static void Foreach<T> (this T[,] v, Action<T, int, int, T[,]> action) {
+            for( int i = 0; i < v.GetLength(0); i++ ) {
+                for( int j = 0; j < v.GetLength(1); j++ ) {
+                    action(v[i, j], i, j, v);
+                }
+            }
+        }
+
     }
 
 }

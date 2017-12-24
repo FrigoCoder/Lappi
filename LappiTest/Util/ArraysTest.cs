@@ -132,6 +132,30 @@ namespace LappiTest.Util {
             Assert.That(sum, Is.EqualTo(55));
         }
 
+        [Test]
+        public void Foreach_2d () {
+            double[,] v = {{1, 2, 3}, {4, 5, 6}};
+            double sum = 0;
+            v.Foreach(x => sum += x);
+            Assert.That(sum, Is.EqualTo(21));
+        }
+
+        [Test]
+        public void Foreach_2d_with_index () {
+            double[,] v = {{1, 2, 3}, {4, 5, 6}};
+            double sum = 0;
+            v.Foreach((x, i, j) => sum += x * v[i, j]);
+            Assert.That(sum, Is.EqualTo(91));
+        }
+
+        [Test]
+        public void Foreach_2d_with_index_and_array () {
+            double[,] v = {{1, 2, 3}, {4, 5, 6}};
+            double sum = 0;
+            v.Foreach((x, i, j, u) => sum += x * u[i, j]);
+            Assert.That(sum, Is.EqualTo(91));
+        }
+
     }
 
 }
