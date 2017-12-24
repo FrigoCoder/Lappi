@@ -51,9 +51,7 @@ namespace Lappi.Filter.Digital {
         public T[] Upsample (T[] source, int factor, int shift, int length) {
             T[] v = new T[length];
             if( default(T) == null ) {
-                for( int i = 0; i < v.Length; i++ ) {
-                    v[i] = new T();
-                }
+                v.Fill(new T());
             }
             for( int i = 0; i < source.Length; i++ ) {
                 v[i * factor + shift] = (dynamic) source[i] * factor;

@@ -50,7 +50,10 @@ namespace Lappi.Filter.Digital2D {
         public Image<T> Upsample (Image<T> source, int factor, int shift) => Upsample(source, factor, shift, source.Xs * factor, source.Ys * factor);
 
         public Image<T> Upsample (Image<T> source, int factor, int shift, int xs, int ys) {
-            Image<T> result = new Image<T>(xs, ys, new T());
+            Image<T> result = new Image<T>(xs, ys);
+            if( default(T) == null ) {
+                result.Fill(new T());
+            }
             for( int x = 0; x < source.Xs; x++ ) {
                 for( int y = 0; y < source.Ys; y++ ) {
                     result[x * factor + shift, y * factor + shift] = (dynamic) source[x, y] * factor * factor;

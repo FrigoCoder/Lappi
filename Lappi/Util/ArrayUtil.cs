@@ -4,6 +4,12 @@ namespace Lappi.Util {
 
     public static class ArrayUtil {
 
+        public static void Fill<T> (this T[] u, T defaultValue) {
+            for( int i = 0; i < u.Length; i++ ) {
+                u[i] = defaultValue;
+            }
+        }
+
         public static T[] Add<T> (this T[] u, T[] v) {
             if( u.Length != v.Length ) {
                 throw new ArgumentException();

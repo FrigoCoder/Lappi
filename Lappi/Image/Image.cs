@@ -60,20 +60,20 @@ namespace Lappi.Image {
         public Image (int xs, int ys) : this(new T[ys, xs]) {
         }
 
-        public Image (int xs, int ys, T defaultValue) : this(new T[ys, xs]) {
-            for( int x = 0; x < xs; x++ ) {
-                for( int y = 0; y < ys; y++ ) {
-                    this[x, y] = defaultValue;
-                }
-            }
-        }
-
         public Image (T[,] pixels) {
             Xs = pixels.GetLength(1);
             Ys = pixels.GetLength(0);
             Rows = new RowIndexer<T>(this);
             Columns = new ColumnIndexer<T>(this);
             this.pixels = pixels;
+        }
+
+        public void Fill (T defaultValue) {
+            for( int x = 0; x < Xs; x++ ) {
+                for( int y = 0; y < Ys; y++ ) {
+                    this[x, y] = defaultValue;
+                }
+            }
         }
 
         public void Save (string filename) {
