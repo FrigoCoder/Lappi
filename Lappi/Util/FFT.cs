@@ -39,55 +39,13 @@ namespace Lappi.Util {
         }
 
         private void BitReverse (Complex[] v) {
-            uint p = NumberOfLeadingZeros((uint) (v.Length - 1));
+            uint div = ((uint) v.Length).Reverse() << 1;
             for( uint i = 0; i < v.Length; i++ ) {
-                uint j = Reverse(i) >> (int) p;
+                uint j = i.Reverse() / div;
                 if( i < j ) {
-                    Swap(v, i, j);
+                    LangUtil.Swap(ref v[i], ref v[j]);
                 }
             }
-        }
-
-        private uint NumberOfLeadingZeros (uint i) {
-            if( i == 0 ) {
-                return 32;
-            }
-            uint n = 0;
-            if( i >> 16 == 0 ) {
-                n += 16;
-                i <<= 16;
-            }
-            if( i >> 24 == 0 ) {
-                n += 8;
-                i <<= 8;
-            }
-            if( i >> 28 == 0 ) {
-                n += 4;
-                i <<= 4;
-            }
-            if( i >> 30 == 0 ) {
-                n += 2;
-                i <<= 2;
-            }
-            if( i >> 31 == 0 ) {
-                n++;
-            }
-            return n;
-        }
-
-        private uint Reverse (uint i) {
-            i = ((i & 0x55555555) << 1) | ((i >> 1) & 0x55555555);
-            i = ((i & 0x33333333) << 2) | ((i >> 2) & 0x33333333);
-            i = ((i & 0x0f0f0f0f) << 4) | ((i >> 4) & 0x0f0f0f0f);
-            i = ((i & 0x00ff00ff) << 8) | ((i >> 8) & 0x00ff00ff);
-            i = ((i & 0x0000ffff) << 16) | ((i >> 16) & 0x0000ffff);
-            return i;
-        }
-
-        private void Swap (Complex[] v, uint i, uint j) {
-            Complex t = v[i];
-            v[i] = v[j];
-            v[j] = t;
         }
 
         private void Normalize (Complex[] F) {
