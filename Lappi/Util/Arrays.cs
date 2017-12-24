@@ -22,10 +22,10 @@ namespace Lappi.Util {
             return result;
         }
 
-        public static T[] New<T> (int length, Func<T[], int, T> f) {
+        public static T[] New<T> (int length, Func<int, T[], T> f) {
             T[] v = new T[length];
             for( int i = 0; i < v.Length; i++ ) {
-                v[i] = f(v, i);
+                v[i] = f(i, v);
             }
             return v;
         }
@@ -42,6 +42,24 @@ namespace Lappi.Util {
                 throw new ArgumentException();
             }
             return New<T>(u.Length, i => (dynamic) u[i] - v[i]);
+        }
+
+        public static void Foreach<T> (this T[] v, Action<T> action) {
+            foreach( T item in v ) {
+                action(item);
+            }
+        }
+
+        public static void Foreach<T> (this T[] v, Action<T, int> action) {
+            for( int i = 0; i < v.Length; i++ ) {
+                action(v[i], i);
+            }
+        }
+
+        public static void Foreach<T> (this T[] v, Action<T, int, T[]> action) {
+            for( int i = 0; i < v.Length; i++ ) {
+                action(v[i], i, v);
+            }
         }
 
     }

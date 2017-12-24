@@ -45,7 +45,7 @@ namespace LappiTest.Util {
 
         [Test]
         public void New_lambda_with_reference_test () {
-            double[] v = Arrays.New<double>(10, (u, i) => i == 0 ? 0 : u[i - 1] + 1);
+            double[] v = Arrays.New<double>(10, (i, u) => i == 0 ? 0 : u[i - 1] + 1);
             Assert.That(v.Length, Is.EqualTo(10));
             for( int i = 0; i < v.Length; i++ ) {
                 Assert.That(v[i], Is.EqualTo(i));
@@ -66,6 +66,30 @@ namespace LappiTest.Util {
             double[] v = {3, 3, 3, 3, 3};
             double[] expected = {-2, -1, 0, 1, 2};
             Assert.That(u.Sub(v), Is.EqualTo(expected));
+        }
+
+        [Test]
+        public void Foreach_test () {
+            double[] v = {1, 2, 3, 4, 5};
+            double sum = 0;
+            v.Foreach(x => sum += x);
+            Assert.That(sum, Is.EqualTo(15));
+        }
+
+        [Test]
+        public void Foreach_with_index_test () {
+            double[] v = {1, 2, 3, 4, 5};
+            double sum = 0;
+            v.Foreach((x, i) => sum += x * v[i]);
+            Assert.That(sum, Is.EqualTo(55));
+        }
+
+        [Test]
+        public void Foreach_with_index_and_reference_test () {
+            double[] v = {1, 2, 3, 4, 5};
+            double sum = 0;
+            v.Foreach((x, i, u) => sum += x * u[i]);
+            Assert.That(sum, Is.EqualTo(55));
         }
 
     }

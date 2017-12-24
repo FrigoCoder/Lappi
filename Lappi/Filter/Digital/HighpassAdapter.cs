@@ -20,9 +20,7 @@ namespace Lappi.Filter.Digital {
 
         private static double[] CreateCoefficients (DigitalFilter filter) {
             double sum = Normalize(filter);
-            double[] coefficients = Arrays.New(filter.Right - filter.Left + 1, i => -filter[i + filter.Left] / sum);
-            coefficients[-filter.Left] = 1 - filter[0] / sum;
-            return coefficients;
+            return Arrays.New(filter.Right - filter.Left + 1, i => i == -filter.Left ? 1 - filter[0] / sum : -filter[i + filter.Left] / sum);
         }
 
         private static double Normalize (DigitalFilter filter) {
