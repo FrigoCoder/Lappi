@@ -7,6 +7,25 @@ namespace LappiTest.Util {
     public class ArraysTest {
 
         [Test]
+        public void New_value_type_test () {
+            double[] v = Arrays.New<double>(10);
+            Assert.That(v.Length, Is.EqualTo(10));
+            foreach( double x in v ) {
+                Assert.That(x, Is.EqualTo(0.0));
+            }
+        }
+
+        [Test]
+        public void New_reference_type_test () {
+            object[] v = Arrays.New<object>(10);
+            Assert.That(v.Length, Is.EqualTo(10));
+            Assert.That(v[0], Is.TypeOf<object>());
+            foreach( object t in v ) {
+                Assert.That(t, Is.EqualTo(t));
+            }
+        }
+
+        [Test]
         public void New_constant_test () {
             double[] v = Arrays.New(10, 1.23);
             Assert.That(v.Length, Is.EqualTo(10));

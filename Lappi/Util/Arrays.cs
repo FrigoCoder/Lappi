@@ -4,6 +4,14 @@ namespace Lappi.Util {
 
     public static class Arrays {
 
+        public static T[] New<T> (int length) where T : new() {
+            T[] result = new T[length];
+            if( default(T) == null ) {
+                result.Fill(new T());
+            }
+            return result;
+        }
+
         public static T[] New<T> (int length, T defaultValue) {
             T[] result = new T[length];
             result.Fill(defaultValue);
