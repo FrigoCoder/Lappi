@@ -21,13 +21,15 @@ namespace Lappi.Filter.Digital2D {
             Coefficients = new double[Right - Left + 1, Bottom - Top + 1];
             for( int x = Left; x <= Right; x++ ) {
                 for( int y = Top; y <= Bottom; y++ ) {
-                    double d = Math.Sqrt(x * x + y * y);
-                    Coefficients[x - Left, y - Top] = filter[d / scale];
+                    this[x, y] = filter[Math.Sqrt(x * x + y * y) / scale];
                 }
             }
         }
 
-        public double this [int x, int y] => Coefficients[x - Left, y - Top];
+        public double this [int x, int y] {
+            get => Coefficients[x - Left, y - Top];
+            private set => Coefficients[x - Left, y - Top] = value;
+        }
 
         [SuppressMessage("ReSharper", "CompareOfFloatsByEqualityOperator")]
         private static int NonZeroLeft (AnalogFilter analog, double scale) {
