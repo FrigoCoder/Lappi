@@ -5,11 +5,11 @@ using Lappi.Image;
 
 namespace Lappi.Filter.Digital2D {
 
-    public class DigitalSampler2DSeparable<T> : Sampler2D<T> where T : new() {
+    public class SeparableSampler<T> : Sampler2D<T> where T : new() {
 
         private readonly DigitalSampler<T> sampler;
 
-        public DigitalSampler2DSeparable (DigitalSampler<T> sampler) {
+        public SeparableSampler (DigitalSampler<T> sampler) {
             this.sampler = sampler;
         }
 

@@ -4,12 +4,12 @@ using Lappi.Image;
 
 namespace Lappi.Filter.Digital2D {
 
-    public class DigitalSampler2D<T> : Sampler2D<T> where T : new() {
+    public class NonSeparableSampler<T> : Sampler2D<T> where T : new() {
 
         private readonly DigitalFilter2D filter;
         private readonly double[,] coefficients;
 
-        public DigitalSampler2D (DigitalFilter2D filter) {
+        public NonSeparableSampler (DigitalFilter2D filter) {
             this.filter = filter;
             coefficients = filter.Coefficients;
         }

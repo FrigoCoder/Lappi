@@ -15,12 +15,12 @@ namespace Lappi.Filter.Digital2D {
             this.synthesis = synthesis;
         }
 
-        public Laplacian2D (DigitalFilter analysis, DigitalFilter synthesis) : this(new DigitalSampler2DSeparable<T>(new DigitalSampler<T>(analysis)),
-            new DigitalSampler2DSeparable<T>(new DigitalSampler<T>(synthesis))) {
+        public Laplacian2D (DigitalFilter analysis, DigitalFilter synthesis) : this(new SeparableSampler<T>(new DigitalSampler<T>(analysis)),
+            new SeparableSampler<T>(new DigitalSampler<T>(synthesis))) {
         }
 
-        public Laplacian2D (DigitalFilter2D analysis, DigitalFilter2D synthesis) : this(new DigitalSampler2D<T>(analysis),
-            new DigitalSampler2D<T>(synthesis)) {
+        public Laplacian2D (DigitalFilter2D analysis, DigitalFilter2D synthesis) : this(new NonSeparableSampler<T>(analysis),
+            new NonSeparableSampler<T>(synthesis)) {
         }
 
         public Image<T>[] Forward (Image<T> image, int steps = 1) {

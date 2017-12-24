@@ -9,7 +9,7 @@ using NUnit.Framework;
 namespace LappiTest.Filter.Digital2D {
 
     using Image = Image<double>;
-    using DigitalSampler2D = DigitalSampler2D<double>;
+    using DigitalSampler2D = NonSeparableSampler<double>;
 
     public class DigitalSampler2DTest {
 
