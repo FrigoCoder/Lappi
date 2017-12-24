@@ -29,7 +29,8 @@ namespace Lappi.Filter.Digital2D {
             return quarter;
         }
 
-        public Image<T> Upsample (Image<T> source, int factor, int shift) => throw new NotImplementedException();
+        public Image<T> Upsample (Image<T> quarter, int factor, int shift) =>
+            Upsample(quarter, factor, shift, quarter.Xs * factor, quarter.Ys * factor);
 
         public Image<T> Upsample (Image<T> quarter, int factor, int shift, int xs, int ys) {
             Image<T> half = new Image<T>(quarter.Xs, ys);
