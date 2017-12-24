@@ -2,7 +2,6 @@
 using System.Diagnostics.CodeAnalysis;
 
 using Lappi.Filter.Analog;
-using Lappi.Filter.Digital;
 
 namespace Lappi.Filter.Digital2D {
 
@@ -23,7 +22,7 @@ namespace Lappi.Filter.Digital2D {
             for( int x = Left; x <= Right; x++ ) {
                 for( int y = Top; y <= Bottom; y++ ) {
                     double d = Math.Sqrt(x * x + y * y);
-                    Coefficients[x - Left, y - Top] = filter.Kernel(d / scale);
+                    Coefficients[x - Left, y - Top] = filter[d / scale];
                 }
             }
         }
@@ -33,7 +32,7 @@ namespace Lappi.Filter.Digital2D {
         [SuppressMessage("ReSharper", "CompareOfFloatsByEqualityOperator")]
         private static int NonZeroLeft (AnalogFilter analog, double scale) {
             int left = Convert.ToInt32(Math.Ceiling(analog.Left * scale));
-            while( analog.Kernel(left / scale) == 0 ) {
+            while( analog[left / scale] == 0 ) {
                 left++;
             }
             return left;
@@ -42,7 +41,7 @@ namespace Lappi.Filter.Digital2D {
         [SuppressMessage("ReSharper", "CompareOfFloatsByEqualityOperator")]
         private static int NonZeroRight (AnalogFilter analog, double scale) {
             int right = Convert.ToInt32(Math.Floor(analog.Right * scale));
-            while( analog.Kernel(right / scale) == 0 ) {
+            while( analog[right / scale] == 0 ) {
                 right--;
             }
             return right;

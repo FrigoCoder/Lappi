@@ -41,25 +41,27 @@ namespace LappiTest.Filter.Analog {
             public double Right => n;
             public double Radius => n;
 
-            public Func<double, double> Kernel => x => {
-                if( Math.Abs(x) >= n ) {
-                    return 0;
-                }
-
-                double z = x / n * Math.PI;
-
-                double result = 0.5;
-                for( int k = 1; k < n; k++ ) {
-                    result += Math.Cos(k * z);
-                }
-                result += 0.5 * Math.Cos(n * z);
-                return result / n;
-            };
-
             private readonly int n;
 
             public DirichletNaive (int n) {
                 this.n = n;
+            }
+
+            public double this [double x] {
+                get {
+                    if( Math.Abs(x) >= n ) {
+                        return 0;
+                    }
+
+                    double z = x / n * Math.PI;
+
+                    double result = 0.5;
+                    for( int k = 1; k < n; k++ ) {
+                        result += Math.Cos(k * z);
+                    }
+                    result += 0.5 * Math.Cos(n * z);
+                    return result / n;
+                }
             }
 
         }
@@ -73,7 +75,7 @@ namespace LappiTest.Filter.Analog {
             Assert.That(actual.Right, Is.EqualTo(expected.Right));
             Assert.That(actual.Radius, Is.EqualTo(expected.Radius));
             for( double x = actual.Left - granularity; x <= actual.Right + granularity; x += granularity ) {
-                Assert.That(actual.Kernel(x), Is.EqualTo(expected.Kernel(x)).Within(1E-15));
+                Assert.That(actual[x], Is.EqualTo(expected[x]).Within(1E-15));
             }
         }
 
