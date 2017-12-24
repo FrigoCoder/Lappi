@@ -2,6 +2,8 @@
 using Lappi.Filter.Digital2D;
 using Lappi.Image;
 
+using LappiTest.Image;
+
 using NUnit.Framework;
 
 namespace LappiTest.Filter.Digital2D {
@@ -19,7 +21,7 @@ namespace LappiTest.Filter.Digital2D {
 
         [Test]
         public void Convolute_with_scale_1_results_in_the_original_image () {
-            AssertEquals(linear1.Convolute(source), source);
+            ImageTest.AssertEquals(linear1.Convolute(source), source);
         }
 
         [Test]
@@ -30,17 +32,7 @@ namespace LappiTest.Filter.Digital2D {
                 {2.0556010205896675, 4.5205645305001854, 9.5205645305001845, 16.520564530500184, 25.520564530500181, 32.129462924504551},
                 {2.0374140570188866, 4.5139002551474166, 9.5139002551474157, 16.513900255147416, 25.513900255147412, 32.196148457597417}
             });
-            AssertEquals(linear2.Convolute(source), expected);
-        }
-
-        private void AssertEquals (Image actual, Image expected) {
-            Assert.That(actual.Xs, Is.EqualTo(expected.Xs));
-            Assert.That(actual.Ys, Is.EqualTo(expected.Ys));
-            for( int x = 0; x < actual.Xs; x++ ) {
-                for( int y = 0; y < actual.Ys; y++ ) {
-                    Assert.That(actual[x, y], Is.EqualTo(expected[x, y]).Within(1E-14), $"At {x}, {y}");
-                }
-            }
+            ImageTest.AssertEquals(linear2.Convolute(source), expected);
         }
 
     }
