@@ -11,7 +11,7 @@ namespace LappiTest.Image {
     [TestFixture]
     public class ImageTest {
 
-        public static void AssertEquals<T> (Image<T> actual, Image<T> expected) {
+        public static void AssertEquals<T> (Image<T> actual, Image<T> expected) where T : new() {
             Assert.That(actual.Xs, Is.EqualTo(expected.Xs));
             Assert.That(actual.Ys, Is.EqualTo(expected.Ys));
             for( int x = 0; x < actual.Xs; x++ ) {
@@ -171,7 +171,7 @@ namespace LappiTest.Image {
             Assert.That(image.ToString(), Is.EqualTo("{{1, 2, 3}, {4, 5, 6}}"));
         }
 
-        private Image<T> CreateRandomImage<T> (int xs, int ys) {
+        private Image<T> CreateRandomImage<T> (int xs, int ys) where T : new() {
             Image<T> result = new Image<T>(xs, ys);
             for( int x = 0; x < xs; x++ ) {
                 for( int y = 0; y < ys; y++ ) {
@@ -182,17 +182,17 @@ namespace LappiTest.Image {
             return result;
         }
 
-        private void AssertDimensions<T> (Image<T> image, int xs, int ys) {
+        private void AssertDimensions<T> (Image<T> image, int xs, int ys) where T : new() {
             Assert.That(image.Xs, Is.EqualTo(xs));
             Assert.That(image.Ys, Is.EqualTo(ys));
         }
 
-        private void AssertPixel<T> (Image<T> image, int x, int y, Color color) {
+        private void AssertPixel<T> (Image<T> image, int x, int y, Color color) where T : new() {
             T value = (T) Activator.CreateInstance(typeof(T), color);
             Assert.That(image[x, y], Is.EqualTo(value));
         }
 
-        private void AssertSolidColor<T> (Image<T> image, Color color) {
+        private void AssertSolidColor<T> (Image<T> image, Color color) where T : new() {
             T value = (T) Activator.CreateInstance(typeof(T), color);
             for( int x = 0; x < image.Xs; x++ ) {
                 for( int y = 0; y < image.Ys; y++ ) {

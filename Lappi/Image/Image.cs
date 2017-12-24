@@ -6,7 +6,7 @@ using Lappi.Util;
 
 namespace Lappi.Image {
 
-    public class Image<T> {
+    public class Image<T> where T : new() {
 
         public static Image<T> Load (string filename) {
             using( Bitmap bitmap = new Bitmap(filename) ) {
@@ -59,7 +59,7 @@ namespace Lappi.Image {
         public readonly ColumnIndexer<T> Columns;
         private readonly T[,] pixels;
 
-        public Image (int xs, int ys) : this(new T[ys, xs]) {
+        public Image (int xs, int ys) : this(Arrays.New<T>(ys, xs)) {
         }
 
         public Image (T[,] pixels) {
@@ -68,14 +68,6 @@ namespace Lappi.Image {
             Rows = new RowIndexer<T>(this);
             Columns = new ColumnIndexer<T>(this);
             this.pixels = pixels;
-        }
-
-        public void Fill (T defaultValue) {
-            for( int x = 0; x < Xs; x++ ) {
-                for( int y = 0; y < Ys; y++ ) {
-                    this[x, y] = defaultValue;
-                }
-            }
         }
 
         public void Save (string filename) {
@@ -117,7 +109,7 @@ namespace Lappi.Image {
 
     }
 
-    public class RowIndexer<T> {
+    public class RowIndexer<T> where T : new() {
 
         private readonly Image<T> image;
 
@@ -139,7 +131,7 @@ namespace Lappi.Image {
 
     }
 
-    public class ColumnIndexer<T> {
+    public class ColumnIndexer<T> where T : new() {
 
         private readonly Image<T> image;
 

@@ -2,6 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 
 using Lappi.Filter.Analog;
+using Lappi.Util;
 
 namespace Lappi.Filter.Digital2D {
 
@@ -18,18 +19,11 @@ namespace Lappi.Filter.Digital2D {
             Right = NonZeroRight(filter, scale);
             Top = NonZeroLeft(filter, scale);
             Bottom = NonZeroRight(filter, scale);
-            Coefficients = new double[Right - Left + 1, Bottom - Top + 1];
-            for( int x = Left; x <= Right; x++ ) {
-                for( int y = Top; y <= Bottom; y++ ) {
-                    this[x, y] = filter[Math.Sqrt(x * x + y * y) / scale];
-                }
-            }
+            Coefficients = Arrays.New(Right - Left + 1, Bottom - Top + 1,
+                (x, y) => filter[Math.Sqrt(Lang.Sqr(x + Left) + Lang.Sqr(y + Top)) / scale]);
         }
 
-        public double this [int x, int y] {
-            get => Coefficients[x - Left, y - Top];
-            private set => Coefficients[x - Left, y - Top] = value;
-        }
+        public double this [int x, int y] => Coefficients[x - Left, y - Top];
 
         [SuppressMessage("ReSharper", "CompareOfFloatsByEqualityOperator")]
         private static int NonZeroLeft (AnalogFilter analog, double scale) {
