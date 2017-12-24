@@ -1,6 +1,6 @@
 ﻿namespace Lappi.Util {
 
-    public static class IntegerUtil {
+    public static class Integers {
 
         public static uint ToUnsigned (this int i) => unchecked((uint) i);
 

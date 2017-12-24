@@ -43,7 +43,7 @@ namespace Lappi.Util {
             for( int i = 0; i < v.Length; i++ ) {
                 int j = (i * mul).Reverse();
                 if( i < j ) {
-                    LangUtil.Swap(ref v[i], ref v[j]);
+                    Lang.Swap(ref v[i], ref v[j]);
                 }
             }
         }

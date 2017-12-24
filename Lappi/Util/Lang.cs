@@ -1,6 +1,6 @@
 ﻿namespace Lappi.Util {
 
-    public static class LangUtil {
+    public static class Lang {
 
         public static void Swap<T> (ref T x, ref T y) {
             T t = x;

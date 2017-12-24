@@ -4,7 +4,7 @@ using NUnit.Framework;
 
 namespace LappiTest.Util {
 
-    public class IntegerUtilTest {
+    public class IntegersTest {
 
         [Test]
         public void ToUnsignedInt_test () {
