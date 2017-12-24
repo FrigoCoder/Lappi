@@ -5,6 +5,8 @@ using NUnit.Framework;
 
 namespace LappiTest.Filter.Digital {
 
+    using Wavelet1D = Wavelet1D<double>;
+
     [TestFixture]
     public class Wavelet1DTest {
 

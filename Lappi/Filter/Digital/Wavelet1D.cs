@@ -2,26 +2,23 @@
 
 namespace Lappi.Filter.Digital {
 
-    using DigitalSampler = DigitalSampler<double>;
-    using HighpassSampler = HighpassSampler<double>;
+    public class Wavelet1D<T> where T : new() {
 
-    public class Wavelet1D {
-
-        private readonly DigitalSampler analysisLowpass;
-        private readonly DigitalSampler analysisHighpass;
-        private readonly DigitalSampler synthesisLowpass;
-        private readonly DigitalSampler synthesisHighpass;
+        private readonly DigitalSampler<T> analysisLowpass;
+        private readonly DigitalSampler<T> analysisHighpass;
+        private readonly DigitalSampler<T> synthesisLowpass;
+        private readonly DigitalSampler<T> synthesisHighpass;
 
         public Wavelet1D (DigitalFilter analysisLowpass, DigitalFilter analysisHighpass, DigitalFilter synthesisLowpass,
             DigitalFilter synthesisHighpass) {
-            this.analysisLowpass = new DigitalSampler(analysisLowpass);
-            this.analysisHighpass = new DigitalSampler(analysisHighpass);
-            this.synthesisLowpass = new DigitalSampler(synthesisLowpass);
-            this.synthesisHighpass = new DigitalSampler(synthesisHighpass);
+            this.analysisLowpass = new DigitalSampler<T>(analysisLowpass);
+            this.analysisHighpass = new DigitalSampler<T>(analysisHighpass);
+            this.synthesisLowpass = new DigitalSampler<T>(synthesisLowpass);
+            this.synthesisHighpass = new DigitalSampler<T>(synthesisHighpass);
         }
 
-        public double[][] Forward (double[] source, int steps = 1) {
-            double[][] scales = new double[steps + 1][];
+        public T[][] Forward (T[] source, int steps = 1) {
+            T[][] scales = new T[steps + 1][];
             scales[0] = source;
             for( int i = 0; i < scales.Length - 1; i++ ) {
                 scales[i + 1] = analysisLowpass.Downsample(scales[i], 2, 0);
@@ -30,15 +27,21 @@ namespace Lappi.Filter.Digital {
             return scales.Reverse().ToArray();
         }
 
-        public double[] Inverse (double[][] scales) {
+        public T[] Inverse (T[][] scales) {
             for( int i = 1; i < scales.Length; i++ ) {
-                double[] low = scales[i - 1];
-                double[] high = scales[i];
-                double[] u = synthesisLowpass.Upsample(low, 2, 0, low.Length + high.Length);
-                double[] v = synthesisHighpass.Upsample(high, 2, 1, low.Length + high.Length);
-                scales[i] = u.Zip(v, (x, y) => x + y).ToArray();
+                scales[i] = InverseStep(scales[i - 1], scales[i]);
             }
             return scales[scales.Length - 1];
+        }
+
+        private T[] InverseStep (T[] low, T[] high) {
+            T[] u = synthesisLowpass.Upsample(low, 2, 0, low.Length + high.Length);
+            T[] v = synthesisHighpass.Upsample(high, 2, 1, low.Length + high.Length);
+            T[] result = new T[low.Length + high.Length];
+            for( int i = 0; i < result.Length; i++ ) {
+                result[i] = (dynamic) u[i] + v[i];
+            }
+            return result;
         }
 
     }
