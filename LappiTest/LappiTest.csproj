@@ -74,6 +74,15 @@
     <Compile Include="Image\Rgb8Test.cs" />
     <Compile Include="Image\YuvDTest.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\ImageTest\512x512_blue.png" />
+    <Content Include="Resources\ImageTest\512x512_green.png" />
+    <Content Include="Resources\ImageTest\512x512_red.png" />
+    <Content Include="Resources\ImageTest\640x480_white.png" />
+    <Content Include="Resources\ImageTest\800x600_black.png" />
+    <Content Include="Resources\ImageTest\black_red_green_blue.png" />
+    <Content Include="Resources\ImageTest\Lenna.png" />
+  </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

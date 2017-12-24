@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Lappi.Filter.Digital {
+﻿namespace Lappi.Filter.Digital {
 
     public class HighpassAdapter : DigitalFilter {
 
@@ -8,7 +6,6 @@ namespace Lappi.Filter.Digital {
         public int Right { get; }
         public int Radius { get; }
         public double[] Coefficients { get; }
-        public Func<int, double> Kernel => x => Coefficients[x - Left];
 
         public HighpassAdapter (DigitalFilter filter) {
             Left = filter.Left;
@@ -17,20 +14,22 @@ namespace Lappi.Filter.Digital {
             Coefficients = CreateCoefficients(filter);
         }
 
+        public double this [int x] => Coefficients[x - Left];
+
         private static double[] CreateCoefficients (DigitalFilter filter) {
             double[] coefficients = new double[filter.Right - filter.Left + 1];
             double sum = Normalize(filter);
             for( int i = 0; i < coefficients.Length; i++ ) {
-                coefficients[i] = -filter.Kernel(i + filter.Left) / sum;
+                coefficients[i] = -filter[i + filter.Left] / sum;
             }
-            coefficients[-filter.Left] = 1 - filter.Kernel(0) / sum;
+            coefficients[-filter.Left] = 1 - filter[0] / sum;
             return coefficients;
         }
 
         private static double Normalize (DigitalFilter filter) {
             double sum = 0;
             for( int i = filter.Left; i <= filter.Right; i++ ) {
-                sum += filter.Kernel(i);
+                sum += filter[i];
             }
             return sum;
         }

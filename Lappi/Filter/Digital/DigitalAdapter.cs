@@ -11,7 +11,6 @@ namespace Lappi.Filter.Digital {
         public int Right { get; }
         public int Radius { get; }
         public double[] Coefficients { get; }
-        public Func<int, double> Kernel => x => Coefficients[x - Left];
 
         public DigitalAdapter (AnalogFilter analog, double scale) {
             Left = NonZeroLeft(analog, scale);
@@ -25,6 +24,8 @@ namespace Lappi.Filter.Digital {
 
         public override string ToString () => GetType().Name + "{Left = " + Left + ", Right = " + Right + ", Radius = " + Radius +
             ", Coefficients=[" + string.Join(", ", Coefficients) + "]}";
+
+        public double this [int x] => Coefficients[x - Left];
 
         [SuppressMessage("ReSharper", "CompareOfFloatsByEqualityOperator")]
         private static int NonZeroLeft (AnalogFilter analog, double scale) {

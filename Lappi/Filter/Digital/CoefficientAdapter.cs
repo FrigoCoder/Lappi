@@ -8,7 +8,6 @@ namespace Lappi.Filter.Digital {
         public int Right { get; }
         public int Radius { get; }
         public double[] Coefficients { get; }
-        public Func<int, double> Kernel => x => Coefficients[x - Left];
 
         public CoefficientAdapter (int center, double[] coefficients) {
             Left = 0 - center;
@@ -16,6 +15,8 @@ namespace Lappi.Filter.Digital {
             Radius = Math.Max(Math.Abs(Left), Math.Abs(Right));
             Coefficients = coefficients;
         }
+
+        public double this [int x] => Coefficients[x - Left];
 
     }
 
