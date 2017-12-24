@@ -39,9 +39,9 @@ namespace Lappi.Util {
         }
 
         private void BitReverse (Complex[] v) {
-            uint div = ((uint) v.Length).Reverse() << 1;
-            for( uint i = 0; i < v.Length; i++ ) {
-                uint j = i.Reverse() / div;
+            int mul = v.Length.Reverse() * 2;
+            for( int i = 0; i < v.Length; i++ ) {
+                int j = (i * mul).Reverse();
                 if( i < j ) {
                     LangUtil.Swap(ref v[i], ref v[j]);
                 }
