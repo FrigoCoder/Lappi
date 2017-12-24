@@ -16,7 +16,7 @@ namespace LappiTest.Filter.Digital {
         public void Transform_returns_correct_lowpass_vector () {
             Wavelet1D wavelet = new Wavelet1D(lowpass, highpass, lowpass, highpass);
             double[] expected = {2, 9.5, 25.5, 49.5, 81.5, 121.5};
-            double[] actual = wavelet.Forward(source).Item1;
+            double[] actual = wavelet.Forward(source)[0];
             Assert.That(actual, Is.EqualTo(expected), "\nExpected: " + string.Join(", ", expected) + "\nActual: " + string.Join(", ", actual));
         }
 
@@ -24,7 +24,7 @@ namespace LappiTest.Filter.Digital {
         public void Transform_returns_correct_highpass_vector () {
             Wavelet1D wavelet = new Wavelet1D(lowpass, highpass, lowpass, highpass);
             double[] expected = {-0.5, -0.5, -0.5, -0.5, -0.5, 55.6666666666666666};
-            double[] actual = wavelet.Forward(source).Item2;
+            double[] actual = wavelet.Forward(source)[1];
             Assert.That(actual, Is.EqualTo(expected).Within(1E-15),
                 "\nExpected: " + string.Join(", ", expected) + "\nActual: " + string.Join(", ", actual));
         }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 
 namespace Lappi.Filter.Digital {
 
@@ -21,18 +20,25 @@ namespace Lappi.Filter.Digital {
             this.synthesisHighpass = new DigitalSampler(synthesisHighpass);
         }
 
-        public Tuple<double[], double[]> Forward (double[] source) {
-            double[] low = analysisLowpass.Downsample(source, 2, 0);
-            double[] high = analysisHighpass.Downsample(source, 2, 1);
-            return Tuple.Create(low, high);
+        public double[][] Forward (double[] source, int steps = 1) {
+            double[][] scales = new double[steps + 1][];
+            scales[0] = source;
+            for( int i = 0; i < scales.Length - 1; i++ ) {
+                scales[i + 1] = analysisLowpass.Downsample(scales[i], 2, 0);
+                scales[i] = analysisHighpass.Downsample(scales[i], 2, 1);
+            }
+            return scales.Reverse().ToArray();
         }
 
-        public double[] Inverse (Tuple<double[], double[]> tuple) => Inverse(tuple.Item1, tuple.Item2);
-
-        public double[] Inverse (double[] low, double[] high) {
-            double[] v1 = synthesisLowpass.Upsample(low, 2, 0, low.Length + high.Length);
-            double[] v2 = synthesisHighpass.Upsample(high, 2, 1, low.Length + high.Length);
-            return v1.Zip(v2, (x, y) => x + y).ToArray();
+        public double[] Inverse (double[][] scales) {
+            for( int i = 1; i < scales.Length; i++ ) {
+                double[] low = scales[i - 1];
+                double[] high = scales[i];
+                double[] u = synthesisLowpass.Upsample(low, 2, 0, low.Length + high.Length);
+                double[] v = synthesisHighpass.Upsample(high, 2, 1, low.Length + high.Length);
+                scales[i] = u.Zip(v, (x, y) => x + y).ToArray();
+            }
+            return scales[scales.Length - 1];
         }
 
     }
