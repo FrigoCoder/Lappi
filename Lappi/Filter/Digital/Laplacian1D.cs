@@ -1,5 +1,6 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
+
+using Lappi.Util;
 
 namespace Lappi.Filter.Digital {
 
@@ -18,43 +19,16 @@ namespace Lappi.Filter.Digital {
             scales[0] = source;
             for( int i = 0; i < scales.Length - 1; i++ ) {
                 scales[i + 1] = analysis.Downsample(source, 2, 0);
-                scales[i] = Sub(scales[i], analysis.Upsample(scales[i + 1], 2, 0, scales[i].Length));
+                scales[i] = scales[i].Sub(analysis.Upsample(scales[i + 1], 2, 0, scales[i].Length));
             }
             return scales.Reverse().ToArray();
         }
 
         public T[] Inverse (T[][] scales) {
             for( int i = 1; i < scales.Length; i++ ) {
-                scales[i] = InverseStep(scales[i - 1], scales[i]);
+                scales[i] = synthesis.Upsample(scales[i - 1], 2, 0, scales[i].Length).Add(scales[i]);
             }
             return scales[scales.Length - 1];
-        }
-
-        private T[] InverseStep (T[] downsampled, T[] difference) {
-            T[] upsampled = synthesis.Upsample(downsampled, 2, 0, difference.Length);
-            return Add(upsampled, difference);
-        }
-
-        private static T[] Add (T[] u, T[] v) {
-            if( u.Length != v.Length ) {
-                throw new ArgumentException();
-            }
-            T[] result = new T[u.Length];
-            for( int i = 0; i < result.Length; i++ ) {
-                result[i] = (dynamic) u[i] + v[i];
-            }
-            return result;
-        }
-
-        private static T[] Sub (T[] u, T[] v) {
-            if( u.Length != v.Length ) {
-                throw new ArgumentException();
-            }
-            T[] result = new T[u.Length];
-            for( int i = 0; i < result.Length; i++ ) {
-                result[i] = (dynamic) u[i] - v[i];
-            }
-            return result;
         }
 
     }

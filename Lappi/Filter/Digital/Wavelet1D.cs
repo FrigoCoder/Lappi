@@ -1,5 +1,6 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
+
+using Lappi.Util;
 
 namespace Lappi.Filter.Digital {
 
@@ -38,18 +39,7 @@ namespace Lappi.Filter.Digital {
         private T[] InverseStep (T[] low, T[] high) {
             T[] u = synthesisLowpass.Upsample(low, 2, 0, low.Length + high.Length);
             T[] v = synthesisHighpass.Upsample(high, 2, 1, low.Length + high.Length);
-            return Add(u, v);
-        }
-
-        private static T[] Add (T[] u, T[] v) {
-            if( u.Length != v.Length ) {
-                throw new ArgumentException();
-            }
-            T[] result = new T[u.Length];
-            for( int i = 0; i < result.Length; i++ ) {
-                result[i] = (dynamic) u[i] + v[i];
-            }
-            return result;
+            return u.Add(v);
         }
 
     }
