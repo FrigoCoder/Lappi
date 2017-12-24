@@ -4,9 +4,15 @@ namespace Lappi.Util {
 
     public static class ArrayUtil {
 
-        public static void Fill<T> (this T[] u, T defaultValue) {
-            for( int i = 0; i < u.Length; i++ ) {
-                u[i] = defaultValue;
+        public static void Fill<T> (this T[] v, T defaultValue) {
+            for( int i = 0; i < v.Length; i++ ) {
+                v[i] = defaultValue;
+            }
+        }
+
+        public static void Fill<T> (this T[] v, Func<int, T> f) {
+            for( int i = 0; i < v.Length; i++ ) {
+                v[i] = f(i);
             }
         }
 

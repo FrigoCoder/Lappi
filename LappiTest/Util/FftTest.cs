@@ -31,9 +31,7 @@ namespace LappiTest.Util {
         public void Full_transform_correctly_restores_random_array () {
             for( int n = 1; n <= maxn; n *= 2 ) {
                 Complex[] T = new Complex[n];
-                for( int t = 0; t < T.Length; t++ ) {
-                    T[t] = new Complex(random.NextDouble(), random.NextDouble());
-                }
+                T.Fill(i => new Complex(random.NextDouble(), random.NextDouble()));
                 Assert.That(fft.Inverse(fft.Forward(T)), Is.EqualTo(T).Using(Complex.Within(1E-16)));
             }
         }
@@ -42,9 +40,7 @@ namespace LappiTest.Util {
         public void Forward_transform_correctly_transforms_constant_signal () {
             for( int n = 1; n <= maxn; n *= 2 ) {
                 Complex[] T = new Complex[n];
-                for( int t = 0; t < n; t++ ) {
-                    T[t] = 1;
-                }
+                T.Fill(i => 1);
                 Complex[] F = fft.Forward(T);
                 for( int f = 0; f < n; f++ ) {
                     Complex expected = f == 0 ? 1 : 0;
@@ -70,9 +66,7 @@ namespace LappiTest.Util {
         public void Forward_transform_correctly_transforms_cis_signal () {
             for( int n = 16; n <= maxn; n *= 2 ) {
                 Complex[] T = new Complex[n];
-                for( int t = 0; t < n; t++ ) {
-                    T[t] = Complex.Cis(2 * Math.PI * 10 * t / n);
-                }
+                T.Fill(t => Complex.Cis(2 * Math.PI * 10 * t / n));
                 Complex[] F = fft.Forward(T);
                 for( int f = 0; f < n; f++ ) {
                     Complex expected = f == 10 ? 1 : 0;
@@ -98,9 +92,7 @@ namespace LappiTest.Util {
         public void Forward_transform_correctly_transforms_cos_signal () {
             for( int n = 16; n <= maxn; n *= 2 ) {
                 Complex[] T = new Complex[n];
-                for( int t = 0; t < n; t++ ) {
-                    T[t] = Math.Cos(2 * Math.PI * 10 * t / n);
-                }
+                T.Fill(t => Math.Cos(2 * Math.PI * 10 * t / n));
                 Complex[] F = fft.Forward(T);
                 for( int f = 0; f < n; f++ ) {
                     Complex expected = f == 10 ? 0.5 : f == n - 10 ? 0.5 : 0;
@@ -141,9 +133,7 @@ namespace LappiTest.Util {
         public void Forward_transform_correctly_transforms_sin_signal () {
             for( int n = 16; n <= maxn; n *= 2 ) {
                 Complex[] T = new Complex[n];
-                for( int t = 0; t < n; t++ ) {
-                    T[t] = Math.Sin(2 * Math.PI * 10 * t / n);
-                }
+                T.Fill(t => Math.Sin(2 * Math.PI * 10 * t / n));
                 Complex[] F = fft.Forward(T);
                 for( int f = 0; f < n; f++ ) {
                     Complex expected = f == 10 ? new Complex(0, -0.5) : f == n - 10 ? new Complex(0, 0.5) : 0;
