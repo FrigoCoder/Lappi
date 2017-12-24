@@ -13,44 +13,49 @@ namespace LappiTest.Image {
 
         private readonly Random random = new Random();
 
+        [SetUp]
+        public void SetUp () {
+            Directory.SetCurrentDirectory(TestContext.CurrentContext.TestDirectory + "\\Resources\\ImageTest");
+        }
+
         [Test]
         public void Can_load_640_by_480_white_image () {
-            Image<Rgb8> image = LoadImage<Rgb8>("640x480_white.png");
+            Image<Rgb8> image = Image<Rgb8>.Load("640x480_white.png");
             AssertDimensions(image, 640, 480);
             AssertSolidColor(image, Color.White);
         }
 
         [Test]
         public void Can_load_800_by_600_black_image () {
-            Image<Rgb8> image = LoadImage<Rgb8>("800x600_black.png");
+            Image<Rgb8> image = Image<Rgb8>.Load("800x600_black.png");
             AssertDimensions(image, 800, 600);
             AssertSolidColor(image, Color.Black);
         }
 
         [Test]
         public void Can_load_512_by_512_red_image () {
-            Image<Rgb8> image = LoadImage<Rgb8>("512x512_red.png");
+            Image<Rgb8> image = Image<Rgb8>.Load("512x512_red.png");
             AssertDimensions(image, 512, 512);
             AssertSolidColor(image, Color.Red);
         }
 
         [Test]
         public void Can_load_512_by_512_green_image () {
-            Image<Rgb8> image = LoadImage<Rgb8>("512x512_green.png");
+            Image<Rgb8> image = Image<Rgb8>.Load("512x512_green.png");
             AssertDimensions(image, 512, 512);
             AssertSolidColor(image, Color.Lime);
         }
 
         [Test]
         public void Can_load_512_by_512_blue_image () {
-            Image<Rgb8> image = LoadImage<Rgb8>("512x512_blue.png");
+            Image<Rgb8> image = Image<Rgb8>.Load("512x512_blue.png");
             AssertDimensions(image, 512, 512);
             AssertSolidColor(image, Color.Blue);
         }
 
         [Test]
         public void Corners_have_correct_coordinates () {
-            Image<Rgb8> image = LoadImage<Rgb8>("black_red_green_blue.png");
+            Image<Rgb8> image = Image<Rgb8>.Load("black_red_green_blue.png");
             AssertPixel(image, 0, 0, Color.Black);
             AssertPixel(image, 1, 0, Color.Red);
             AssertPixel(image, 0, 1, Color.Lime);
@@ -144,8 +149,6 @@ namespace LappiTest.Image {
             Image<double> image = new Image<double>(new double[,] {{1, 2, 3}, {4, 5, 6}});
             Assert.That(image.ToString(), Is.EqualTo("{{1, 2, 3}, {4, 5, 6}}"));
         }
-
-        private Image<T> LoadImage<T> (string filename) => Image<T>.Load("LappiTest\\Resources\\ImageTest\\" + filename);
 
         private Image<T> CreateRandomImage<T> (int xs, int ys) {
             Image<T> result = new Image<T>(xs, ys);

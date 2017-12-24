@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 using Lappi.Filter.Analog;
 using Lappi.Filter.Digital;
@@ -21,6 +22,7 @@ namespace LappiTest.Filter.Digital2D {
 
         [SetUp]
         public void SetUp () {
+            Directory.SetCurrentDirectory(TestContext.CurrentContext.TestDirectory + "\\Resources\\ImageTest");
             laplacian = new Laplacian2D<double>(analysis, synthesis);
         }
 
@@ -49,7 +51,7 @@ namespace LappiTest.Filter.Digital2D {
         [TestCase]
         public void Lenna_is_perfectly_reconstructed_after_5_steps () {
             Laplacian2D<YuvD> transform = new Laplacian2D<YuvD>(CDF97.AnalysisLowpass, CDF97.SynthesisLowpass);
-            Image<YuvD> lenna = Image<YuvD>.Load("LappiTest\\Resources\\ImageTest\\Lenna.png");
+            Image<YuvD> lenna = Image<YuvD>.Load("Lenna.png");
             AssertEquals(transform.Inverse(transform.Forward(lenna, 5)), lenna);
         }
 
