@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-using Lappi.Filter.Digital;
+﻿using Lappi.Filter.Digital;
 using Lappi.Image;
 
 namespace Lappi.Filter.Digital2D {
@@ -25,12 +23,12 @@ namespace Lappi.Filter.Digital2D {
 
         public Image<T>[] Forward (Image<T> image, int steps = 1) {
             Image<T>[] scales = new Image<T>[steps + 1];
-            scales[0] = image;
-            for( int i = 0; i < scales.Length - 1; i++ ) {
-                scales[i + 1] = analysis.Downsample(scales[i], 2, 0);
-                scales[i] -= synthesis.Upsample(scales[i + 1], 2, 0, scales[i].Xs, scales[i].Ys);
+            scales[scales.Length - 1] = image;
+            for( int i = scales.Length - 1; i >= 1; i-- ) {
+                scales[i - 1] = analysis.Downsample(scales[i], 2, 0);
+                scales[i] -= synthesis.Upsample(scales[i - 1], 2, 0, scales[i].Xs, scales[i].Ys);
             }
-            return scales.Reverse().ToArray();
+            return scales;
         }
 
         public Image<T> Inverse (Image<T>[] scales) {

@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-using Lappi.Util;
+﻿using Lappi.Util;
 
 namespace Lappi.Filter.Digital {
 
@@ -16,12 +14,12 @@ namespace Lappi.Filter.Digital {
 
         public T[][] Forward (T[] source, int steps = 1) {
             T[][] scales = new T[steps + 1][];
-            scales[0] = source;
-            for( int i = 0; i < scales.Length - 1; i++ ) {
-                scales[i + 1] = analysis.Downsample(source, 2, 0);
-                scales[i] = scales[i].Sub(analysis.Upsample(scales[i + 1], 2, 0, scales[i].Length));
+            scales[scales.Length - 1] = source;
+            for( int i = scales.Length - 1; i >= 1; i-- ) {
+                scales[i - 1] = analysis.Downsample(scales[i], 2, 0);
+                scales[i] = scales[i].Sub(synthesis.Upsample(scales[i - 1], 2, 0, scales[i].Length));
             }
-            return scales.Reverse().ToArray();
+            return scales;
         }
 
         public T[] Inverse (T[][] scales) {
