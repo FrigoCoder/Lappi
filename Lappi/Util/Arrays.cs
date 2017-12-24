@@ -4,7 +4,16 @@ namespace Lappi.Util {
 
     public static class Arrays {
 
-        public static T[] New<T> (int length) where T : new() => default(T) == null ? New(length, i => new T()) : new T[length];
+        public static T[] New<T> (int length) where T : new() {
+            T[] v = new T[length];
+            if( default(T) == null ) {
+                T x = new T();
+                for( int i = 0; i < v.Length; i++ ) {
+                    v[i] = x;
+                }
+            }
+            return v;
+        }
 
         public static T[] New<T> (int length, Func<int, T> f) {
             T[] v = new T[length];
@@ -18,6 +27,39 @@ namespace Lappi.Util {
             T[] v = new T[length];
             for( int i = 0; i < v.Length; i++ ) {
                 v[i] = f(i, v);
+            }
+            return v;
+        }
+
+        public static T[,] New<T> (int length1, int length2) where T : new() {
+            T[,] v = new T[length1, length2];
+            if( default(T) == null ) {
+                T x = new T();
+                for( int i = 0; i < v.GetLength(0); i++ ) {
+                    for( int j = 0; j < v.GetLength(1); j++ ) {
+                        v[i, j] = x;
+                    }
+                }
+            }
+            return v;
+        }
+
+        public static T[,] New<T> (int length1, int length2, Func<int, int, T> f) {
+            T[,] v = new T[length1, length2];
+            for( int i = 0; i < v.GetLength(0); i++ ) {
+                for( int j = 0; j < v.GetLength(1); j++ ) {
+                    v[i, j] = f(i, j);
+                }
+            }
+            return v;
+        }
+
+        public static T[,] New<T> (int length1, int length2, Func<int, int, T[,], T> f) {
+            T[,] v = new T[length1, length2];
+            for( int i = 0; i < v.GetLength(0); i++ ) {
+                for( int j = 0; j < v.GetLength(1); j++ ) {
+                    v[i, j] = f(i, j, v);
+                }
             }
             return v;
         }

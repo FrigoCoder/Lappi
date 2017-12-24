@@ -7,7 +7,7 @@ namespace LappiTest.Util {
     public class ArraysTest {
 
         [Test]
-        public void New_value_type_test () {
+        public void New_value_type () {
             double[] v = Arrays.New<double>(10);
             Assert.That(v.Length, Is.EqualTo(10));
             foreach( double x in v ) {
@@ -16,17 +16,17 @@ namespace LappiTest.Util {
         }
 
         [Test]
-        public void New_reference_type_test () {
+        public void New_reference_type () {
             object[] v = Arrays.New<object>(10);
             Assert.That(v.Length, Is.EqualTo(10));
             Assert.That(v[0], Is.TypeOf<object>());
             foreach( object t in v ) {
-                Assert.That(t, Is.EqualTo(t));
+                Assert.That(t, Is.SameAs(v[0]));
             }
         }
 
         [Test]
-        public void New_lambda_test () {
+        public void New_lambda () {
             double[] v = Arrays.New<double>(10, i => i);
             Assert.That(v.Length, Is.EqualTo(10));
             for( int i = 0; i < v.Length; i++ ) {
@@ -35,7 +35,7 @@ namespace LappiTest.Util {
         }
 
         [Test]
-        public void New_lambda_with_reference_test () {
+        public void New_lambda_with_array () {
             double[] v = Arrays.New<double>(10, (i, u) => i == 0 ? 0 : u[i - 1] + 1);
             Assert.That(v.Length, Is.EqualTo(10));
             for( int i = 0; i < v.Length; i++ ) {
@@ -44,7 +44,56 @@ namespace LappiTest.Util {
         }
 
         [Test]
-        public void Add_test () {
+        public void New_2d_value_type () {
+            double[,] v = Arrays.New<double>(10, 11);
+            Assert.That(v.GetLength(0), Is.EqualTo(10));
+            Assert.That(v.GetLength(1), Is.EqualTo(11));
+            for( int i = 0; i < v.GetLength(0); i++ ) {
+                for( int j = 0; j < v.GetLength(1); j++ ) {
+                    Assert.That(v[i, j], Is.EqualTo(0.0));
+                }
+            }
+        }
+
+        [Test]
+        public void New_2d_reference_type () {
+            object[,] v = Arrays.New<object>(10, 11);
+            Assert.That(v.GetLength(0), Is.EqualTo(10));
+            Assert.That(v.GetLength(1), Is.EqualTo(11));
+            Assert.That(v[0, 0], Is.TypeOf<object>());
+            for( int i = 0; i < v.GetLength(0); i++ ) {
+                for( int j = 0; j < v.GetLength(1); j++ ) {
+                    Assert.That(v[i, j], Is.SameAs(v[0, 0]));
+                }
+            }
+        }
+
+        [Test]
+        public void New_2d_lambda () {
+            double[,] v = Arrays.New<double>(10, 11, (i, j) => i + 10 * j);
+            Assert.That(v.GetLength(0), Is.EqualTo(10));
+            Assert.That(v.GetLength(1), Is.EqualTo(11));
+            for( int i = 0; i < v.GetLength(0); i++ ) {
+                for( int j = 0; j < v.GetLength(1); j++ ) {
+                    Assert.That(v[i, j], Is.EqualTo(i + 10 * j));
+                }
+            }
+        }
+
+        [Test]
+        public void New_2d_lambda_with_array () {
+            double[,] v = Arrays.New<double>(10, 11, (i, j, u) => i == 0 ? j : u[i - 1, j] + 1);
+            Assert.That(v.GetLength(0), Is.EqualTo(10));
+            Assert.That(v.GetLength(1), Is.EqualTo(11));
+            for( int i = 0; i < v.GetLength(0); i++ ) {
+                for( int j = 0; j < v.GetLength(1); j++ ) {
+                    Assert.That(v[i, j], Is.EqualTo(i + j));
+                }
+            }
+        }
+
+        [Test]
+        public void Add () {
             double[] u = {1, 2, 3, 4, 5};
             double[] v = {3, 3, 3, 3, 3};
             double[] expected = {4, 5, 6, 7, 8};
@@ -52,7 +101,7 @@ namespace LappiTest.Util {
         }
 
         [Test]
-        public void Sub_test () {
+        public void Sub () {
             double[] u = {1, 2, 3, 4, 5};
             double[] v = {3, 3, 3, 3, 3};
             double[] expected = {-2, -1, 0, 1, 2};
@@ -60,7 +109,7 @@ namespace LappiTest.Util {
         }
 
         [Test]
-        public void Foreach_test () {
+        public void Foreach () {
             double[] v = {1, 2, 3, 4, 5};
             double sum = 0;
             v.Foreach(x => sum += x);
@@ -68,7 +117,7 @@ namespace LappiTest.Util {
         }
 
         [Test]
-        public void Foreach_with_index_test () {
+        public void Foreach_with_index () {
             double[] v = {1, 2, 3, 4, 5};
             double sum = 0;
             v.Foreach((x, i) => sum += x * v[i]);
@@ -76,7 +125,7 @@ namespace LappiTest.Util {
         }
 
         [Test]
-        public void Foreach_with_index_and_reference_test () {
+        public void Foreach_with_index_and_array () {
             double[] v = {1, 2, 3, 4, 5};
             double sum = 0;
             v.Foreach((x, i, u) => sum += x * u[i]);
