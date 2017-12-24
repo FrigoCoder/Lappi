@@ -4,15 +4,7 @@ namespace Lappi.Util {
 
     public static class Arrays {
 
-        public static T[] New<T> (int length) where T : new() => default(T) == null ? New(length, new T()) : new T[length];
-
-        public static T[] New<T> (int length, T x) {
-            T[] v = new T[length];
-            for( int i = 0; i < v.Length; i++ ) {
-                v[i] = x;
-            }
-            return v;
-        }
+        public static T[] New<T> (int length) where T : new() => default(T) == null ? New(length, i => new T()) : new T[length];
 
         public static T[] New<T> (int length, Func<int, T> f) {
             T[] v = new T[length];

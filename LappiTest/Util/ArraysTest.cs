@@ -26,15 +26,6 @@ namespace LappiTest.Util {
         }
 
         [Test]
-        public void New_constant_test () {
-            double[] v = Arrays.New(10, 1.23);
-            Assert.That(v.Length, Is.EqualTo(10));
-            foreach( double x in v ) {
-                Assert.That(x, Is.EqualTo(1.23));
-            }
-        }
-
-        [Test]
         public void New_lambda_test () {
             double[] v = Arrays.New<double>(10, i => i);
             Assert.That(v.Length, Is.EqualTo(10));
