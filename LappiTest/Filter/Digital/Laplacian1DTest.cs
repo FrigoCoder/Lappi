@@ -1,6 +1,4 @@
-﻿using System;
-
-using Lappi.Filter.Analog;
+﻿using Lappi.Filter.Analog;
 using Lappi.Filter.Digital;
 
 using NUnit.Framework;
@@ -26,25 +24,25 @@ namespace LappiTest.Filter.Digital {
         [TestCase]
         public void Forward_transform_produces_correct_downsampled_signal () {
             double[] expected = {2, 9.5, 25.5};
-            Assert.That(laplacian.Forward(source).Item1, Is.EqualTo(expected));
+            Assert.That(laplacian.Forward(source)[0], Is.EqualTo(expected));
         }
 
         [TestCase]
         public void Forward_transform_produces_correct_difference_signal () {
             double[] expected = {-1.6666666666666666, -1.75, -0.5, -1.5, -0.5, 19};
-            Assert.That(laplacian.Forward(source).Item2, Is.EqualTo(expected).Within(1E-15));
+            Assert.That(laplacian.Forward(source)[1], Is.EqualTo(expected).Within(1E-15));
         }
 
         [TestCase]
         public void Forward_transform_produces_correct_downsampled_signal_from_odd_length_source () {
             double[] expected = {2, 9.5, 22};
-            Assert.That(laplacian.Forward(odd).Item1, Is.EqualTo(expected));
+            Assert.That(laplacian.Forward(odd)[0], Is.EqualTo(expected));
         }
 
         [TestCase]
         public void Forward_transform_produces_correct_difference_signal_from_odd_length_source () {
             double[] expected = {-1.6666666666666666, -1.75, -0.5, 0.25, -4.3333333333333333};
-            Assert.That(laplacian.Forward(odd).Item2, Is.EqualTo(expected).Within(1E-15));
+            Assert.That(laplacian.Forward(odd)[1], Is.EqualTo(expected).Within(1E-15));
         }
 
         [TestCase]
@@ -63,8 +61,8 @@ namespace LappiTest.Filter.Digital {
             float[] array = {1, 4, 9, 16, 25, 36};
             float[] low = {2f, 9.5f, 25.5f};
             float[] high = {-1.6666666666666666f, -1.75f, -0.5f, -1.5f, -0.5f, 19f};
-            Assert.That(transform.Forward(array).Item1, Is.EqualTo(low));
-            Assert.That(transform.Forward(array).Item2, Is.EqualTo(high).Within(1E-6));
+            Assert.That(transform.Forward(array)[0], Is.EqualTo(low));
+            Assert.That(transform.Forward(array)[1], Is.EqualTo(high).Within(1E-6));
         }
 
         [TestCase]
@@ -73,7 +71,7 @@ namespace LappiTest.Filter.Digital {
             float[] array = {1, 4, 9, 16, 25, 36};
             float[] low = {2f, 9.5f, 25.5f};
             float[] high = {-1.6666666666666666f, -1.75f, -0.5f, -1.5f, -0.5f, 19f};
-            Assert.That(transform.Inverse(Tuple.Create(low, high)), Is.EqualTo(array).Within(1E-6));
+            Assert.That(transform.Inverse(new[] {low, high}), Is.EqualTo(array).Within(1E-6));
         }
 
     }

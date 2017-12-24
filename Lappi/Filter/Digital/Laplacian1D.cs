@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace Lappi.Filter.Digital {
 
@@ -12,23 +13,46 @@ namespace Lappi.Filter.Digital {
             this.synthesis = new DigitalSampler<T>(synthesis);
         }
 
-        public Tuple<T[], T[]> Forward (T[] source) {
-            T[] downsampled = analysis.Downsample(source, 2, 0);
-            T[] upsampled = synthesis.Upsample(downsampled, 2, 0, source.Length);
-            T[] difference = new T[source.Length];
-            for( int i = 0; i < difference.Length; i++ ) {
-                difference[i] = (dynamic) source[i] - upsampled[i];
+        public T[][] Forward (T[] source, int steps = 1) {
+            T[][] scales = new T[steps + 1][];
+            scales[0] = source;
+            for( int i = 0; i < scales.Length - 1; i++ ) {
+                scales[i + 1] = analysis.Downsample(source, 2, 0);
+                scales[i] = Sub(scales[i], analysis.Upsample(scales[i + 1], 2, 0, scales[i].Length));
             }
-            return Tuple.Create(downsampled, difference);
+            return scales.Reverse().ToArray();
         }
 
-        public T[] Inverse (Tuple<T[], T[]> tuple) => Inverse(tuple.Item1, tuple.Item2);
+        public T[] Inverse (T[][] scales) {
+            for( int i = 1; i < scales.Length; i++ ) {
+                scales[i] = InverseStep(scales[i - 1], scales[i]);
+            }
+            return scales[scales.Length - 1];
+        }
 
-        public T[] Inverse (T[] downsampled, T[] difference) {
+        private T[] InverseStep (T[] downsampled, T[] difference) {
             T[] upsampled = synthesis.Upsample(downsampled, 2, 0, difference.Length);
-            T[] result = new T[difference.Length];
+            return Add(upsampled, difference);
+        }
+
+        private static T[] Add (T[] u, T[] v) {
+            if( u.Length != v.Length ) {
+                throw new ArgumentException();
+            }
+            T[] result = new T[u.Length];
             for( int i = 0; i < result.Length; i++ ) {
-                result[i] = (dynamic) upsampled[i] + difference[i];
+                result[i] = (dynamic) u[i] + v[i];
+            }
+            return result;
+        }
+
+        private static T[] Sub (T[] u, T[] v) {
+            if( u.Length != v.Length ) {
+                throw new ArgumentException();
+            }
+            T[] result = new T[u.Length];
+            for( int i = 0; i < result.Length; i++ ) {
+                result[i] = (dynamic) u[i] - v[i];
             }
             return result;
         }
