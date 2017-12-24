@@ -4,58 +4,44 @@ namespace Lappi.Util {
 
     public static class Arrays {
 
-        public static T[] New<T> (int length) where T : new() {
-            T[] result = new T[length];
-            if( default(T) == null ) {
-                result.Fill(new T());
-            }
-            return result;
-        }
+        public static T[] New<T> (int length) where T : new() => default(T) == null ? New(length, new T()) : new T[length];
 
         public static T[] New<T> (int length, T defaultValue) {
-            T[] result = new T[length];
-            result.Fill(defaultValue);
-            return result;
+            T[] v = new T[length];
+            for( int i = 0; i < v.Length; i++ ) {
+                v[i] = defaultValue;
+            }
+            return v;
         }
 
         public static T[] New<T> (int length, Func<int, T> f) {
             T[] result = new T[length];
-            result.Fill(f);
+            for( int i = 0; i < result.Length; i++ ) {
+                result[i] = f(i);
+            }
             return result;
         }
 
-        public static void Fill<T> (this T[] v, T defaultValue) {
+        public static T[] New<T> (int length, Func<T[], int, T> f) {
+            T[] v = new T[length];
             for( int i = 0; i < v.Length; i++ ) {
-                v[i] = defaultValue;
+                v[i] = f(v, i);
             }
-        }
-
-        public static void Fill<T> (this T[] v, Func<int, T> f) {
-            for( int i = 0; i < v.Length; i++ ) {
-                v[i] = f(i);
-            }
+            return v;
         }
 
         public static T[] Add<T> (this T[] u, T[] v) {
             if( u.Length != v.Length ) {
                 throw new ArgumentException();
             }
-            T[] result = new T[u.Length];
-            for( int i = 0; i < result.Length; i++ ) {
-                result[i] = (dynamic) u[i] + v[i];
-            }
-            return result;
+            return New<T>(u.Length, i => (dynamic) u[i] + v[i]);
         }
 
         public static T[] Sub<T> (this T[] u, T[] v) {
             if( u.Length != v.Length ) {
                 throw new ArgumentException();
             }
-            T[] result = new T[u.Length];
-            for( int i = 0; i < result.Length; i++ ) {
-                result[i] = (dynamic) u[i] - v[i];
-            }
-            return result;
+            return New<T>(u.Length, i => (dynamic) u[i] - v[i]);
         }
 
     }
