@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Lappi {
+namespace Lappi.Util {
 
     [SuppressMessage("ReSharper", "CompareOfFloatsByEqualityOperator")]
     public struct Complex {

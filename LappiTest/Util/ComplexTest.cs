@@ -1,10 +1,10 @@
 ﻿using System;
 
-using Lappi;
+using Lappi.Util;
 
 using NUnit.Framework;
 
-namespace LappiTest {
+namespace LappiTest.Util {
 
     public class ComplexTest {
 

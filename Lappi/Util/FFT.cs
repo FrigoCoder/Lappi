@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Lappi {
+namespace Lappi.Util {
 
     public class Fft {
 

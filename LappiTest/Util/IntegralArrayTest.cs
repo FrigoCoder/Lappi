@@ -1,8 +1,8 @@
-﻿using Lappi.Filter.Digital;
+﻿using Lappi.Util;
 
 using NUnit.Framework;
 
-namespace LappiTest.Filter.Digital {
+namespace LappiTest.Util {
 
     [TestFixture]
     public class IntegralArrayTest {

@@ -1,4 +1,4 @@
-﻿namespace Lappi.Filter.Digital {
+﻿namespace Lappi.Util {
 
     public class IntegralArray<T> where T : new() {
 

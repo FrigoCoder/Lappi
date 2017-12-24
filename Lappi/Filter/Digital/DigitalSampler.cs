@@ -2,6 +2,8 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
+using Lappi.Util;
+
 namespace Lappi.Filter.Digital {
 
     public class DigitalSampler<T> where T : new() {

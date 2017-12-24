@@ -1,6 +1,6 @@
 ﻿using Lappi.Image;
 
-namespace Lappi.Filter.Digital2D {
+namespace Lappi.Filter {
 
     public interface Sampler2D<T> where T : new() {
 
