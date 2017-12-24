@@ -55,33 +55,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ComplexTest.cs" />
-    <Compile Include="FftTest.cs" />
-    <Compile Include="Filter\Analog\DirichletTest.cs" />
-    <Compile Include="Filter\Analog\LinearTest.cs" />
-    <Compile Include="Filter\Digital2D\DigitalSampler2DTest.cs" />
-    <Compile Include="Filter\Digital2D\LaplacianSeparableTest.cs" />
-    <Compile Include="Filter\Digital2D\RadialAdapterTest.cs" />
-    <Compile Include="Filter\Digital\CoefficientAdapterTest.cs" />
-    <Compile Include="Filter\Digital\DigitalAdapterTest.cs" />
-    <Compile Include="Filter\Digital\DigitalSamplerTest.cs" />
-    <Compile Include="Filter\Digital\HighpassAdapterTest.cs" />
-    <Compile Include="Filter\Digital\HighpassSamplerTest.cs" />
-    <Compile Include="Filter\Digital\IntegralArrayTest.cs" />
-    <Compile Include="Filter\Digital\Laplacian1DTest.cs" />
-    <Compile Include="Filter\Digital\Wavelet1DTest.cs" />
-    <Compile Include="Image\ImageTest.cs" />
-    <Compile Include="Image\Rgb8Test.cs" />
-    <Compile Include="Image\YuvDTest.cs" />
+    <Compile Include="**\*.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\ImageTest\512x512_blue.png" />
-    <Content Include="Resources\ImageTest\512x512_green.png" />
-    <Content Include="Resources\ImageTest\512x512_red.png" />
-    <Content Include="Resources\ImageTest\640x480_white.png" />
-    <Content Include="Resources\ImageTest\800x600_black.png" />
-    <Content Include="Resources\ImageTest\black_red_green_blue.png" />
-    <Content Include="Resources\ImageTest\Lenna.png" />
+    <Content Include="Resources\**\*.*">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
