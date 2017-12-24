@@ -2,7 +2,7 @@
 
 namespace Lappi.Filter.Analog {
 
-    public class Linear : AnalogFilter, ResamplingFilter {
+    public class Linear : AnalogFilter {
 
         public double Left => -1;
         public double Right => +1;

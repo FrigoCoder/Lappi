@@ -2,7 +2,7 @@
 
 namespace Lappi.Filter.Analog {
 
-    public class Dirichlet : AnalogFilter, ResamplingFilter {
+    public class Dirichlet : AnalogFilter {
 
         public double Left => -Radius;
         public double Right => Radius;

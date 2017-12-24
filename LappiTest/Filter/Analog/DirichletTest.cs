@@ -35,7 +35,7 @@ namespace LappiTest.Filter.Analog {
             AssertFiltersEqual(new Dirichlet(4), new DirichletNaive(4), 0.125);
         }
 
-        private class DirichletNaive : AnalogFilter, ResamplingFilter {
+        private class DirichletNaive : AnalogFilter {
 
             public double Left => -n;
             public double Right => n;
