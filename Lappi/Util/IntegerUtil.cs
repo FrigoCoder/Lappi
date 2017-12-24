@@ -2,6 +2,12 @@
 
     public static class IntegerUtil {
 
+        public static uint ToUnsigned (this int i) => unchecked((uint) i);
+
+        public static int ToSigned (this uint i) => unchecked((int) i);
+
+        public static int Reverse (this int i) => i.ToUnsigned().Reverse().ToSigned();
+
         public static uint Reverse (this uint i) {
             i = ((i & 0x55555555) << 1) | ((i >> 1) & 0x55555555);
             i = ((i & 0x33333333) << 2) | ((i >> 2) & 0x33333333);
