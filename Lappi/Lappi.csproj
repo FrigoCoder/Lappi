@@ -70,21 +70,21 @@
     <Compile Include="Filter\Analog\Dirichlet.cs" />
     <Compile Include="Filter\Analog\Linear.cs" />
     <Compile Include="Filter\Analog\ResamplingFilter.cs" />
+    <Compile Include="Filter\Digital2D\DigitalSampler2D.cs" />
+    <Compile Include="Filter\Digital2D\Filter2D.cs" />
+    <Compile Include="Filter\Digital2D\Laplacian2D.cs" />
+    <Compile Include="Filter\Digital2D\LaplacianSeparable.cs" />
+    <Compile Include="Filter\Digital2D\RadialAdapter.cs" />
     <Compile Include="Filter\Digital\CDF53.cs" />
     <Compile Include="Filter\Digital\CDF97.cs" />
     <Compile Include="Filter\Digital\CoefficientAdapter.cs" />
     <Compile Include="Filter\Digital\DigitalAdapter.cs" />
     <Compile Include="Filter\Digital\DigitalFilter.cs" />
     <Compile Include="Filter\Digital\DigitalSampler.cs" />
-    <Compile Include="Filter\Digital\DigitalSampler2D.cs" />
-    <Compile Include="Filter\Digital\Filter2D.cs" />
     <Compile Include="Filter\Digital\HighpassAdapter.cs" />
     <Compile Include="Filter\Digital\HighpassSampler.cs" />
     <Compile Include="Filter\Digital\IntegralArray.cs" />
     <Compile Include="Filter\Digital\Laplacian1D.cs" />
-    <Compile Include="Filter\Digital\Laplacian2D.cs" />
-    <Compile Include="Filter\Digital\LaplacianSeparable.cs" />
-    <Compile Include="Filter\Digital\RadialAdapter.cs" />
     <Compile Include="Filter\Digital\Wavelet1D.cs" />
     <Compile Include="Image\Image.cs" />
     <Compile Include="MainForm.cs">
@@ -93,9 +93,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="Image\Rgb8.cs" />
     <Compile Include="Image\YuvD.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">

@@ -19,11 +19,11 @@ namespace Lappi.Image {
             }
         }
 
-        public static bool operator == (Image<T> image1, Image<T> image2) => ReferenceEquals(image1, null) ? ReferenceEquals(image2, null) :
-            image1.Equals(image2);
+        public static bool operator == (Image<T> image1, Image<T> image2) =>
+            ReferenceEquals(image1, null) ? ReferenceEquals(image2, null) : image1.Equals(image2);
 
-        public static bool operator != (Image<T> image1, Image<T> image2) => ReferenceEquals(image1, null) ? !ReferenceEquals(image2, null) :
-            !image1.Equals(image2);
+        public static bool operator != (Image<T> image1, Image<T> image2) =>
+            ReferenceEquals(image1, null) ? !ReferenceEquals(image2, null) : !image1.Equals(image2);
 
         public static Image<T> operator + (Image<T> image1, Image<T> image2) {
             if( image1.Xs != image2.Xs || image1.Ys != image2.Ys ) {

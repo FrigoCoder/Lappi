@@ -1,9 +1,9 @@
 ﻿using Lappi.Filter.Analog;
-using Lappi.Filter.Digital;
+using Lappi.Filter.Digital2D;
 
 using NUnit.Framework;
 
-namespace LappiTest.Filter.Digital {
+namespace LappiTest.Filter.Digital2D {
 
     public class RadialAdapterTest {
 

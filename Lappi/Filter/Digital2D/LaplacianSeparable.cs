@@ -1,8 +1,9 @@
 ﻿using System.Linq;
 
+using Lappi.Filter.Digital;
 using Lappi.Image;
 
-namespace Lappi.Filter.Digital {
+namespace Lappi.Filter.Digital2D {
 
     public class LaplacianSeparable<T> where T : new() {
 

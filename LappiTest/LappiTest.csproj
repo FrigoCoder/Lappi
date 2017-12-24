@@ -46,9 +46,6 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -62,16 +59,16 @@
     <Compile Include="FftTest.cs" />
     <Compile Include="Filter\Analog\DirichletTest.cs" />
     <Compile Include="Filter\Analog\LinearTest.cs" />
+    <Compile Include="Filter\Digital2D\DigitalSampler2DTest.cs" />
+    <Compile Include="Filter\Digital2D\LaplacianSeparableTest.cs" />
+    <Compile Include="Filter\Digital2D\RadialAdapterTest.cs" />
     <Compile Include="Filter\Digital\CoefficientAdapterTest.cs" />
     <Compile Include="Filter\Digital\DigitalAdapterTest.cs" />
-    <Compile Include="Filter\Digital\DigitalSampler2DTest.cs" />
     <Compile Include="Filter\Digital\DigitalSamplerTest.cs" />
     <Compile Include="Filter\Digital\HighpassAdapterTest.cs" />
     <Compile Include="Filter\Digital\HighpassSamplerTest.cs" />
     <Compile Include="Filter\Digital\IntegralArrayTest.cs" />
     <Compile Include="Filter\Digital\Laplacian1DTest.cs" />
-    <Compile Include="Filter\Digital\LaplacianSeparableTest.cs" />
-    <Compile Include="Filter\Digital\RadialAdapterTest.cs" />
     <Compile Include="Filter\Digital\Wavelet1DTest.cs" />
     <Compile Include="Image\ImageTest.cs" />
     <Compile Include="Image\Rgb8Test.cs" />

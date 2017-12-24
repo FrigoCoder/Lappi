@@ -1,4 +1,4 @@
-﻿namespace Lappi.Filter.Digital {
+﻿namespace Lappi.Filter.Digital2D {
 
     public interface Filter2D {
 

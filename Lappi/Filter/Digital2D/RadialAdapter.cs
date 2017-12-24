@@ -2,8 +2,9 @@
 using System.Diagnostics.CodeAnalysis;
 
 using Lappi.Filter.Analog;
+using Lappi.Filter.Digital;
 
-namespace Lappi.Filter.Digital {
+namespace Lappi.Filter.Digital2D {
 
     public class RadialAdapter : Filter2D {
 

@@ -1,10 +1,10 @@
 ﻿using Lappi.Filter.Analog;
-using Lappi.Filter.Digital;
+using Lappi.Filter.Digital2D;
 using Lappi.Image;
 
 using NUnit.Framework;
 
-namespace LappiTest.Filter.Digital {
+namespace LappiTest.Filter.Digital2D {
 
     using Image = Image<double>;
     using DigitalSampler2D = DigitalSampler2D<double>;

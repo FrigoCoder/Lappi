@@ -2,7 +2,7 @@
 
 using Lappi.Image;
 
-namespace Lappi.Filter.Digital {
+namespace Lappi.Filter.Digital2D {
 
     public class DigitalSampler2D<T> where T : new() {
 

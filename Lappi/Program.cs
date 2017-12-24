@@ -2,6 +2,7 @@
 using System.Windows.Forms;
 
 using Lappi.Filter.Digital;
+using Lappi.Filter.Digital2D;
 using Lappi.Image;
 
 namespace Lappi {
