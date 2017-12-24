@@ -1,4 +1,6 @@
-﻿using Lappi.Util;
+﻿using System.Linq;
+
+using Lappi.Util;
 
 namespace Lappi.Filter.Digital {
 
@@ -19,16 +21,8 @@ namespace Lappi.Filter.Digital {
         public double this [int x] => Coefficients[x - Left];
 
         private static double[] CreateCoefficients (DigitalFilter filter) {
-            double sum = Normalize(filter);
+            double sum = filter.Coefficients.Sum();
             return Arrays.New(filter.Right - filter.Left + 1, i => i == -filter.Left ? 1 - filter[0] / sum : -filter[i + filter.Left] / sum);
-        }
-
-        private static double Normalize (DigitalFilter filter) {
-            double sum = 0;
-            for( int i = filter.Left; i <= filter.Right; i++ ) {
-                sum += filter[i];
-            }
-            return sum;
         }
 
     }
