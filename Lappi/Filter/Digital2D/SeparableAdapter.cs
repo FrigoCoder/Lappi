@@ -1,4 +1,5 @@
 ﻿using Lappi.Filter.Digital;
+using Lappi.Util;
 
 namespace Lappi.Filter.Digital2D {
 
@@ -15,18 +16,10 @@ namespace Lappi.Filter.Digital2D {
             Right = filter.Right;
             Top = filter.Left;
             Bottom = filter.Right;
-            Coefficients = new double[Right - Left + 1, Bottom - Top + 1];
-            for( int x = Left; x <= Right; x++ ) {
-                for( int y = Top; y <= Bottom; y++ ) {
-                    this[x, y] = filter[x] * filter[y];
-                }
-            }
+            Coefficients = Arrays.New(Right - Left + 1, Bottom - Top + 1, (x, y) => filter[x + Left] * filter[y + Top]);
         }
 
-        public double this [int x, int y] {
-            get => Coefficients[x - Left, y - Top];
-            private set => Coefficients[x - Left, y - Top] = value;
-        }
+        public double this [int x, int y] => Coefficients[x - Left, y - Top];
 
     }
 

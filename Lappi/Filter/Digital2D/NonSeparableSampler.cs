@@ -14,7 +14,7 @@ namespace Lappi.Filter.Digital2D {
             coefficients = filter.Coefficients;
         }
 
-        public virtual T Sample (Image<T> source, int cx, int cy) {
+        public T Sample (Image<T> source, int cx, int cy) {
             T result = new T();
             double sum = 0;
             for( int x = Math.Max(0, cx + filter.Left); x <= Math.Min(cx + filter.Right, source.Xs - 1); x++ ) {
