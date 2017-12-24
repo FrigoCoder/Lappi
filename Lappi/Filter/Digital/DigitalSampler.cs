@@ -30,29 +30,15 @@ namespace Lappi.Filter.Digital {
             return SampleBoundary(source, center);
         }
 
-        public T[] Convolute (T[] source) {
-            T[] result = new T[source.Length];
-            for( int i = 0; i < result.Length; i++ ) {
-                result[i] = Sample(source, i);
-            }
-            return result;
-        }
+        public T[] Convolute (T[] source) => Arrays.New(source.Length, i => Sample(source, i));
 
-        public T[] Downsample (T[] source, int factor, int shift) {
-            T[] result = new T[(source.Length - shift + factor - 1) / factor];
-            for( int i = 0; i < result.Length; i++ ) {
-                result[i] = Sample(source, i * factor + shift);
-            }
-            return result;
-        }
+        public T[] Downsample (T[] source, int factor, int shift) =>
+            Arrays.New((source.Length - shift + factor - 1) / factor, i => Sample(source, i * factor + shift));
 
         public T[] Upsample (T[] source, int factor, int shift) => Upsample(source, factor, shift, source.Length * factor);
 
         public T[] Upsample (T[] source, int factor, int shift, int length) {
-            T[] v = new T[length];
-            if( default(T) == null ) {
-                v.Fill(new T());
-            }
+            T[] v = Arrays.New<T>(length);
             for( int i = 0; i < source.Length; i++ ) {
                 v[i * factor + shift] = (dynamic) source[i] * factor;
             }

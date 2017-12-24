@@ -1,4 +1,6 @@
-﻿namespace Lappi.Filter.Digital {
+﻿using Lappi.Util;
+
+namespace Lappi.Filter.Digital {
 
     public class HighpassAdapter : DigitalFilter {
 
@@ -17,11 +19,8 @@
         public double this [int x] => Coefficients[x - Left];
 
         private static double[] CreateCoefficients (DigitalFilter filter) {
-            double[] coefficients = new double[filter.Right - filter.Left + 1];
             double sum = Normalize(filter);
-            for( int i = 0; i < coefficients.Length; i++ ) {
-                coefficients[i] = -filter[i + filter.Left] / sum;
-            }
+            double[] coefficients = Arrays.New(filter.Right - filter.Left + 1, i => -filter[i + filter.Left] / sum);
             coefficients[-filter.Left] = 1 - filter[0] / sum;
             return coefficients;
         }

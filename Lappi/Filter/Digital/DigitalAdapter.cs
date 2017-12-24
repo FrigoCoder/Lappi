@@ -2,6 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 
 using Lappi.Filter.Analog;
+using Lappi.Util;
 
 namespace Lappi.Filter.Digital {
 
@@ -16,10 +17,7 @@ namespace Lappi.Filter.Digital {
             Left = NonZeroLeft(analog, scale);
             Right = NonZeroRight(analog, scale);
             Radius = Math.Max(Math.Abs(Left), Math.Abs(Right));
-            Coefficients = new double[Right - Left + 1];
-            for( int i = 0; i < Coefficients.Length; i++ ) {
-                Coefficients[i] = analog[(i + Left) / scale];
-            }
+            Coefficients = Arrays.New(Right - Left + 1, i => analog[(i + Left) / scale]);
         }
 
         public override string ToString () => GetType().Name + "{Left = " + Left + ", Right = " + Right + ", Radius = " + Radius +

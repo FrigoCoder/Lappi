@@ -2,6 +2,8 @@
 using System.Drawing;
 using System.Linq;
 
+using Lappi.Util;
+
 namespace Lappi.Image {
 
     public class Image<T> {
@@ -124,13 +126,7 @@ namespace Lappi.Image {
         }
 
         public T[] this [int y] {
-            get {
-                T[] result = new T[image.Xs];
-                for( int x = 0; x < result.Length; x++ ) {
-                    result[x] = image[x, y];
-                }
-                return result;
-            }
+            get => Arrays.New(image.Xs, x => image[x, y]);
             set {
                 if( value.Length != image.Xs ) {
                     throw new ArgumentException();
@@ -152,13 +148,7 @@ namespace Lappi.Image {
         }
 
         public T[] this [int x] {
-            get {
-                T[] result = new T[image.Ys];
-                for( int y = 0; y < result.Length; y++ ) {
-                    result[y] = image[x, y];
-                }
-                return result;
-            }
+            get => Arrays.New(image.Ys, y => image[x, y]);
             set {
                 if( value.Length != image.Ys ) {
                     throw new ArgumentException();
