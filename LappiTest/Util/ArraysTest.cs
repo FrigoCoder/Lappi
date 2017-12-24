@@ -4,7 +4,25 @@ using NUnit.Framework;
 
 namespace LappiTest.Util {
 
-    public class ArrayUtilTest {
+    public class ArraysTest {
+
+        [Test]
+        public void New_constant_test () {
+            double[] v = Arrays.New(10, 1.23);
+            Assert.That(v.Length, Is.EqualTo(10));
+            foreach( double x in v ) {
+                Assert.That(x, Is.EqualTo(1.23));
+            }
+        }
+
+        [Test]
+        public void New_lambda_test () {
+            double[] v = Arrays.New<double>(10, i => i);
+            Assert.That(v.Length, Is.EqualTo(10));
+            for( int i = 0; i < v.Length; i++ ) {
+                Assert.That(v[i], Is.EqualTo(i));
+            }
+        }
 
         [Test]
         public void Fill_constant_test () {

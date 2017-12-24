@@ -2,7 +2,19 @@
 
 namespace Lappi.Util {
 
-    public static class ArrayUtil {
+    public static class Arrays {
+
+        public static T[] New<T> (int length, T defaultValue) {
+            T[] result = new T[length];
+            result.Fill(defaultValue);
+            return result;
+        }
+
+        public static T[] New<T> (int length, Func<int, T> f) {
+            T[] result = new T[length];
+            result.Fill(f);
+            return result;
+        }
 
         public static void Fill<T> (this T[] v, T defaultValue) {
             for( int i = 0; i < v.Length; i++ ) {
