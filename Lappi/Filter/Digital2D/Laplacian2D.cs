@@ -9,7 +9,7 @@ namespace Lappi.Filter.Digital2D {
         private readonly DigitalSampler2D<T> analysis;
         private readonly DigitalSampler2D<T> synthesis;
 
-        public Laplacian2D (Filter2D analysis, Filter2D synthesis) {
+        public Laplacian2D (DigitalFilter2D analysis, DigitalFilter2D synthesis) {
             this.analysis = new DigitalSampler2D<T>(analysis);
             this.synthesis = new DigitalSampler2D<T>(synthesis);
         }

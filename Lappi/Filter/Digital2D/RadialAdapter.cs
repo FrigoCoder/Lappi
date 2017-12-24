@@ -6,7 +6,7 @@ using Lappi.Filter.Digital;
 
 namespace Lappi.Filter.Digital2D {
 
-    public class RadialAdapter : Filter2D {
+    public class RadialAdapter : DigitalFilter2D {
 
         public int Left { get; }
         public int Right { get; }

@@ -70,7 +70,7 @@
     <Compile Include="Filter\Analog\Dirichlet.cs" />
     <Compile Include="Filter\Analog\Linear.cs" />
     <Compile Include="Filter\Digital2D\DigitalSampler2D.cs" />
-    <Compile Include="Filter\Digital2D\Filter2D.cs" />
+    <Compile Include="Filter\Digital2D\DigitalFilter2D.cs" />
     <Compile Include="Filter\Digital2D\Laplacian2D.cs" />
     <Compile Include="Filter\Digital2D\LaplacianSeparable.cs" />
     <Compile Include="Filter\Digital2D\RadialAdapter.cs" />

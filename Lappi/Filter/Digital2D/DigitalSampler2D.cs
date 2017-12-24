@@ -6,10 +6,10 @@ namespace Lappi.Filter.Digital2D {
 
     public class DigitalSampler2D<T> where T : new() {
 
-        private readonly Filter2D filter;
+        private readonly DigitalFilter2D filter;
         private readonly double[,] coefficients;
 
-        public DigitalSampler2D (Filter2D filter) {
+        public DigitalSampler2D (DigitalFilter2D filter) {
             this.filter = filter;
             coefficients = filter.Coefficients;
         }
