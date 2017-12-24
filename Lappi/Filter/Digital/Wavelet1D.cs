@@ -30,10 +30,11 @@ namespace Lappi.Filter.Digital {
         }
 
         public T[] Inverse (T[][] scales) {
-            for( int i = 1; i < scales.Length; i++ ) {
-                scales[i] = InverseStep(scales[i - 1], scales[i]);
+            T[][] result = (T[][]) scales.Clone();
+            for( int i = 1; i < result.Length; i++ ) {
+                result[i] = InverseStep(result[i - 1], result[i]);
             }
-            return scales[scales.Length - 1];
+            return result[result.Length - 1];
         }
 
         private T[] InverseStep (T[] low, T[] high) {

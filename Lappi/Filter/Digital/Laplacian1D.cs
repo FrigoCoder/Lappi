@@ -25,10 +25,11 @@ namespace Lappi.Filter.Digital {
         }
 
         public T[] Inverse (T[][] scales) {
-            for( int i = 1; i < scales.Length; i++ ) {
-                scales[i] = synthesis.Upsample(scales[i - 1], 2, 0, scales[i].Length).Add(scales[i]);
+            T[][] result = (T[][]) scales.Clone();
+            for( int i = 1; i < result.Length; i++ ) {
+                result[i] = synthesis.Upsample(result[i - 1], 2, 0, result[i].Length).Add(result[i]);
             }
-            return scales[scales.Length - 1];
+            return result[result.Length - 1];
         }
 
     }
