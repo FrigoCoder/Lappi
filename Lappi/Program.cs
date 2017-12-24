@@ -37,7 +37,7 @@ namespace Lappi {
 
             DigitalFilter analysis = new CoefficientAdapter(4, new[] {0.015625, 0, -0.125, 0.25, 0.71875, 0.25, -0.125, 0, 0.015625});
             DigitalFilter synthesis = new CoefficientAdapter(3, new[] {-0.03125, 0, 0.28125, 0.5, 0.28125, 0, -0.03125});
-            LaplacianSeparable<YuvD> transform = new LaplacianSeparable<YuvD>(analysis, synthesis);
+            Laplacian2D<YuvD> transform = new Laplacian2D<YuvD>(analysis, synthesis);
 
             Image<YuvD>[] transformed = transform.Forward(lenna, 5);
             Image<YuvD> reconstructed = transform.Inverse(transformed);

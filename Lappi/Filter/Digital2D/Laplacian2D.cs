@@ -1,17 +1,22 @@
 ﻿using System.Linq;
 
+using Lappi.Filter.Digital;
 using Lappi.Image;
 
 namespace Lappi.Filter.Digital2D {
 
     public class Laplacian2D<T> where T : new() {
 
-        private readonly DigitalSampler2D<T> analysis;
-        private readonly DigitalSampler2D<T> synthesis;
+        private readonly Sampler2D<T> analysis;
+        private readonly Sampler2D<T> synthesis;
 
-        public Laplacian2D (DigitalFilter2D analysis, DigitalFilter2D synthesis) {
-            this.analysis = new DigitalSampler2D<T>(analysis);
-            this.synthesis = new DigitalSampler2D<T>(synthesis);
+        public Laplacian2D (Sampler2D<T> analysis, Sampler2D<T> synthesis) {
+            this.analysis = analysis;
+            this.synthesis = synthesis;
+        }
+
+        public Laplacian2D (DigitalFilter analysis, DigitalFilter synthesis) : this(new DigitalSampler2DSeparable<T>(new DigitalSampler<T>(analysis)),
+            new DigitalSampler2DSeparable<T>(new DigitalSampler<T>(synthesis))) {
         }
 
         public Image<T>[] Forward (Image<T> image, int steps = 1) {
