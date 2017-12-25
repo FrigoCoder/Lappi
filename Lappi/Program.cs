@@ -26,11 +26,7 @@ namespace Lappi {
             Image<YuvD>[] transformed = transform.Forward(lenna, 5);
 
             for( int i = 1; i < transformed.Length; i++ ) {
-                for( int x = 0; x < transformed[i].Xs; x++ ) {
-                    for( int y = 0; y < transformed[i].Ys; y++ ) {
-                        transformed[i][x, y] = new YuvD();
-                    }
-                }
+                transformed[i] = new Image<YuvD>(transformed[i].Xs, transformed[i].Ys, (x, y) => new YuvD());
             }
 
             transformed[0].Save("c:\\temp\\lenna-0.png");
@@ -44,11 +40,7 @@ namespace Lappi {
         }
 
         private static void Normalize (this Image<YuvD> image) {
-            for( int x = 0; x < image.Xs; x++ ) {
-                for( int y = 0; y < image.Ys; y++ ) {
-                    image[x, y] += new YuvD(0.5, 0, 0);
-                }
-            }
+            image.ForEach((x, y) => image[x, y] += new YuvD(0.5, 0, 0));
         }
 
     }

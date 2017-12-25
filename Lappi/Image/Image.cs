@@ -50,13 +50,12 @@ namespace Lappi.Image {
             this.pixels = pixels;
         }
 
+        public void ForEach (Action<int, int> f) => pixels.Foreach((c, y, x) => f(x, y));
+        public void ForEach (Action<int, int, T> f) => pixels.Foreach((c, y, x) => f(x, y, c));
+
         public void Save (string filename) {
             using( Bitmap bitmap = new Bitmap(Xs, Ys) ) {
-                for( int x = 0; x < Xs; x++ ) {
-                    for( int y = 0; y < Ys; y++ ) {
-                        bitmap.SetPixel(x, y, ((dynamic) this[x, y]).ToColor());
-                    }
-                }
+                ForEach((x, y, c) => bitmap.SetPixel(x, y, ((dynamic) c).ToColor()));
                 bitmap.Save(filename);
             }
         }
