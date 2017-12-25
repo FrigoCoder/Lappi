@@ -7,11 +7,9 @@ namespace Lappi.Filter.Digital2D {
     public class NonSeparableSampler<T> : Sampler2D<T> where T : new() {
 
         private readonly DigitalFilter2D filter;
-        private readonly double[,] coefficients;
 
         public NonSeparableSampler (DigitalFilter2D filter) {
             this.filter = filter;
-            coefficients = filter.Coefficients;
         }
 
         public T Sample (Image<T> source, int cx, int cy) {
@@ -19,7 +17,7 @@ namespace Lappi.Filter.Digital2D {
             double sum = 0;
             for( int x = Math.Max(0, cx + filter.Left); x <= Math.Min(cx + filter.Right, source.Xs - 1); x++ ) {
                 for( int y = Math.Max(0, cy + filter.Top); y <= Math.Min(cy + filter.Bottom, source.Ys - 1); y++ ) {
-                    double w = coefficients[x - cx - filter.Left, y - cy - filter.Top];
+                    double w = filter[x - cx, y - cy];
                     result += (dynamic) source[x, y] * w;
                     sum += w;
                 }
