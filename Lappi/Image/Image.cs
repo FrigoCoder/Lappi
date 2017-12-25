@@ -10,14 +10,7 @@ namespace Lappi.Image {
 
         public static Image<T> Load (string filename) {
             using( Bitmap bitmap = new Bitmap(filename) ) {
-                Image<T> image = new Image<T>(bitmap.Width, bitmap.Height);
-                for( int x = 0; x < image.Xs; x++ ) {
-                    for( int y = 0; y < image.Ys; y++ ) {
-                        Color color = bitmap.GetPixel(x, y);
-                        image[x, y] = (T) Activator.CreateInstance(typeof(T), color);
-                    }
-                }
-                return image;
+                return new Image<T>(bitmap.Width, bitmap.Height, (x, y) => (T) Activator.CreateInstance(typeof(T), bitmap.GetPixel(x, y)));
             }
         }
 
@@ -28,29 +21,13 @@ namespace Lappi.Image {
             ReferenceEquals(image1, null) ? !ReferenceEquals(image2, null) : !image1.Equals(image2);
 
         public static Image<T> operator + (Image<T> image1, Image<T> image2) {
-            if( image1.Xs != image2.Xs || image1.Ys != image2.Ys ) {
-                throw new ArgumentException();
-            }
-            Image<T> result = new Image<T>(image1.Xs, image2.Ys);
-            for( int x = 0; x < result.Xs; x++ ) {
-                for( int y = 0; y < result.Ys; y++ ) {
-                    result[x, y] = (dynamic) image1[x, y] + image2[x, y];
-                }
-            }
-            return result;
+            Preconditions.Require<ArgumentException>(image1.Xs == image2.Xs && image1.Ys == image2.Ys);
+            return new Image<T>(image1.Xs, image1.Ys, (x, y) => (dynamic) image1[x, y] + image2[x, y]);
         }
 
         public static Image<T> operator - (Image<T> image1, Image<T> image2) {
-            if( image1.Xs != image2.Xs || image1.Ys != image2.Ys ) {
-                throw new ArgumentException();
-            }
-            Image<T> result = new Image<T>(image1.Xs, image2.Ys);
-            for( int x = 0; x < result.Xs; x++ ) {
-                for( int y = 0; y < result.Ys; y++ ) {
-                    result[x, y] = (dynamic) image1[x, y] - image2[x, y];
-                }
-            }
-            return result;
+            Preconditions.Require<ArgumentException>(image1.Xs == image2.Xs && image1.Ys == image2.Ys);
+            return new Image<T>(image1.Xs, image1.Ys, (x, y) => (dynamic) image1[x, y] - image2[x, y]);
         }
 
         public readonly int Xs;
@@ -60,6 +37,9 @@ namespace Lappi.Image {
         private readonly T[,] pixels;
 
         public Image (int xs, int ys) : this(Arrays.New<T>(ys, xs)) {
+        }
+
+        public Image (int xs, int ys, Func<int, int, T> f) : this(Arrays.New(ys, xs, (y, x) => f(x, y))) {
         }
 
         public Image (T[,] pixels) {
@@ -120,9 +100,7 @@ namespace Lappi.Image {
         public T[] this [int y] {
             get => Arrays.New(image.Xs, x => image[x, y]);
             set {
-                if( value.Length != image.Xs ) {
-                    throw new ArgumentException();
-                }
+                Preconditions.Require<ArgumentException>(value.Length == image.Xs);
                 for( int x = 0; x < image.Xs; x++ ) {
                     image[x, y] = value[x];
                 }
@@ -142,9 +120,7 @@ namespace Lappi.Image {
         public T[] this [int x] {
             get => Arrays.New(image.Ys, y => image[x, y]);
             set {
-                if( value.Length != image.Ys ) {
-                    throw new ArgumentException();
-                }
+                Preconditions.Require<ArgumentException>(value.Length == image.Ys);
                 for( int y = 0; y < image.Ys; y++ ) {
                     image[x, y] = value[y];
                 }
