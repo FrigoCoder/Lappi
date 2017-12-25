@@ -4,17 +4,17 @@ namespace Lappi.Util {
 
     public class Fft {
 
-        public Complex[] Forward (Complex[] T) {
-            Complex[] F = (Complex[]) T.Clone();
-            Core(F, -1.0);
-            Normalize(F);
-            return F;
+        public Complex[] Forward (Complex[] time) {
+            Complex[] freq = (Complex[]) time.Clone();
+            Core(freq, -1.0);
+            Normalize(freq);
+            return freq;
         }
 
-        public Complex[] Inverse (Complex[] F) {
-            Complex[] T = (Complex[]) F.Clone();
-            Core(T, 1.0);
-            return T;
+        public Complex[] Inverse (Complex[] freq) {
+            Complex[] time = (Complex[]) freq.Clone();
+            Core(time, 1.0);
+            return time;
         }
 
         private void Core (Complex[] v, double sign) {
@@ -46,9 +46,9 @@ namespace Lappi.Util {
             }
         }
 
-        private void Normalize (Complex[] F) {
-            for( int f = 0; f < F.Length; f++ ) {
-                F[f] /= F.Length;
+        private void Normalize (Complex[] freq) {
+            for( int f = 0; f < freq.Length; f++ ) {
+                freq[f] /= freq.Length;
             }
         }
 

@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 
 using Lappi.Filter.Analog;
 using Lappi.Filter.Digital;
