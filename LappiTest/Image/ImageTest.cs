@@ -171,16 +171,8 @@ namespace LappiTest.Image {
             Assert.That(image.ToString(), Is.EqualTo("{{1, 2, 3}, {4, 5, 6}}"));
         }
 
-        private Image<T> CreateRandomImage<T> (int xs, int ys) where T : new() {
-            Image<T> result = new Image<T>(xs, ys);
-            for( int x = 0; x < xs; x++ ) {
-                for( int y = 0; y < ys; y++ ) {
-                    Color color = Color.FromArgb(random.Next(256), random.Next(256), random.Next(256));
-                    result[x, y] = (T) Activator.CreateInstance(typeof(T), color);
-                }
-            }
-            return result;
-        }
+        private Image<T> CreateRandomImage<T> (int xs, int ys) where T : new() => new Image<T>(xs, ys,
+            (x, y) => Colors.To<T>(Color.FromArgb(random.Next(256), random.Next(256), random.Next(256))));
 
         private void AssertDimensions<T> (Image<T> image, int xs, int ys) where T : new() {
             Assert.That(image.Xs, Is.EqualTo(xs));
@@ -188,15 +180,13 @@ namespace LappiTest.Image {
         }
 
         private void AssertPixel<T> (Image<T> image, int x, int y, Color color) where T : new() {
-            T value = (T) Activator.CreateInstance(typeof(T), color);
-            Assert.That(image[x, y], Is.EqualTo(value));
+            Assert.That(image[x, y], Is.EqualTo(Colors.To<T>(color)));
         }
 
         private void AssertSolidColor<T> (Image<T> image, Color color) where T : new() {
-            T value = (T) Activator.CreateInstance(typeof(T), color);
             for( int x = 0; x < image.Xs; x++ ) {
                 for( int y = 0; y < image.Ys; y++ ) {
-                    Assert.That(image[x, y], Is.EqualTo(value));
+                    Assert.That(image[x, y], Is.EqualTo(Colors.To<T>(color)));
                 }
             }
         }

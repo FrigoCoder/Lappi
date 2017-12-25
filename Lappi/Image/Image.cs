@@ -10,7 +10,7 @@ namespace Lappi.Image {
 
         public static Image<T> Load (string filename) {
             using( Bitmap bitmap = new Bitmap(filename) ) {
-                return new Image<T>(bitmap.Width, bitmap.Height, (x, y) => (T) Activator.CreateInstance(typeof(T), bitmap.GetPixel(x, y)));
+                return new Image<T>(bitmap.Width, bitmap.Height, (x, y) => Colors.To<T>(bitmap.GetPixel(x, y)));
             }
         }
 
