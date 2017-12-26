@@ -14,22 +14,14 @@ namespace LappiTest.Image {
         public static void AssertEquals<T> (Image<T> actual, Image<T> expected) where T : new() {
             Assert.That(actual.Xs, Is.EqualTo(expected.Xs));
             Assert.That(actual.Ys, Is.EqualTo(expected.Ys));
-            for( int x = 0; x < actual.Xs; x++ ) {
-                for( int y = 0; y < actual.Ys; y++ ) {
-                    Assert.That(actual[x, y], Is.EqualTo(expected[x, y]).Within(1E-14), "Fails at [" + x + ", " + y + "]");
-                }
-            }
+            actual.ForEach((x, y) => Assert.That(actual[x, y], Is.EqualTo(expected[x, y]).Within(1E-14), "Fails at [" + x + ", " + y + "]"));
         }
 
         public static void AssertEquals (Image<YuvD> actual, Image<YuvD> expected) {
             Comparison<YuvD> comparer = (a, b) => Math.Abs(a.Y - b.Y) + Math.Abs(a.U - b.U) + Math.Abs(a.V - b.V) < 1E-15 ? 0 : 1;
             Assert.That(actual.Xs, Is.EqualTo(expected.Xs));
             Assert.That(actual.Ys, Is.EqualTo(expected.Ys));
-            for( int x = 0; x < actual.Xs; x++ ) {
-                for( int y = 0; y < actual.Ys; y++ ) {
-                    Assert.That(actual[x, y], Is.EqualTo(expected[x, y]).Using(comparer));
-                }
-            }
+            actual.ForEach((x, y) => Assert.That(actual[x, y], Is.EqualTo(expected[x, y]).Using(comparer), "Fails at [" + x + ", " + y + "]"));
         }
 
         private readonly Random random = new Random();
@@ -102,11 +94,7 @@ namespace LappiTest.Image {
             Image<double> image = new Image<double>(pixels);
             Assert.That(image.Xs, Is.EqualTo(3));
             Assert.That(image.Ys, Is.EqualTo(2));
-            for( int x = 0; x < 3; x++ ) {
-                for( int y = 0; y < 2; y++ ) {
-                    Assert.That(image[x, y], Is.EqualTo(pixels[y, x]));
-                }
-            }
+            image.ForEach((x, y) => Assert.That(image[x, y], Is.EqualTo(pixels[y, x])));
         }
 
         [Test]
@@ -184,11 +172,7 @@ namespace LappiTest.Image {
         }
 
         private void AssertSolidColor<T> (Image<T> image, Color color) where T : new() {
-            for( int x = 0; x < image.Xs; x++ ) {
-                for( int y = 0; y < image.Ys; y++ ) {
-                    Assert.That(image[x, y], Is.EqualTo(Colors.To<T>(color)));
-                }
-            }
+            image.ForEach((x, y) => Assert.That(image[x, y], Is.EqualTo(Colors.To<T>(color))));
         }
 
     }
