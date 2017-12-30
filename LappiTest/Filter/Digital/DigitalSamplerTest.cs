@@ -45,14 +45,14 @@ namespace LappiTest.Filter.Digital {
 
         [TestCase]
         public void Sample_beyond_left_boundary_throws_exception () {
-            Assert.That(() => linear2.Sample(source, -2), Throws.TypeOf<IndexOutOfRangeException>());
-            Assert.That(() => linear2.Sample(source, -1), Throws.TypeOf<IndexOutOfRangeException>());
+            Assert.That(() => linear2.Sample(source, -2), Throws.TypeOf<ArgumentException>());
+            Assert.That(() => linear2.Sample(source, -1), Throws.TypeOf<ArgumentException>());
         }
 
         [TestCase]
         public void Sample_beyond_right_boundary_throws_exception () {
-            Assert.That(() => linear2.Sample(source, source.Length), Throws.TypeOf<IndexOutOfRangeException>());
-            Assert.That(() => linear2.Sample(source, source.Length + 1), Throws.TypeOf<IndexOutOfRangeException>());
+            Assert.That(() => linear2.Sample(source, source.Length), Throws.TypeOf<ArgumentException>());
+            Assert.That(() => linear2.Sample(source, source.Length + 1), Throws.TypeOf<ArgumentException>());
         }
 
         [TestCase]
