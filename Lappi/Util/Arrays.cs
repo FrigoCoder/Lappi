@@ -6,7 +6,7 @@ namespace Lappi.Util {
 
         public static T[] New<T> (int length, T defaultValue) {
             T[] v = new T[length];
-            for( int i = 0; i < v.Length; i++ ) {
+            for( int i = 0; i < length; i++ ) {
                 v[i] = defaultValue;
             }
             return v;
@@ -14,7 +14,7 @@ namespace Lappi.Util {
 
         public static T[] New<T> (int length, Func<int, T> f) {
             T[] v = new T[length];
-            for( int i = 0; i < v.Length; i++ ) {
+            for( int i = 0; i < length; i++ ) {
                 v[i] = f(i);
             }
             return v;
@@ -22,7 +22,7 @@ namespace Lappi.Util {
 
         public static T[] New<T> (int length, Func<int, T[], T> f) {
             T[] v = new T[length];
-            for( int i = 0; i < v.Length; i++ ) {
+            for( int i = 0; i < length; i++ ) {
                 v[i] = f(i, v);
             }
             return v;
@@ -30,8 +30,8 @@ namespace Lappi.Util {
 
         public static T[,] New<T> (int length1, int length2, T defaultValue) {
             T[,] v = new T[length1, length2];
-            for( int i = 0; i < v.GetLength(0); i++ ) {
-                for( int j = 0; j < v.GetLength(1); j++ ) {
+            for( int i = 0; i < length1; i++ ) {
+                for( int j = 0; j < length2; j++ ) {
                     v[i, j] = defaultValue;
                 }
             }
@@ -40,8 +40,8 @@ namespace Lappi.Util {
 
         public static T[,] New<T> (int length1, int length2, Func<int, int, T> f) {
             T[,] v = new T[length1, length2];
-            for( int i = 0; i < v.GetLength(0); i++ ) {
-                for( int j = 0; j < v.GetLength(1); j++ ) {
+            for( int i = 0; i < length1; i++ ) {
+                for( int j = 0; j < length2; j++ ) {
                     v[i, j] = f(i, j);
                 }
             }
@@ -50,8 +50,8 @@ namespace Lappi.Util {
 
         public static T[,] New<T> (int length1, int length2, Func<int, int, T[,], T> f) {
             T[,] v = new T[length1, length2];
-            for( int i = 0; i < v.GetLength(0); i++ ) {
-                for( int j = 0; j < v.GetLength(1); j++ ) {
+            for( int i = 0; i < length1; i++ ) {
+                for( int j = 0; j < length2; j++ ) {
                     v[i, j] = f(i, j, v);
                 }
             }
