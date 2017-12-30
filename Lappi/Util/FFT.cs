@@ -18,7 +18,7 @@ namespace Lappi.Util {
         }
 
         private void Core (Complex[] v, double sign) {
-            Preconditions.Require<ArgumentException>(v.Length != 0 && (v.Length & (v.Length - 1)) == 0);
+            Preconditions.Require(v.Length != 0 && (v.Length & (v.Length - 1)) == 0);
             for( int blockSize = v.Length; blockSize > 1; blockSize /= 2 ) {
                 Complex root = Complex.Cis(sign * 2.0 * Math.PI / blockSize);
                 Complex twiddle = 1;

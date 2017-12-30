@@ -65,12 +65,12 @@ namespace Lappi.Util {
         }
 
         public static T[] Add<T> (this T[] u, T[] v) {
-            Preconditions.Require<ArgumentException>(u.Length == v.Length);
+            Preconditions.Require(u.Length == v.Length);
             return New<T>(u.Length, i => (dynamic) u[i] + v[i]);
         }
 
         public static T[] Sub<T> (this T[] u, T[] v) {
-            Preconditions.Require<ArgumentException>(u.Length == v.Length);
+            Preconditions.Require(u.Length == v.Length);
             return New<T>(u.Length, i => (dynamic) u[i] - v[i]);
         }
 

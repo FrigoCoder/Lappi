@@ -21,7 +21,7 @@ namespace Lappi.Filter.Digital {
         }
 
         public virtual T Sample (T[] source, int center) {
-            Preconditions.Require<IndexOutOfRangeException>(0 <= center && center < source.Length);
+            Preconditions.Require(0 <= center && center < source.Length);
             if( 0 <= center + filter.Left && center + filter.Right < coefficients.Length ) {
                 return SampleInner(source, center);
             }

@@ -21,12 +21,12 @@ namespace Lappi.Image {
             ReferenceEquals(image1, null) ? !ReferenceEquals(image2, null) : !image1.Equals(image2);
 
         public static Image<T> operator + (Image<T> image1, Image<T> image2) {
-            Preconditions.Require<ArgumentException>(image1.Xs == image2.Xs && image1.Ys == image2.Ys);
+            Preconditions.Require(image1.Xs == image2.Xs && image1.Ys == image2.Ys);
             return new Image<T>(image1.Xs, image1.Ys, (x, y) => (dynamic) image1[x, y] + image2[x, y]);
         }
 
         public static Image<T> operator - (Image<T> image1, Image<T> image2) {
-            Preconditions.Require<ArgumentException>(image1.Xs == image2.Xs && image1.Ys == image2.Ys);
+            Preconditions.Require(image1.Xs == image2.Xs && image1.Ys == image2.Ys);
             return new Image<T>(image1.Xs, image1.Ys, (x, y) => (dynamic) image1[x, y] - image2[x, y]);
         }
 
@@ -99,7 +99,7 @@ namespace Lappi.Image {
         public T[] this [int y] {
             get => Arrays.New(image.Xs, x => image[x, y]);
             set {
-                Preconditions.Require<ArgumentException>(value.Length == image.Xs);
+                Preconditions.Require(value.Length == image.Xs);
                 for( int x = 0; x < image.Xs; x++ ) {
                     image[x, y] = value[x];
                 }
@@ -119,7 +119,7 @@ namespace Lappi.Image {
         public T[] this [int x] {
             get => Arrays.New(image.Ys, y => image[x, y]);
             set {
-                Preconditions.Require<ArgumentException>(value.Length == image.Ys);
+                Preconditions.Require(value.Length == image.Ys);
                 for( int y = 0; y < image.Ys; y++ ) {
                     image[x, y] = value[y];
                 }
