@@ -8,7 +8,7 @@ namespace LappiTest.Util {
 
         [Test]
         public void New_value_type () {
-            double[] v = Arrays.New<double>(10);
+            double[] v = Arrays.New(10, new double());
             Assert.That(v.Length, Is.EqualTo(10));
             foreach( double x in v ) {
                 Assert.That(x, Is.EqualTo(0.0));
@@ -17,7 +17,7 @@ namespace LappiTest.Util {
 
         [Test]
         public void New_reference_type () {
-            object[] v = Arrays.New<object>(10);
+            object[] v = Arrays.New(10, new object());
             Assert.That(v.Length, Is.EqualTo(10));
             Assert.That(v[0], Is.TypeOf<object>());
             foreach( object t in v ) {
@@ -159,3 +159,4 @@ namespace LappiTest.Util {
     }
 
 }
+
