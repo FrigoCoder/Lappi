@@ -45,7 +45,7 @@ namespace LappiTest.Util {
 
         [Test]
         public void New_2d_value_type () {
-            double[,] v = Arrays.New<double>(10, 11);
+            double[,] v = Arrays.New(10, 11, new double());
             Assert.That(v.GetLength(0), Is.EqualTo(10));
             Assert.That(v.GetLength(1), Is.EqualTo(11));
             for( int i = 0; i < v.GetLength(0); i++ ) {
@@ -57,7 +57,7 @@ namespace LappiTest.Util {
 
         [Test]
         public void New_2d_reference_type () {
-            object[,] v = Arrays.New<object>(10, 11);
+            object[,] v = Arrays.New(10, 11, new object());
             Assert.That(v.GetLength(0), Is.EqualTo(10));
             Assert.That(v.GetLength(1), Is.EqualTo(11));
             Assert.That(v[0, 0], Is.TypeOf<object>());
@@ -159,4 +159,3 @@ namespace LappiTest.Util {
     }
 
 }
-

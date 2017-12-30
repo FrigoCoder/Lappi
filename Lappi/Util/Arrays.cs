@@ -28,14 +28,11 @@ namespace Lappi.Util {
             return v;
         }
 
-        public static T[,] New<T> (int length1, int length2) where T : new() {
+        public static T[,] New<T> (int length1, int length2, T defaultValue) {
             T[,] v = new T[length1, length2];
-            if( default(T) == null ) {
-                T x = new T();
-                for( int i = 0; i < v.GetLength(0); i++ ) {
-                    for( int j = 0; j < v.GetLength(1); j++ ) {
-                        v[i, j] = x;
-                    }
+            for( int i = 0; i < v.GetLength(0); i++ ) {
+                for( int j = 0; j < v.GetLength(1); j++ ) {
+                    v[i, j] = defaultValue;
                 }
             }
             return v;

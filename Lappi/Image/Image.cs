@@ -36,7 +36,7 @@ namespace Lappi.Image {
         public readonly ColumnIndexer<T> Columns;
         private readonly T[,] pixels;
 
-        public Image (int xs, int ys) : this(Arrays.New<T>(ys, xs)) {
+        public Image (int xs, int ys) : this(Arrays.New(ys, xs, new T())) {
         }
 
         public Image (int xs, int ys, Func<int, int, T> f) : this(Arrays.New(ys, xs, (y, x) => f(x, y))) {
