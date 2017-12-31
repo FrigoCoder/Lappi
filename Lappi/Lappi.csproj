@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{027D5156-D77E-44A6-9CFF-750708F12A6E}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <RootNamespace>Lappi</RootNamespace>
     <AssemblyName>Lappi</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
