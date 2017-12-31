@@ -9,8 +9,8 @@ namespace Lappi {
         public static void Main () {
             Image<YuvD> lenna = Image<YuvD>.Load("Resources\\Lenna.png");
 
-            Sampler2D<YuvD> analysis = new SeparableSampler<YuvD>(new DigitalSampler<YuvD>(new Dirichlet3BoundaryHandler()));
-            Sampler2D<YuvD> synthesis = new SeparableSampler<YuvD>(new DigitalSampler<YuvD>(new Dirichlet2BoundaryHandler()));
+            Sampler2D<YuvD> analysis = new SeparableSampler<YuvD>(new DigitalSampler<YuvD>(new DirichletBoundaryHandler(3)));
+            Sampler2D<YuvD> synthesis = new SeparableSampler<YuvD>(new DigitalSampler<YuvD>(new DirichletBoundaryHandler(2)));
 
             Laplacian2D<YuvD> transform = new Laplacian2D<YuvD>(analysis, synthesis);
             Image<YuvD>[] transformed = transform.Forward(lenna, 5);
