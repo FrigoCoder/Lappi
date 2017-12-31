@@ -19,8 +19,14 @@ namespace Lappi {
             // DigitalFilter2D analysis = new SeparableAdapter(new DigitalAdapter(new Dirichlet(3), 2.0));
             // DigitalFilter2D synthesis = new SeparableAdapter(new DigitalAdapter(new Dirichlet(2), 2.0));
 
-            DigitalFilter analysis = new DigitalAdapter(new Dirichlet(3), 2.0);
-            DigitalFilter synthesis = new DigitalAdapter(new Dirichlet(2), 2.0);
+            //            DigitalFilter analysis = new DigitalAdapter(new Dirichlet(3), 2.0);
+            //            DigitalFilter synthesis = new DigitalAdapter(new Dirichlet(2), 2.0);
+
+            //            Sampler2D<YuvD> analysis = new SeparableSampler<YuvD>(new DigitalSampler<YuvD>(new Dirichlet3BoundaryHandler()));
+            //            Sampler2D<YuvD> synthesis = new SeparableSampler<YuvD>(new DigitalSampler<YuvD>(new Dirichlet2BoundaryHandler()));
+
+            Sampler2D<YuvD> analysis = new SeparableSampler<YuvD>(new DigitalSampler<YuvD>(new DigitalAdapter(new Dirichlet(3), 2.0)));
+            Sampler2D<YuvD> synthesis = new SeparableSampler<YuvD>(new DigitalSampler<YuvD>(new DigitalAdapter(new Dirichlet(2), 2.0)));
 
             Laplacian2D<YuvD> transform = new Laplacian2D<YuvD>(analysis, synthesis);
             Image<YuvD>[] transformed = transform.Forward(lenna, 5);
@@ -29,14 +35,14 @@ namespace Lappi {
                 transformed[i] = new Image<YuvD>(transformed[i].Xs, transformed[i].Ys, (x, y) => new YuvD());
             }
 
+            Image<YuvD> reconstructed = transform.Inverse(transformed);
+            reconstructed.Save("c:\\temp\\lenna-r.png");
+
             transformed[0].Save("c:\\temp\\lenna-0.png");
             for( int i = 1; i < transformed.Length; i++ ) {
                 transformed[i].Normalize();
                 transformed[i].Save($"c:\\temp\\lenna-{i}.png");
             }
-
-            Image<YuvD> reconstructed = transform.Inverse(transformed);
-            reconstructed.Save("c:\\temp\\lenna-r.png");
         }
 
         private static void Normalize (this Image<YuvD> image) {
