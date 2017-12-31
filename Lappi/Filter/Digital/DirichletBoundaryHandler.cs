@@ -26,12 +26,11 @@ namespace Lappi.Filter.Digital {
 
         public DigitalFilter GetFilter (int index, int length) {
             Preconditions.Require(0 <= index && index < length);
-            if( index < max * 2 - 1 ) {
+            if( leftFilters.ContainsKey(index) ) {
                 return leftFilters[index];
             }
-            index = length - 1 - index;
-            if( index < max * 2 - 1 ) {
-                return rightFilters[index];
+            if( rightFilters.ContainsKey(length - 1 - index) ) {
+                return rightFilters[length - 1 - index];
             }
             return maxFilter;
         }
