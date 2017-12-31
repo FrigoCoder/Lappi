@@ -37,7 +37,7 @@ namespace LappiTest.Filter.Digital {
         public void Convolute_nulls_constant_array () {
             double[] constant = {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2};
             double[] expected = new double[constant.Length];
-            Assert.That(dirichlet4.Convolute(constant), Is.EqualTo(expected));
+            Assert.That(dirichlet4.Convolute(constant), Is.EqualTo(expected).Within(1E-15));
         }
 
         [Ignore("#1: DigitalSampler normalization bug - Lowpass and highpass filters are inconsistent due to boundary handling")]

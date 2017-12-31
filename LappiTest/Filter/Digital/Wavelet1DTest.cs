@@ -27,7 +27,7 @@ namespace LappiTest.Filter.Digital {
             Wavelet1D wavelet = new Wavelet1D(lowpass, highpass, lowpass, highpass);
             double[] expected = {-0.5, -0.5, -0.5, -0.5, -0.5, 55.6666666666666666};
             double[] actual = wavelet.Forward(source)[1];
-            Assert.That(actual, Is.EqualTo(expected).Within(1E-15),
+            Assert.That(actual, Is.EqualTo(expected).Within(1E-14),
                 "\nExpected: " + string.Join(", ", expected) + "\nActual: " + string.Join(", ", actual));
         }
 

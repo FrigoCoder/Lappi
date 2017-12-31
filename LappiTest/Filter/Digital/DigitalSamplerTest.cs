@@ -39,7 +39,7 @@ namespace LappiTest.Filter.Digital {
         [TestCase]
         public void Sample_with_scale_2_linear_filter_blurs_linearly () {
             for( int i = 0; i < source.Length; i++ ) {
-                Assert.That(linear2.Sample(source, i), Is.EqualTo(blurred[i]));
+                Assert.That(linear2.Sample(source, i), Is.EqualTo(blurred[i]).Within(1E-14));
             }
         }
 
@@ -62,12 +62,12 @@ namespace LappiTest.Filter.Digital {
 
         [TestCase]
         public void Convolute_with_scale_2_linear_filter_blurs_linearly () {
-            Assert.That(linear2.Convolute(source), Is.EqualTo(blurred));
+            Assert.That(linear2.Convolute(source), Is.EqualTo(blurred).Within(1E-14));
         }
 
         [TestCase]
         public void Convolute_with_lowpass_filter_preserves_constant_array () {
-            Assert.That(dirichlet4.Convolute(constant), Is.EqualTo(constant));
+            Assert.That(dirichlet4.Convolute(constant), Is.EqualTo(constant).Within(1E-15));
         }
 
         [Ignore("#1: DigitalSampler normalization bug - Lowpass and highpass filters are inconsistent due to boundary handling")]
@@ -128,14 +128,14 @@ namespace LappiTest.Filter.Digital {
         [TestCase]
         public void Downsample_with_factor_2_and_shift_1 () {
             double[] expected = {4.5, 16.5, 32.333333333333333333333333333333};
-            Assert.That(linear2.Downsample(source, 2, 1), Is.EqualTo(expected));
+            Assert.That(linear2.Downsample(source, 2, 1), Is.EqualTo(expected).Within(1E-14));
         }
 
         [TestCase]
         public void Downsample_can_handle_odd_length_arrays_with_shift_0 () {
             double[] odd = {1, 4, 9, 16, 25};
             double[] expected = {2, 9.5, 22};
-            Assert.That(linear2.Downsample(odd, 2, 0), Is.EqualTo(expected));
+            Assert.That(linear2.Downsample(odd, 2, 0), Is.EqualTo(expected).Within(1E-14));
         }
 
         [TestCase]
