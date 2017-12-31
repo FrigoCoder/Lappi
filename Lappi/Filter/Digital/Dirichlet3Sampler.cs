@@ -41,11 +41,12 @@ namespace Lappi.Filter.Digital {
         public T[] Upsample (T[] source, int factor, int shift) => Upsample(source, factor, shift, source.Length * factor);
 
         public T[] Upsample (T[] source, int factor, int shift, int length) {
+            Preconditions.Require(factor == 2 && shift == 0);
             T[] v = Arrays.New(length, new T());
             for( int i = 0; i < source.Length; i++ ) {
                 v[i * factor + shift] = (dynamic) source[i] * factor;
             }
-            return Convolute(v);
+            return Arrays.New(length, i => i % 2 == 0 ? (T) ((dynamic) v[i] * 0.5) : Sample(v, i));
         }
 
     }
