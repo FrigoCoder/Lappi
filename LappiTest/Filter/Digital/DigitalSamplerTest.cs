@@ -23,11 +23,11 @@ namespace LappiTest.Filter.Digital {
         private readonly double[] nyquist =
             {2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2, 2, -2};
 
-        private readonly DigitalSampler linear1 = new DigitalSampler(new DigitalAdapter(new Linear(), 1.0));
-        private readonly DigitalSampler linear2 = new DigitalSampler(new DigitalAdapter(new Linear(), 2.0));
-        private readonly DigitalSampler linear2Highpass = new DigitalSampler(new HighpassAdapter(new DigitalAdapter(new Linear(), 2.0)));
-        private readonly DigitalSampler dirichlet4 = new DigitalSampler(new DigitalAdapter(new Dirichlet(4.0), 2.0));
-        private readonly DigitalSampler dirichlet4Highpass = new DigitalSampler(new HighpassAdapter(new DigitalAdapter(new Dirichlet(4.0), 2.0)));
+        private readonly Sampler1D<double> linear1 = new DigitalSampler(new DigitalAdapter(new Linear(), 1.0));
+        private readonly Sampler1D<double> linear2 = new DigitalSampler(new DigitalAdapter(new Linear(), 2.0));
+        private readonly Sampler1D<double> linear2Highpass = new DigitalSampler(new HighpassAdapter(new DigitalAdapter(new Linear(), 2.0)));
+        private readonly Sampler1D<double> dirichlet4 = new DigitalSampler(new DigitalAdapter(new Dirichlet(4.0), 2.0));
+        private readonly Sampler1D<double> dirichlet4Highpass = new DigitalSampler(new HighpassAdapter(new DigitalAdapter(new Dirichlet(4.0), 2.0)));
 
         [TestCase]
         public void Sample_with_scale_1_linear_filter_returns_array_value () {
@@ -108,7 +108,7 @@ namespace LappiTest.Filter.Digital {
 
         [TestCase]
         public void Convolute_can_handle_float_arrays () {
-            DigitalSampler<float> sampler = new DigitalSampler<float>(new DigitalAdapter(new Linear(), 2.0));
+            Sampler1D<float> sampler = new DigitalSampler<float>(new DigitalAdapter(new Linear(), 2.0));
             float[] array = {1, 4, 9, 16, 25, 36};
             float[] expected = {2, 4.5f, 9.5f, 16.5f, 25.5f, 32.333333333333333333333333333333f};
             Assert.That(sampler.Convolute(array), Is.EqualTo(expected));

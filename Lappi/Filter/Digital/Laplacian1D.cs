@@ -4,12 +4,16 @@ namespace Lappi.Filter.Digital {
 
     public class Laplacian1D<T> where T : new() {
 
-        private readonly DigitalSampler<T> analysis;
-        private readonly DigitalSampler<T> synthesis;
+        private readonly Sampler1D<T> analysis;
+        private readonly Sampler1D<T> synthesis;
 
-        public Laplacian1D (DigitalFilter analysis, DigitalFilter synthesis) {
-            this.analysis = new DigitalSampler<T>(analysis);
-            this.synthesis = new DigitalSampler<T>(synthesis);
+        public Laplacian1D (DigitalFilter analysis, DigitalFilter synthesis) :
+            this(new DigitalSampler<T>(analysis), new DigitalSampler<T>(synthesis)) {
+        }
+
+        public Laplacian1D (Sampler1D<T> analysis, Sampler1D<T> synthesis) {
+            this.analysis = analysis;
+            this.synthesis = synthesis;
         }
 
         public T[][] Forward (T[] source, int steps = 1) {

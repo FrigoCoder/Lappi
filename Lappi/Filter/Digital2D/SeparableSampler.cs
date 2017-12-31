@@ -7,9 +7,9 @@ namespace Lappi.Filter.Digital2D {
 
     public class SeparableSampler<T> : Sampler2D<T> where T : new() {
 
-        private readonly DigitalSampler<T> sampler;
+        private readonly Sampler1D<T> sampler;
 
-        public SeparableSampler (DigitalSampler<T> sampler) {
+        public SeparableSampler (Sampler1D<T> sampler) {
             this.sampler = sampler;
         }
 

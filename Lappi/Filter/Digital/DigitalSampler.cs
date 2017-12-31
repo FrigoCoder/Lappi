@@ -2,7 +2,7 @@
 
 namespace Lappi.Filter.Digital {
 
-    public class DigitalSampler<T> where T : new() {
+    public class DigitalSampler<T> : Sampler1D<T> where T : new() {
 
         private readonly BoundaryHandler filters;
 

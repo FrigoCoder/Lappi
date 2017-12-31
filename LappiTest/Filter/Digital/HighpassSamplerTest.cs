@@ -15,9 +15,9 @@ namespace LappiTest.Filter.Digital {
 
         private readonly double[] source = {1, 4, 9, 16, 25, 36};
         private readonly double[] blurred = {2, 4.5, 9.5, 16.5, 25.5, 32.333333333333333333333333333333};
-        private readonly DigitalSampler linear2 = new HighpassSampler(new DigitalAdapter(new Linear(), 2.0));
-        private readonly DigitalSampler linear2Lowpass = new DigitalSampler(new DigitalAdapter(new Linear(), 2.0));
-        private readonly DigitalSampler dirichlet4 = new HighpassSampler(new DigitalAdapter(new Dirichlet(4.0), 2.0));
+        private readonly Sampler1D<double> linear2 = new HighpassSampler(new DigitalAdapter(new Linear(), 2.0));
+        private readonly Sampler1D<double> linear2Lowpass = new DigitalSampler(new DigitalAdapter(new Linear(), 2.0));
+        private readonly Sampler1D<double> dirichlet4 = new HighpassSampler(new DigitalAdapter(new Dirichlet(4.0), 2.0));
 
         [TestCase]
         public void Sample_returns_difference_between_original_and_blurred () {
@@ -57,7 +57,7 @@ namespace LappiTest.Filter.Digital {
 
         [TestCase]
         public void Convolute_can_handle_float_arrays_even_if_imprecise_as_fuck () {
-            DigitalSampler<float> sampler = new HighpassSampler<float>(new DigitalAdapter(new Linear(), 2.0));
+            Sampler1D<float> sampler = new HighpassSampler<float>(new DigitalAdapter(new Linear(), 2.0));
             float[] array = {1, 4, 9, 16, 25, 36};
             float[] expected = {-1f, -0.5f, -0.5f, -0.5f, -0.5f, 3.6666666666666666f};
             Assert.That(sampler.Convolute(array), Is.EqualTo(expected).Within(1E-5));

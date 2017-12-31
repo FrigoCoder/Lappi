@@ -4,17 +4,22 @@ namespace Lappi.Filter.Digital {
 
     public class Wavelet1D<T> where T : new() {
 
-        private readonly DigitalSampler<T> analysisLowpass;
-        private readonly DigitalSampler<T> analysisHighpass;
-        private readonly DigitalSampler<T> synthesisLowpass;
-        private readonly DigitalSampler<T> synthesisHighpass;
+        private readonly Sampler1D<T> analysisLowpass;
+        private readonly Sampler1D<T> analysisHighpass;
+        private readonly Sampler1D<T> synthesisLowpass;
+        private readonly Sampler1D<T> synthesisHighpass;
 
         public Wavelet1D (DigitalFilter analysisLowpass, DigitalFilter analysisHighpass, DigitalFilter synthesisLowpass,
-            DigitalFilter synthesisHighpass) {
-            this.analysisLowpass = new DigitalSampler<T>(analysisLowpass);
-            this.analysisHighpass = new DigitalSampler<T>(analysisHighpass);
-            this.synthesisLowpass = new DigitalSampler<T>(synthesisLowpass);
-            this.synthesisHighpass = new DigitalSampler<T>(synthesisHighpass);
+            DigitalFilter synthesisHighpass) : this(new DigitalSampler<T>(analysisLowpass), new DigitalSampler<T>(analysisHighpass),
+            new DigitalSampler<T>(synthesisLowpass), new DigitalSampler<T>(synthesisHighpass)) {
+        }
+
+        public Wavelet1D (Sampler1D<T> analysisLowpass, Sampler1D<T> analysisHighpass, Sampler1D<T> synthesisLowpass,
+            Sampler1D<T> synthesisHighpass) {
+            this.analysisLowpass = analysisLowpass;
+            this.analysisHighpass = analysisHighpass;
+            this.synthesisLowpass = synthesisLowpass;
+            this.synthesisHighpass = synthesisHighpass;
         }
 
         public T[][] Forward (T[] source, int steps = 1) {
