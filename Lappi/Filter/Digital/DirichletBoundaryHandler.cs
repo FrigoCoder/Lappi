@@ -8,13 +8,11 @@ namespace Lappi.Filter.Digital {
 
     public class DirichletBoundaryHandler : BoundaryHandler {
 
-        private readonly int max;
         private readonly DigitalFilter maxFilter;
         private readonly Dictionary<int, DigitalFilter> leftFilters = new Dictionary<int, DigitalFilter>();
         private readonly Dictionary<int, DigitalFilter> rightFilters = new Dictionary<int, DigitalFilter>();
 
         public DirichletBoundaryHandler (int max) {
-            this.max = max;
             maxFilter = NormalizedDirichlet(max);
             leftFilters[0] = new CoefficientAdapter(0, new[] {0.5, 0.5});
             rightFilters[0] = new CoefficientAdapter(1, new[] {0.5, 0.5});
@@ -26,11 +24,11 @@ namespace Lappi.Filter.Digital {
 
         public DigitalFilter GetFilter (int index, int length) {
             Preconditions.Require(0 <= index && index < length);
-            if( leftFilters.ContainsKey(index) ) {
-                return leftFilters[index];
+            if( leftFilters.TryGetValue(index, out DigitalFilter leftFilter) ) {
+                return leftFilter;
             }
-            if( rightFilters.ContainsKey(length - 1 - index) ) {
-                return rightFilters[length - 1 - index];
+            if( rightFilters.TryGetValue(length - 1 - index, out DigitalFilter rightFilter) ) {
+                return rightFilter;
             }
             return maxFilter;
         }
