@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 
-namespace Lappi.Filter.Analog {
+using Lappi.Filter.Analog;
 
-    public static class AnalogFilters {
+namespace Lappi.Filter.Digital {
+
+    public static class DigitalFilters {
 
         [SuppressMessage("ReSharper", "CompareOfFloatsByEqualityOperator")]
         public static int NonZeroLeft (AnalogFilter analog, double scale) {
@@ -22,6 +25,14 @@ namespace Lappi.Filter.Analog {
             }
             return right;
         }
+
+        public static DigitalFilter Normalize (this DigitalFilter filter) {
+            double sum = filter.Coefficients.Sum();
+            return new CoefficientAdapter(-filter.Left, filter.Coefficients.Select(x => x / sum).ToArray());
+        }
+
+        public static string ToString (this DigitalFilter filter) => filter.GetType().Name + "{Left = " + filter.Left + ", Right = " + filter.Right +
+            ", Radius = " + filter.Radius + ", Coefficients=[" + string.Join(", ", filter.Coefficients) + "]}";
 
     }
 

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 
 using Lappi.Filter.Analog;
 using Lappi.Util;
@@ -33,11 +32,7 @@ namespace Lappi.Filter.Digital {
             return maxFilter;
         }
 
-        private static DigitalFilter NormalizedDirichlet (double radius) {
-            DigitalFilter filter = new DigitalAdapter(new Dirichlet(radius), 2.0);
-            double sum = filter.Coefficients.Sum();
-            return new CoefficientAdapter(-filter.Left, filter.Coefficients.Select(x => x / sum).ToArray());
-        }
+        private static DigitalFilter NormalizedDirichlet (double radius) => new DigitalAdapter(new Dirichlet(radius), 2.0).Normalize();
 
     }
 

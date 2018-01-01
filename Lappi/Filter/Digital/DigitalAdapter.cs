@@ -13,14 +13,11 @@ namespace Lappi.Filter.Digital {
         public double[] Coefficients { get; }
 
         public DigitalAdapter (AnalogFilter analog, double scale) {
-            Left = AnalogFilters.NonZeroLeft(analog, scale);
-            Right = AnalogFilters.NonZeroRight(analog, scale);
+            Left = DigitalFilters.NonZeroLeft(analog, scale);
+            Right = DigitalFilters.NonZeroRight(analog, scale);
             Radius = Math.Max(Math.Abs(Left), Math.Abs(Right));
             Coefficients = Arrays.New(Right - Left + 1, i => analog[(i + Left) / scale]);
         }
-
-        public override string ToString () => GetType().Name + "{Left = " + Left + ", Right = " + Right + ", Radius = " + Radius +
-            ", Coefficients=[" + string.Join(", ", Coefficients) + "]}";
 
         public double this [int x] => Coefficients[x - Left];
 
