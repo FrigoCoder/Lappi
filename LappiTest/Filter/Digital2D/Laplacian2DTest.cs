@@ -51,7 +51,7 @@ namespace LappiTest.Filter.Digital2D {
 
         [TestCase]
         public void Lenna_is_perfectly_reconstructed_after_5_steps () {
-            Laplacian2D<YuvD> transform = new Laplacian2D<YuvD>(CDF97.AnalysisLowpass, CDF97.SynthesisLowpass);
+            Laplacian2D<YuvD> transform = new Laplacian2D<YuvD>(new DigitalAdapter(new Dirichlet(3), 2), new DigitalAdapter(new Dirichlet(2), 2));
             Image<YuvD> lenna = Image<YuvD>.Load("Lenna.png");
             ImageTest.AssertEquals(transform.Inverse(transform.Forward(lenna, 5)), lenna);
         }
