@@ -25,9 +25,14 @@ namespace LappiTest.Filter.Digital {
 
         private readonly Sampler1D<double> linear1 = new DigitalSampler(new DigitalAdapter(new Linear(), 1.0));
         private readonly Sampler1D<double> linear2 = new DigitalSampler(new DigitalAdapter(new Linear(), 2.0));
-        private readonly Sampler1D<double> linear2Highpass = new DigitalSampler(new HighpassAdapter(new DigitalAdapter(new Linear(), 2.0)));
+        private readonly Sampler1D<double> linear2Highpass = new DigitalSampler(new CoefficientAdapter(1, new[] {-0.25, 0.5, -0.25}));
         private readonly Sampler1D<double> dirichlet4 = new DigitalSampler(new DigitalAdapter(new Dirichlet(4.0), 2.0));
-        private readonly Sampler1D<double> dirichlet4Highpass = new DigitalSampler(new HighpassAdapter(new DigitalAdapter(new Dirichlet(4.0), 2.0)));
+
+        private readonly Sampler1D<double> dirichlet4Highpass = new DigitalSampler(new CoefficientAdapter(7,
+            new[] {
+                0.0124320229612286, 0, -0.0417611648699562, 0, 0.0935378601665931, 0, -0.314208718257866, 0.5, -0.314208718257866, 0,
+                0.0935378601665931, 0, -0.0417611648699562, 0, 0.0124320229612286
+            }));
 
         [TestCase]
         public void Sample_with_scale_1_linear_filter_returns_array_value () {
