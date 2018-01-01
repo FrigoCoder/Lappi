@@ -1,4 +1,7 @@
-﻿using Lappi.Filter.Digital;
+﻿using System.Globalization;
+using System.Threading;
+
+using Lappi.Filter.Digital;
 using Lappi.Filter.Digital2D;
 using Lappi.Image;
 
@@ -7,10 +10,12 @@ namespace Lappi {
     public static class Program {
 
         public static void Main () {
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+
             Image<YuvD> lenna = Image<YuvD>.Load("Resources\\Lenna.png");
 
-            Sampler2D<YuvD> analysis = new SeparableSampler<YuvD>(new DigitalSampler<YuvD>(new DirichletBoundaryHandler(3)));
-            Sampler2D<YuvD> synthesis = new SeparableSampler<YuvD>(new DigitalSampler<YuvD>(new DirichletBoundaryHandler(2)));
+            Sampler2D<YuvD> analysis = new SeparableSampler<YuvD>(new Dirichlet3SamplerYuvD());
+            Sampler2D<YuvD> synthesis = new SeparableSampler<YuvD>(new Dirichlet2SamplerYuvD());
 
             Laplacian2D<YuvD> transform = new Laplacian2D<YuvD>(analysis, synthesis);
             Image<YuvD>[] transformed = transform.Forward(lenna, 5);
