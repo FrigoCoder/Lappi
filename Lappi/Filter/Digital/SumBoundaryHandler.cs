@@ -9,34 +9,29 @@ namespace Lappi.Filter.Digital {
 
     public class SumBoundaryHandler : BoundaryHandler {
 
-        private readonly DigitalFilter normalized;
+        private readonly DigitalFilter fullFilter;
         private readonly Dictionary<int, DigitalFilter> leftFilters = new Dictionary<int, DigitalFilter>();
         private readonly Dictionary<int, DigitalFilter> rightFilters = new Dictionary<int, DigitalFilter>();
 
         public SumBoundaryHandler (DigitalFilter filter) {
-            normalized = CreateFilter(filter, filter.Left, filter.Right);
-            for( int left = filter.Left; left <= 0; left++ ) {
-                leftFilters[left] = CreateFilter(filter, left, filter.Right);
+            fullFilter = CreateFilter(filter, filter.Left, filter.Right);
+            for( int left = filter.Left + 1; left <= 0; left++ ) {
+                leftFilters[-left] = CreateFilter(filter, left, filter.Right);
             }
-            for( int right = 0; right <= filter.Right; right++ ) {
+            for( int right = 0; right <= filter.Right - 1; right++ ) {
                 rightFilters[right] = CreateFilter(filter, filter.Left, right);
             }
         }
 
         public DigitalFilter GetFilter (int center, int length) {
             Preconditions.Require(0 <= center && center < length);
-            int left = Math.Max(0, center + normalized.Left) - center;
-            int right = Math.Min(length - 1, center + normalized.Right) - center;
-            if( left == normalized.Left && right == normalized.Right ) {
-                return normalized;
+            if( leftFilters.TryGetValue(center, out DigitalFilter leftFilter) ) {
+                return leftFilter;
             }
-            if( left != normalized.Left ) {
-                return leftFilters[left];
+            if( rightFilters.TryGetValue(length - 1 - center, out DigitalFilter rightFilter) ) {
+                return rightFilter;
             }
-            if( right != normalized.Right ) {
-                return rightFilters[right];
-            }
-            throw new ArgumentException();
+            return fullFilter;
         }
 
         private DigitalFilter CreateFilter (DigitalFilter source, int left, int right) {
