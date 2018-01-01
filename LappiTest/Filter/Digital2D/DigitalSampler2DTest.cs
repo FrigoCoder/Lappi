@@ -1,4 +1,5 @@
 ﻿using Lappi.Filter.Analog;
+using Lappi.Filter.Digital;
 using Lappi.Filter.Digital2D;
 using Lappi.Image;
 
@@ -14,10 +15,10 @@ namespace LappiTest.Filter.Digital2D {
     public class DigitalSampler2DTest {
 
         private readonly Image source = new Image(new double[,]
-            {{1, 4, 9, 16, 25, 36}, {1, 4, 9, 16, 25, 36}, {1, 4, 9, 16, 25, 36}, {1, 4, 9, 16, 25, 36}});
+            {{1, 4, 9, 16, 25, 36}, {1, 4, 9, 16, 25, 36}, {1, 4, 9, 16, 25, 36}, {0, 0, 0, 0, 0, 0}});
 
-        private readonly DigitalSampler2D linear1 = new DigitalSampler2D(new RadialAdapter(new Linear(), 1.0));
-        private readonly DigitalSampler2D linear2 = new DigitalSampler2D(new RadialAdapter(new Linear(), 2.0));
+        private readonly DigitalSampler2D linear1 = new DigitalSampler2D(new SeparableAdapter(new DigitalAdapter(new Linear(), 1.0)));
+        private readonly DigitalSampler2D linear2 = new DigitalSampler2D(new SeparableAdapter(new DigitalAdapter(new Linear(), 2.0)));
 
         [Test]
         public void Convolute_with_scale_1_results_in_the_original_image () {
@@ -27,10 +28,8 @@ namespace LappiTest.Filter.Digital2D {
         [Test]
         public void Convolute_with_scale_2_results_in_blurred_image () {
             Image expected = new Image(new[,] {
-                {2.0374140570188866, 4.5139002551474166, 9.5139002551474157, 16.513900255147416, 25.513900255147412, 32.196148457597417},
-                {2.0556010205896675, 4.5205645305001854, 9.5205645305001845, 16.520564530500184, 25.520564530500181, 32.129462924504551},
-                {2.0556010205896675, 4.5205645305001854, 9.5205645305001845, 16.520564530500184, 25.520564530500181, 32.129462924504551},
-                {2.0374140570188866, 4.5139002551474166, 9.5139002551474157, 16.513900255147416, 25.513900255147412, 32.196148457597417}
+                {2.0, 4.5, 9.5, 16.5, 25.5, 32.33333333333333}, {2.0, 4.5, 9.5, 16.5, 25.5, 32.33333333333333},
+                {1.5, 3.375, 7.125, 12.375, 19.125, 24.25}, {0.6666666666666666, 1.5, 3.166666666666666, 5.5, 8.5, 10.77777777777777}
             });
             ImageTest.AssertEquals(linear2.Convolute(source), expected);
         }
