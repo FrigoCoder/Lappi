@@ -8,11 +8,9 @@ namespace Lappi.Filter.Digital2D {
 
         Image<T> Convolute (Image<T> source);
 
-        Image<T> Downsample (Image<T> source, int factor = 2, int shift = 0);
+        Image<T> Downsample (Image<T> source);
 
-        Image<T> Upsample (Image<T> source, int factor, int shift);
-
-        Image<T> Upsample (Image<T> source, int factor, int shift, int xs, int ys);
+        Image<T> Upsample (Image<T> source, int xs, int ys);
 
     }
 

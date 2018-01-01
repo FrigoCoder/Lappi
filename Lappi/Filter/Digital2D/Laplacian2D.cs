@@ -25,8 +25,8 @@ namespace Lappi.Filter.Digital2D {
             Image<T>[] scales = new Image<T>[steps + 1];
             scales[scales.Length - 1] = image;
             for( int i = scales.Length - 1; i >= 1; i-- ) {
-                scales[i - 1] = analysis.Downsample(scales[i], 2, 0);
-                scales[i] -= synthesis.Upsample(scales[i - 1], 2, 0, scales[i].Xs, scales[i].Ys);
+                scales[i - 1] = analysis.Downsample(scales[i]);
+                scales[i] -= synthesis.Upsample(scales[i - 1], scales[i].Xs, scales[i].Ys);
             }
             return scales;
         }
@@ -34,7 +34,7 @@ namespace Lappi.Filter.Digital2D {
         public Image<T> Inverse (Image<T>[] scales) {
             Image<T>[] result = (Image<T>[]) scales.Clone();
             for( int i = 1; i < result.Length; i++ ) {
-                result[i] += synthesis.Upsample(result[i - 1], 2, 0, result[i].Xs, result[i].Ys);
+                result[i] += synthesis.Upsample(result[i - 1], result[i].Xs, result[i].Ys);
             }
             return result[result.Length - 1];
         }

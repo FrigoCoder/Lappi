@@ -27,14 +27,12 @@ namespace Lappi.Filter.Digital2D {
 
         public Image<T> Convolute (Image<T> source) => new Image<T>(source.Xs, source.Ys, (x, y) => Sample(source, x, y));
 
-        public Image<T> Downsample (Image<T> source, int factor = 2, int shift = 0) => new Image<T>((source.Xs - shift + factor - 1) / factor,
-            (source.Ys - shift + factor - 1) / factor, (x, y) => Sample(source, x * factor + shift, y * factor + shift));
+        public Image<T> Downsample (Image<T> source) =>
+            new Image<T>((source.Xs + 1) / 2, (source.Ys + 1) / 2, (x, y) => Sample(source, x * 2, y * 2));
 
-        public Image<T> Upsample (Image<T> source, int factor, int shift) => Upsample(source, factor, shift, source.Xs * factor, source.Ys * factor);
-
-        public Image<T> Upsample (Image<T> source, int factor, int shift, int xs, int ys) {
+        public Image<T> Upsample (Image<T> source, int xs, int ys) {
             Image<T> result = new Image<T>(xs, ys);
-            source.ForEach((x, y) => result[x * factor + shift, y * factor + shift] = (dynamic) source[x, y] * factor * factor);
+            source.ForEach((x, y) => result[x * 2, y * 2] = (dynamic) source[x, y] * 4);
             return Convolute(result);
         }
 
