@@ -24,12 +24,13 @@ namespace LappiTest.Filter.Digital {
 
         [Test]
         public void Downsample_test () {
-            Assert.That(dirichletSampler.Downsample(array, 2, 0), Is.EqualTo(digitalSampler.Downsample(array, 2, 0)).Within(1E-15));
+            Assert.That(dirichletSampler.Downsample(array), Is.EqualTo(digitalSampler.Downsample(array)).Within(1E-15));
         }
 
         [Test]
         public void Upsample_test () {
-            Assert.That(dirichletSampler.Upsample(array, 2, 0), Is.EqualTo(digitalSampler.Upsample(array, 2, 0)).Within(1E-15));
+            Assert.That(dirichletSampler.Upsample(array, array.Length * 2),
+                Is.EqualTo(digitalSampler.Upsample(array, array.Length * 2)).Within(1E-15));
         }
 
         private static readonly Random random = new Random();

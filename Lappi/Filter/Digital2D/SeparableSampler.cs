@@ -20,11 +20,11 @@ namespace Lappi.Filter.Digital2D {
         public Image<T> Downsample (Image<T> source) {
             Image<T> half = new Image<T>(source.Xs / 2, source.Ys);
             for( int y = 0; y < source.Ys; y++ ) {
-                half.Rows[y] = sampler.Downsample(source.Rows[y], 2, 0);
+                half.Rows[y] = sampler.Downsample(source.Rows[y]);
             }
             Image<T> quarter = new Image<T>(source.Xs / 2, source.Ys / 2);
             for( int x = 0; x < source.Xs / 2; x++ ) {
-                quarter.Columns[x] = sampler.Downsample(half.Columns[x], 2, 0);
+                quarter.Columns[x] = sampler.Downsample(half.Columns[x]);
             }
             return quarter;
         }
@@ -32,11 +32,11 @@ namespace Lappi.Filter.Digital2D {
         public Image<T> Upsample (Image<T> quarter, int xs, int ys) {
             Image<T> half = new Image<T>(quarter.Xs, ys);
             for( int x = 0; x < half.Xs; x++ ) {
-                half.Columns[x] = sampler.Upsample(quarter.Columns[x], 2, 0, ys);
+                half.Columns[x] = sampler.Upsample(quarter.Columns[x], ys);
             }
             Image<T> full = new Image<T>(xs, ys);
             for( int y = 0; y < full.Ys; y++ ) {
-                full.Rows[y] = sampler.Upsample(half.Rows[y], 2, 0, xs);
+                full.Rows[y] = sampler.Upsample(half.Rows[y], xs);
             }
             return full;
         }

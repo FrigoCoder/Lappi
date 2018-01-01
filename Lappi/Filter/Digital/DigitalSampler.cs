@@ -24,15 +24,12 @@ namespace Lappi.Filter.Digital {
 
         public T[] Convolute (T[] source) => Arrays.New(source.Length, i => Sample(source, i));
 
-        public T[] Downsample (T[] source, int factor, int shift) =>
-            Arrays.New((source.Length - shift + factor - 1) / factor, i => Sample(source, i * factor + shift));
+        public T[] Downsample (T[] source) => Arrays.New((source.Length + 1) / 2, i => Sample(source, i * 2));
 
-        public T[] Upsample (T[] source, int factor, int shift) => Upsample(source, factor, shift, source.Length * factor);
-
-        public T[] Upsample (T[] source, int factor, int shift, int length) {
+        public T[] Upsample (T[] source, int length) {
             T[] v = Arrays.New(length, new T());
             for( int i = 0; i < source.Length; i++ ) {
-                v[i * factor + shift] = (dynamic) source[i] * factor;
+                v[i * 2] = (dynamic) source[i] * 2;
             }
             return Convolute(v);
         }

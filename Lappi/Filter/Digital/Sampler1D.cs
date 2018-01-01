@@ -6,11 +6,9 @@
 
         T[] Convolute (T[] source);
 
-        T[] Downsample (T[] source, int factor, int shift);
+        T[] Downsample (T[] source);
 
-        T[] Upsample (T[] source, int factor, int shift);
-
-        T[] Upsample (T[] source, int factor, int shift, int length);
+        T[] Upsample (T[] source, int length);
 
     }
 

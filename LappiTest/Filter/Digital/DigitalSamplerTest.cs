@@ -116,44 +116,31 @@ namespace LappiTest.Filter.Digital {
 
         [TestCase]
         public void Downsample_preserves_constant_array () {
-            Assert.That(linear2.Downsample(constant, 2, 0), Is.EqualTo(shortConstant));
+            Assert.That(linear2.Downsample(constant), Is.EqualTo(shortConstant));
         }
 
         [TestCase]
         public void Downsample_with_factor_2_and_shift_0 () {
             double[] expected = {2, 9.5, 25.5};
-            Assert.That(linear2.Downsample(source, 2, 0), Is.EqualTo(expected));
-        }
-
-        [TestCase]
-        public void Downsample_with_factor_2_and_shift_1 () {
-            double[] expected = {4.5, 16.5, 32.333333333333333333333333333333};
-            Assert.That(linear2.Downsample(source, 2, 1), Is.EqualTo(expected).Within(1E-14));
+            Assert.That(linear2.Downsample(source), Is.EqualTo(expected));
         }
 
         [TestCase]
         public void Downsample_can_handle_odd_length_arrays_with_shift_0 () {
             double[] odd = {1, 4, 9, 16, 25};
             double[] expected = {2, 9.5, 22};
-            Assert.That(linear2.Downsample(odd, 2, 0), Is.EqualTo(expected).Within(1E-14));
-        }
-
-        [TestCase]
-        public void Downsample_can_handle_odd_length_arrays_with_shift_1 () {
-            double[] odd = {1, 4, 9, 16, 25};
-            double[] expected = {4.5, 16.5};
-            Assert.That(linear2.Downsample(odd, 2, 1), Is.EqualTo(expected));
+            Assert.That(linear2.Downsample(odd), Is.EqualTo(expected).Within(1E-14));
         }
 
         [Ignore("#1: DigitalSampler normalization bug - Lowpass and highpass filters are inconsistent due to boundary handling")]
         [TestCase]
         public void Upsample_preserves_constant_array () {
-            Assert.That(linear2.Upsample(shortConstant, 2, 1), Is.EqualTo(shortConstant));
+            Assert.That(linear2.Upsample(shortConstant, shortConstant.Length * 2), Is.EqualTo(constant));
         }
 
         [TestCase]
         public void Upsample_preserves_constant_array_at_nonboundaries () {
-            double[] upsampled = linear2.Upsample(shortConstant, 2, 0);
+            double[] upsampled = linear2.Upsample(shortConstant, shortConstant.Length * 2);
             for( int i = 1; i < constant.Length - 1; i++ ) {
                 Assert.That(upsampled[i], Is.EqualTo(constant[i]));
             }
@@ -163,42 +150,28 @@ namespace LappiTest.Filter.Digital {
         public void Upsample_with_factor_2_and_shift_0 () {
             double[] downsampled = {2, 9.5, 25.5};
             double[] expected = {2.6666666666666666, 5.75, 9.5, 17.5, 25.5, 17};
-            Assert.That(linear2.Upsample(downsampled, 2, 0), Is.EqualTo(expected));
-        }
-
-        [TestCase]
-        public void Upsample_with_factor_2_and_shift_1 () {
-            double[] downsampled = {4.5, 16.5, 32.333333333333333333333333333333};
-            double[] expected = {3, 4.5, 10.5, 16.5, 24.4166666666666666, 43.1111111111111111};
-            Assert.That(linear2.Upsample(downsampled, 2, 1), Is.EqualTo(expected));
+            Assert.That(linear2.Upsample(downsampled, downsampled.Length * 2), Is.EqualTo(expected));
         }
 
         [TestCase]
         public void Upsample_can_handle_odd_length_arrays_with_shift_0 () {
             double[] downsampled = {2, 9.5, 22};
             double[] expected = {2.6666666666666666, 5.75, 9.5, 15.75, 29.333333333333333};
-            Assert.That(linear2.Upsample(downsampled, 2, 0, 5), Is.EqualTo(expected));
-        }
-
-        [TestCase]
-        public void Upsample_can_handle_odd_length_arrays_with_shift_1 () {
-            double[] downsampled = {4.5, 16.5};
-            double[] expected = {3, 4.5, 10.5, 16.5, 11};
-            Assert.That(linear2.Upsample(downsampled, 2, 1, 5), Is.EqualTo(expected));
+            Assert.That(linear2.Upsample(downsampled, 5), Is.EqualTo(expected));
         }
 
         [Ignore("#1: DigitalSampler normalization bug - Lowpass and highpass filters are inconsistent due to boundary handling")]
         [TestCase]
         public void Downsample_upsample_preserves_constant_array () {
-            double[] downsampled = linear2.Downsample(constant, 2, 0);
-            double[] upsampled = linear2.Upsample(downsampled, 2, 0);
+            double[] downsampled = linear2.Downsample(constant);
+            double[] upsampled = linear2.Upsample(downsampled, downsampled.Length * 2);
             Assert.That(upsampled, Is.EqualTo(constant));
         }
 
         [TestCase]
         public void Downsample_upsample_preserves_constant_array_at_nonboundaries () {
-            double[] downsampled = linear2.Downsample(constant, 2, 0);
-            double[] upsampled = linear2.Upsample(downsampled, 2, 0);
+            double[] downsampled = linear2.Downsample(constant);
+            double[] upsampled = linear2.Upsample(downsampled, downsampled.Length * 2);
             for( int i = 1; i < upsampled.Length - 1; i++ ) {
                 Assert.That(upsampled[i], Is.EqualTo(constant[i]));
             }
