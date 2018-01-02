@@ -11,20 +11,17 @@ namespace Lappi.Filter.Digital {
 
         public readonly int Left;
         public readonly int Right;
-        public readonly int Radius;
         public readonly double[] Coefficients;
 
         public DigitalFilter (int center, double[] coefficients) {
             Left = 0 - center;
             Right = coefficients.Length - 1 - center;
-            Radius = Math.Max(Math.Abs(Left), Math.Abs(Right));
             Coefficients = coefficients;
         }
 
         public DigitalFilter (AnalogFilter analog, double scale) {
             Left = NonZeroLeft(analog, scale);
             Right = NonZeroRight(analog, scale);
-            Radius = Math.Max(Math.Abs(Left), Math.Abs(Right));
             Coefficients = Arrays.New(Right - Left + 1, i => analog[(i + Left) / scale]);
         }
 
@@ -33,8 +30,7 @@ namespace Lappi.Filter.Digital {
             return new DigitalFilter(-Left, Coefficients.Select(x => x / sum).ToArray());
         }
 
-        public string ToString () => GetType().Name + "{Left = " + Left + ", Right = " + Right + ", Radius = " + Radius + ", Coefficients=[" +
-            string.Join(", ", Coefficients) + "]}";
+        public override string ToString () => $"{GetType().Name}{{Left = {Left}, Right = {Right}, Coefficients=[{string.Join(", ", Coefficients)}]}}";
 
         public double this [int x] => Coefficients[x - Left];
 
