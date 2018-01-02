@@ -24,7 +24,7 @@ namespace LappiTest.Filter.Digital {
         [TestCase]
         public void ToString_is_correct () {
             DigitalFilter filter = new DigitalFilter(new Linear(), 2.0);
-            Assert.That(filter.ToString(), Is.EqualTo("DigitalFilter{Left = -1, Right = 1, Radius = 1, Coefficients=[0,5, 1, 0,5]}"));
+            Assert.That(filter.ToString(), Is.EqualTo("DigitalFilter{Left = -1, Right = 1, Coefficients=[0,5, 1, 0,5]}"));
         }
 
         private void AssertFilter (DigitalFilter filter, int left, int right, double[] coefficients) {
