@@ -2,7 +2,7 @@
 
     public interface BoundaryHandler {
 
-        DigitalFilter GetFilter (int center, int length);
+        Filter1D GetFilter (int center, int length);
 
     }
 

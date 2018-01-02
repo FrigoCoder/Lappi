@@ -51,7 +51,7 @@ namespace LappiTest.Filter.Digital {
             AssertFilter(filters.GetFilter(10, 11), -1, 0, new[] {0.5, 0.5});
         }
 
-        private void AssertFilter (DigitalFilter filter, int left, int right, double[] coefficients) {
+        private void AssertFilter (Filter1D filter, int left, int right, double[] coefficients) {
             Assert.That(filter.Left, Is.EqualTo(left));
             Assert.That(filter.Right, Is.EqualTo(right));
             Assert.That(filter.Coefficients, Is.EqualTo(coefficients).Within(1E-15));

@@ -11,7 +11,7 @@ namespace Lappi.Filter.Digital2D {
         public int Bottom { get; }
         public double[,] Coefficients { get; }
 
-        public SeparableAdapter (DigitalFilter filter) {
+        public SeparableAdapter (Filter1D filter) {
             Left = filter.Left;
             Right = filter.Right;
             Top = filter.Left;

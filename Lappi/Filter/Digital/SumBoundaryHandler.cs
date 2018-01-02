@@ -9,11 +9,11 @@ namespace Lappi.Filter.Digital {
 
     public class SumBoundaryHandler : BoundaryHandler {
 
-        private readonly DigitalFilter fullFilter;
-        private readonly Dictionary<int, DigitalFilter> leftFilters = new Dictionary<int, DigitalFilter>();
-        private readonly Dictionary<int, DigitalFilter> rightFilters = new Dictionary<int, DigitalFilter>();
+        private readonly Filter1D fullFilter;
+        private readonly Dictionary<int, Filter1D> leftFilters = new Dictionary<int, Filter1D>();
+        private readonly Dictionary<int, Filter1D> rightFilters = new Dictionary<int, Filter1D>();
 
-        public SumBoundaryHandler (DigitalFilter filter) {
+        public SumBoundaryHandler (Filter1D filter) {
             fullFilter = CreateFilter(filter, filter.Left, filter.Right);
             for( int left = filter.Left + 1; left <= 0; left++ ) {
                 leftFilters[-left] = CreateFilter(filter, left, filter.Right);
@@ -23,21 +23,21 @@ namespace Lappi.Filter.Digital {
             }
         }
 
-        public DigitalFilter GetFilter (int center, int length) {
+        public Filter1D GetFilter (int center, int length) {
             Preconditions.Require(0 <= center && center < length);
-            if( leftFilters.TryGetValue(center, out DigitalFilter leftFilter) ) {
+            if( leftFilters.TryGetValue(center, out Filter1D leftFilter) ) {
                 return leftFilter;
             }
-            if( rightFilters.TryGetValue(length - 1 - center, out DigitalFilter rightFilter) ) {
+            if( rightFilters.TryGetValue(length - 1 - center, out Filter1D rightFilter) ) {
                 return rightFilter;
             }
             return fullFilter;
         }
 
-        private DigitalFilter CreateFilter (DigitalFilter source, int left, int right) {
+        private Filter1D CreateFilter (Filter1D source, int left, int right) {
             double[] coeffs = Arrays.New(right - left + 1, i => source[i + left]);
             double factor = GetFactor(coeffs);
-            return new DigitalFilter(-left, coeffs.Select(x => x / factor).ToArray());
+            return new Filter1D(-left, coeffs.Select(x => x / factor).ToArray());
         }
 
         [SuppressMessage("ReSharper", "CompareOfFloatsByEqualityOperator")]
