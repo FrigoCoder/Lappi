@@ -13,8 +13,8 @@ namespace Lappi.Filter.Digital {
 
         public DirichletBoundaryHandler (int max) {
             fullFilter = NormalizedDirichlet(max);
-            leftFilters[0] = new CoefficientAdapter(0, new[] {0.5, 0.5});
-            rightFilters[0] = new CoefficientAdapter(1, new[] {0.5, 0.5});
+            leftFilters[0] = new DigitalFilter(0, new[] {0.5, 0.5});
+            rightFilters[0] = new DigitalFilter(1, new[] {0.5, 0.5});
             for( int i = 1; i < max; i++ ) {
                 DigitalFilter filter = NormalizedDirichlet(i);
                 leftFilters[2 * i] = leftFilters[2 * i - 1] = rightFilters[2 * i] = rightFilters[2 * i - 1] = filter;
@@ -32,7 +32,7 @@ namespace Lappi.Filter.Digital {
             return fullFilter;
         }
 
-        private static DigitalFilter NormalizedDirichlet (double radius) => new DigitalAdapter(new Dirichlet(radius), 2.0).Normalize();
+        private static DigitalFilter NormalizedDirichlet (double radius) => new DigitalFilter(new Dirichlet(radius), 2.0).Normalize();
 
     }
 

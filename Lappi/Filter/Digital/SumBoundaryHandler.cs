@@ -37,7 +37,7 @@ namespace Lappi.Filter.Digital {
         private DigitalFilter CreateFilter (DigitalFilter source, int left, int right) {
             double[] coeffs = Arrays.New(right - left + 1, i => source[i + left]);
             double factor = GetFactor(coeffs);
-            return new CoefficientAdapter(-left, coeffs.Select(x => x / factor).ToArray());
+            return new DigitalFilter(-left, coeffs.Select(x => x / factor).ToArray());
         }
 
         [SuppressMessage("ReSharper", "CompareOfFloatsByEqualityOperator")]

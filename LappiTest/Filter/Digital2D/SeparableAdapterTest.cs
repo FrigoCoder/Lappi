@@ -31,7 +31,7 @@ namespace LappiTest.Filter.Digital2D {
         }
 
         private void AssertRanges (AnalogFilter analog, double scale, int left, int right, int top, int bottom) {
-            SeparableAdapter adapter = new SeparableAdapter(new DigitalAdapter(analog, scale));
+            SeparableAdapter adapter = new SeparableAdapter(new DigitalFilter(analog, scale));
             Assert.That(adapter.Left, Is.EqualTo(left));
             Assert.That(adapter.Right, Is.EqualTo(right));
             Assert.That(adapter.Top, Is.EqualTo(top));
@@ -39,7 +39,7 @@ namespace LappiTest.Filter.Digital2D {
         }
 
         private void AssertCoefficients (AnalogFilter filter, double scale, double[,] coefficients) {
-            Assert.That(new SeparableAdapter(new DigitalAdapter(filter, scale)).Coefficients, Is.EqualTo(coefficients).Within(1E-15));
+            Assert.That(new SeparableAdapter(new DigitalFilter(filter, scale)).Coefficients, Is.EqualTo(coefficients).Within(1E-15));
         }
 
     }
