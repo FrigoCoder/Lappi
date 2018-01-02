@@ -3,7 +3,7 @@ using Lappi.Util;
 
 namespace Lappi.Filter.Digital2D {
 
-    public class SeparableAdapter : DigitalFilter2D {
+    public class SeparableAdapter : Filter2D {
 
         public int Left { get; }
         public int Right { get; }

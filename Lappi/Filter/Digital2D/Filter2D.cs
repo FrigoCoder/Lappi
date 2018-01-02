@@ -1,6 +1,6 @@
 ﻿namespace Lappi.Filter.Digital2D {
 
-    public interface DigitalFilter2D {
+    public interface Filter2D {
 
         int Left { get; }
         int Right { get; }

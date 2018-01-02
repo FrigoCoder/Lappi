@@ -17,7 +17,7 @@ namespace Lappi.Filter.Digital2D {
             new SeparableSampler<T>(new DigitalSampler<T>(synthesis))) {
         }
 
-        public Laplacian2D (DigitalFilter2D analysis, DigitalFilter2D synthesis) : this(new NonSeparableSampler<T>(analysis),
+        public Laplacian2D (Filter2D analysis, Filter2D synthesis) : this(new NonSeparableSampler<T>(analysis),
             new NonSeparableSampler<T>(synthesis)) {
         }
 
