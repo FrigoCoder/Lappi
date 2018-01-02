@@ -159,8 +159,8 @@ namespace LappiTest.Image {
             Assert.That(image.ToString(), Is.EqualTo("{{1, 2, 3}, {4, 5, 6}}"));
         }
 
-        private Image<T> CreateRandomImage<T> (int xs, int ys) where T : new() => new Image<T>(xs, ys,
-            (x, y) => Colors.To<T>(Color.FromArgb(random.Next(256), random.Next(256), random.Next(256))));
+        private Image<T> CreateRandomImage<T> (int xs, int ys) where T : new() =>
+            new Image<T>(xs, ys, (x, y) => Colors.To<T>(Color.FromArgb(random.Next(256), random.Next(256), random.Next(256))));
 
         private void AssertDimensions<T> (Image<T> image, int xs, int ys) where T : new() {
             Assert.That(image.Xs, Is.EqualTo(xs));
