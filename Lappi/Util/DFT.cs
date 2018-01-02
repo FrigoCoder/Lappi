@@ -2,13 +2,12 @@
 
 namespace Lappi.Util {
 
-    /**
- * Discrete Fourier Transform implemented according to <a
- * href=http://en.wikipedia.org/wiki/Discrete_Fourier_transform#Definition>Wikipedia</a>. The forward transform
- * normalizes the result by 1/n, so the transform of an array of [1.0, 1.0, ...] will result in an array of [1.0, 0.0,
- * ...]. The inverse transform does not normalize anything.
- */
-
+    /// <summary>
+    ///     Discrete Fourier Transform implemented according to
+    ///     <a href="http://en.wikipedia.org/wiki/Discrete_Fourier_transform#Definition">Wikipedia</a>. The forward
+    ///     transform normalizes the result by 1/n, so the transform of an array of [1.0, 1.0, ...] will result in an array of
+    ///     [1.0, 0.0, ...]. The inverse transform does not normalize anything.
+    /// </summary>
     public class Dft {
 
         public Complex[] Forward (Complex[] time) {
