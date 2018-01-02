@@ -6,9 +6,9 @@ namespace Lappi.Filter.Digital2D {
 
     public class NonSeparableSampler<T> : Sampler2D<T> where T : new() {
 
-        private readonly Filter2D filter;
+        private readonly DigitalFilter2D filter;
 
-        public NonSeparableSampler (Filter2D filter) {
+        public NonSeparableSampler (DigitalFilter2D filter) {
             this.filter = filter;
         }
 

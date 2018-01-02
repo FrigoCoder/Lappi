@@ -67,7 +67,7 @@ namespace LappiTest.Filter.Analog {
         }
 
         private static void AssertCoefficients (AnalogFilter filter, double scale, double[] coeffs) {
-            Assert.That(new Filter1D(filter, scale).Coefficients, Is.EqualTo(coeffs).Within(1E-15));
+            Assert.That(new DigitalFilter(filter, scale).Coefficients, Is.EqualTo(coeffs).Within(1E-15));
         }
 
         private static void AssertFiltersEqual (AnalogFilter actual, AnalogFilter expected, double granularity) {

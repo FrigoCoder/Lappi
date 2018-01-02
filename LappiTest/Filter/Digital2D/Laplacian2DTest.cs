@@ -17,8 +17,8 @@ namespace LappiTest.Filter.Digital2D {
         private readonly Image<double> source = new Image<double>(new double[,]
             {{1, 4, 9, 16, 25, 36}, {1, 4, 9, 16, 25, 36}, {1, 4, 9, 16, 25, 36}, {1, 4, 9, 16, 25, 36}});
 
-        private readonly Filter1D analysis = new Filter1D(new Linear(), 2.0);
-        private readonly Filter1D synthesis = new Filter1D(new Linear(), 2.0);
+        private readonly DigitalFilter analysis = new DigitalFilter(new Linear(), 2.0);
+        private readonly DigitalFilter synthesis = new DigitalFilter(new Linear(), 2.0);
         private Laplacian2D<double> laplacian;
 
         [SetUp]
@@ -51,7 +51,7 @@ namespace LappiTest.Filter.Digital2D {
 
         [TestCase]
         public void Lenna_is_perfectly_reconstructed_after_5_steps () {
-            Laplacian2D<YuvD> transform = new Laplacian2D<YuvD>(new Filter1D(new Dirichlet(3), 2), new Filter1D(new Dirichlet(2), 2));
+            Laplacian2D<YuvD> transform = new Laplacian2D<YuvD>(new DigitalFilter(new Dirichlet(3), 2), new DigitalFilter(new Dirichlet(2), 2));
             Image<YuvD> lenna = Image<YuvD>.Load("Lenna.png");
             ImageTest.AssertEquals(transform.Inverse(transform.Forward(lenna, 5)), lenna);
         }

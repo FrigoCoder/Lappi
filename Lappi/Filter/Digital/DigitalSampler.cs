@@ -6,7 +6,7 @@ namespace Lappi.Filter.Digital {
 
         private readonly BoundaryHandler filters;
 
-        public DigitalSampler (Filter1D filter) : this(new SumBoundaryHandler(filter)) {
+        public DigitalSampler (DigitalFilter filter) : this(new SumBoundaryHandler(filter)) {
         }
 
         public DigitalSampler (BoundaryHandler filters) {
@@ -14,7 +14,7 @@ namespace Lappi.Filter.Digital {
         }
 
         public virtual T Sample (T[] source, int center) {
-            Filter1D filter = filters.GetFilter(center, source.Length);
+            DigitalFilter filter = filters.GetFilter(center, source.Length);
             T sum = new T();
             for( int i = filter.Left; i <= filter.Right; i++ ) {
                 sum += (dynamic) source[center + i] * filter[i];

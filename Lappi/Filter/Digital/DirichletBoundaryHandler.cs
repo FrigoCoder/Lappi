@@ -7,32 +7,32 @@ namespace Lappi.Filter.Digital {
 
     public class DirichletBoundaryHandler : BoundaryHandler {
 
-        private readonly Filter1D fullFilter;
-        private readonly Dictionary<int, Filter1D> leftFilters = new Dictionary<int, Filter1D>();
-        private readonly Dictionary<int, Filter1D> rightFilters = new Dictionary<int, Filter1D>();
+        private readonly DigitalFilter fullFilter;
+        private readonly Dictionary<int, DigitalFilter> leftFilters = new Dictionary<int, DigitalFilter>();
+        private readonly Dictionary<int, DigitalFilter> rightFilters = new Dictionary<int, DigitalFilter>();
 
         public DirichletBoundaryHandler (int max) {
             fullFilter = NormalizedDirichlet(max);
-            leftFilters[0] = new Filter1D(0, new[] {0.5, 0.5});
-            rightFilters[0] = new Filter1D(1, new[] {0.5, 0.5});
+            leftFilters[0] = new DigitalFilter(0, new[] {0.5, 0.5});
+            rightFilters[0] = new DigitalFilter(1, new[] {0.5, 0.5});
             for( int i = 1; i < max; i++ ) {
-                Filter1D filter = NormalizedDirichlet(i);
+                DigitalFilter filter = NormalizedDirichlet(i);
                 leftFilters[2 * i] = leftFilters[2 * i - 1] = rightFilters[2 * i] = rightFilters[2 * i - 1] = filter;
             }
         }
 
-        public Filter1D GetFilter (int center, int length) {
+        public DigitalFilter GetFilter (int center, int length) {
             Preconditions.Require(0 <= center && center < length);
-            if( leftFilters.TryGetValue(center, out Filter1D leftFilter) ) {
+            if( leftFilters.TryGetValue(center, out DigitalFilter leftFilter) ) {
                 return leftFilter;
             }
-            if( rightFilters.TryGetValue(length - 1 - center, out Filter1D rightFilter) ) {
+            if( rightFilters.TryGetValue(length - 1 - center, out DigitalFilter rightFilter) ) {
                 return rightFilter;
             }
             return fullFilter;
         }
 
-        private static Filter1D NormalizedDirichlet (double radius) => new Filter1D(new Dirichlet(radius), 2.0).Normalize();
+        private static DigitalFilter NormalizedDirichlet (double radius) => new DigitalFilter(new Dirichlet(radius), 2.0).Normalize();
 
     }
 

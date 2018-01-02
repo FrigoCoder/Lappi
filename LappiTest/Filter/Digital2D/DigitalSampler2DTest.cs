@@ -17,8 +17,8 @@ namespace LappiTest.Filter.Digital2D {
         private readonly Image source = new Image(new double[,]
             {{1, 4, 9, 16, 25, 36}, {1, 4, 9, 16, 25, 36}, {1, 4, 9, 16, 25, 36}, {0, 0, 0, 0, 0, 0}});
 
-        private readonly DigitalSampler2D linear1 = new DigitalSampler2D(new SeparableAdapter(new Filter1D(new Linear(), 1.0)));
-        private readonly DigitalSampler2D linear2 = new DigitalSampler2D(new SeparableAdapter(new Filter1D(new Linear(), 2.0)));
+        private readonly DigitalSampler2D linear1 = new DigitalSampler2D(new SeparableAdapter(new DigitalFilter(new Linear(), 1.0)));
+        private readonly DigitalSampler2D linear2 = new DigitalSampler2D(new SeparableAdapter(new DigitalFilter(new Linear(), 2.0)));
 
         [Test]
         public void Convolute_with_scale_1_results_in_the_original_image () {
